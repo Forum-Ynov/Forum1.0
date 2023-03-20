@@ -1,0 +1,84 @@
+:root {
+    --couleur_fond: #DAE0E6;
+    --couleur_principale: #FAFAFA;
+    --couleur_secondaire: #4F46E5;
+    --couleur_texte_principal: #1A1A1A;
+    --couleur_texte_secondaire: #404040ae;
+    --couleur_input: #EDEDED;
+
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--couleur_fond);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+}
+
+.container {
+    background-color: var(--couleur_principale);
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+}
+
+h2 {
+    margin-bottom: 10%;
+}
+
+input {
+    margin-bottom: 14px;
+    background-color: var(--couleur_input);
+    border-radius: 10px;
+    padding: 14px;
+    border: none;
+    width: 100%;
+}
+
+.div_input {
+    position: relative;
+}
+
+.img_input {
+    position: absolute;
+    right: 10px;
+    top: calc(18%);
+    opacity: 0.5;
+}
+
+
+
+
+.formulaire {
+    display: flex;
+    flex-direction: column;
+}
+
+
+button {
+    padding: 10px;
+    margin-top: 24px;
+    border-radius: 10px;
+    background-color: var(--couleur_secondaire);
+    color: var(--couleur_principale);
+    border: solid var(--couleur_principale) 2px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: var(--couleur_principale);
+    border: solid var(--couleur_secondaire) 2px;
+    color: var(--couleur_texte_principal);
+}
