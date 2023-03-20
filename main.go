@@ -2,7 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -75,6 +78,178 @@ func getUsers(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, users)
 }
 
+func getUserById(id string) (*User, error) {
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM user WHERE id_user = '" + id + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var user User
+	var testuser User
+
+	for rows.Next() {
+
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp)
+		if err != nil {
+			return nil, errors.New("user not found")
+		}
+	}
+
+	if user == testuser {
+		return nil, errors.New("user not found")
+	}
+
+	return &user, nil
+}
+
+func getUser(context *gin.Context) {
+	id := context.Param("id")
+	user, err := getUserById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		return
+	}
+
+	context.IndentedJSON(http.StatusOK, user)
+}
+
+func change_imagepp(context *gin.Context) {
+	id := context.Param("id")
+	user, err := getUserById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		return
+	}
+
+	if err := context.BindJSON(&user); err != nil {
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	if _, err := db.Exec("UPDATE user SET id_imagepp = " + strconv.Itoa(user.Id_imagepp) + "  WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
+		fmt.Println(err)
+	}
+
+	context.IndentedJSON(http.StatusOK, user)
+
+}
+
+func addUsers(context *gin.Context) {
+	var newUser User
+
+	if err := context.BindJSON(&newUser); err != nil {
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rowspseudo, err := db.Query("SELECT * FROM user WHERE pseudo = '" + newUser.Pseudo + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rowspseudo.Close()
+
+	var user_pseudo User
+	for rowspseudo.Next() {
+		err = rowspseudo.Scan(&user_pseudo.Id_user, &user_pseudo.Pseudo, &user_pseudo.Email, &user_pseudo.Passwd, &user_pseudo.Id_imagepp)
+		if err != nil {
+			println(errors.New("user not found"))
+		}
+
+	}
+
+	var default_user User
+	if user_pseudo != default_user {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "pseudo already used "})
+		return
+	}
+
+	rowsemail, err := db.Query("SELECT * FROM user WHERE email = '" + newUser.Email + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rowsemail.Close()
+
+	var user_email User
+	for rowsemail.Next() {
+		err = rowsemail.Scan(&user_email.Id_user, &user_email.Pseudo, &user_email.Email, &user_email.Passwd, &user_email.Id_imagepp)
+		if err != nil {
+			println(errors.New("user not found"))
+		}
+
+	}
+
+	if user_email != default_user {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "email already used "})
+		return
+	}
+
+	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "')"); err != nil {
+		fmt.Println(err)
+	}
+
+	rows, err := db.Query("SELECT * FROM user WHERE pseudo = '" + newUser.Pseudo + "' AND email = '" + newUser.Email + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var temp_user User
+	for rows.Next() {
+		err = rows.Scan(&temp_user.Id_user, &temp_user.Pseudo, &temp_user.Email, &temp_user.Passwd, &temp_user.Id_imagepp)
+		if err != nil {
+			println(errors.New("user not found"))
+		}
+
+	}
+
+	newUser.Id_user = temp_user.Id_user
+
+	context.IndentedJSON(http.StatusCreated, newUser)
+
+}
+
+func deleteUser(context *gin.Context) {
+	id := context.Param("id")
+	user, err := getUserById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	if _, err := db.Exec("DELETE FROM user WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
+		fmt.Println(err)
+	}
+
+	getUsers(context)
+}
+
 func getMessages(context *gin.Context) {
 	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
 	if err != nil {
@@ -109,6 +284,10 @@ func main() {
 
 	router := gin.Default()
 	router.GET("/users", getUsers)
+	router.GET("/users/:id", getUser)
+	router.PATCH("/userpp/:id", change_imagepp)
+	router.POST("/adduser", addUsers)
+	router.DELETE("/deleteuser/:id", deleteUser)
 	router.GET("/messages", getMessages)
 	router.Run("localhost:9090")
 }
