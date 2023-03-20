@@ -2,50 +2,50 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type User struct {
-	Id_user    int
-	Pseudo     string
-	Email      string
-	Passwd     string
-	Id_imagepp int
+	Id_user    int    `json:"id_user"`
+	Pseudo     string `json:"pseudo"`
+	Email      string `json:"email"`
+	Passwd     string `json:"passwd"`
+	Id_imagepp int    `json:"id_imagepp"`
 }
 
 type Imagepp struct {
-	Id_pp     int
-	Image_loc string
+	Id_pp     int    `json:"id_pp"`
+	Image_loc string `json:"image_loc"`
 }
 
 type Tags struct {
-	Id_tags int
-	Tags    string
+	Id_tags int    `json:"id_tags"`
+	Tags    string `json:"tags"`
 }
 
 type Topics struct {
-	Id_topics        int
-	Titre            string
-	Crea_date        time.Time
-	Format_crea_date string
-	Id_tags          int
-	Id_user          int
+	Id_topics        int       `json:"id_topics"`
+	Titre            string    `json:"titre"`
+	Crea_date        time.Time `json:"crea_date"`
+	Format_crea_date string    `json:"format_crea_date"`
+	Id_tags          int       `json:"id_tags"`
+	Id_user          int       `json:"id_uer"`
 }
 
 type Messages struct {
-	Id_message        int
-	Message           string
-	Id_user           int
-	Publi_time        time.Time
-	Format_publi_time string
-	Id_topics         int
+	Id_message        int       `json:"id_message"`
+	Message           string    `json:"message"`
+	Id_user           int       `json:"id_user"`
+	Publi_time        time.Time `json:"publi_time"`
+	Format_publi_time string    `json:"format_publi_time"`
+	Id_topics         int       `json:"id_topics"`
 }
 
-func main() {
-
+func getUsers(context *gin.Context) {
 	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
 	if err != nil {
 		panic(err)
@@ -59,6 +59,8 @@ func main() {
 
 	defer rows.Close()
 
+	var users []User
+
 	for rows.Next() {
 		var user User
 
@@ -67,8 +69,18 @@ func main() {
 			panic(err.Error())
 		}
 
-		fmt.Println(user)
+		users = append(users, user)
 	}
+
+	context.IndentedJSON(http.StatusOK, users)
+}
+
+func getMessages(context *gin.Context) {
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
 
 	rows2, err := db.Query("SELECT * FROM messages ")
 	if err != nil {
@@ -77,6 +89,7 @@ func main() {
 
 	defer rows2.Close()
 
+	var messages []Messages
 	for rows2.Next() {
 		var message Messages
 
@@ -86,8 +99,16 @@ func main() {
 		}
 
 		message.Format_publi_time = message.Publi_time.Format("15:04:05 02/01/2006")
-		fmt.Println(message)
+		messages = append(messages, message)
 	}
 
-	fmt.Println("Done")
+	context.IndentedJSON(http.StatusOK, messages)
+}
+
+func main() {
+
+	router := gin.Default()
+	router.GET("/users", getUsers)
+	router.GET("/messages", getMessages)
+	router.Run("localhost:9090")
 }
