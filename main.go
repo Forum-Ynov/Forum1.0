@@ -8,8 +8,16 @@ import (
 )
 
 type User struct {
-	Id_user int
-	Pseudo  string
+	Id_user    int
+	Pseudo     string
+	Email      string
+	Passwd     string
+	Id_imagepp int
+}
+
+type Imagepp struct {
+	Id_pp     int
+	Image_loc string
 }
 
 func main() {
@@ -30,13 +38,13 @@ func main() {
 	for rows.Next() {
 		var user User
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp)
 		if err != nil {
 			panic(err.Error())
 		}
 
-		fmt.Println(user.Id_user, user.Pseudo)
+		fmt.Println(user)
 	}
 
-	fmt.Println("hello")
+	fmt.Println("Done")
 }
