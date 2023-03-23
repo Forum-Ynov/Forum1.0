@@ -49,6 +49,14 @@ type Messages struct {
 }
 
 func getUsers(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
 	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
 	if err != nil {
 		panic(err)
@@ -79,6 +87,7 @@ func getUsers(context *gin.Context) {
 }
 
 func getUserById(id string) (*User, error) {
+
 	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
 	if err != nil {
 		panic(err)
@@ -111,6 +120,14 @@ func getUserById(id string) (*User, error) {
 }
 
 func getUser(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
 	id := context.Param("id")
 	user, err := getUserById(id)
 	if err != nil {
@@ -122,6 +139,14 @@ func getUser(context *gin.Context) {
 }
 
 func change_imagepp(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
 	id := context.Param("id")
 	user, err := getUserById(id)
 	if err != nil {
@@ -148,6 +173,14 @@ func change_imagepp(context *gin.Context) {
 }
 
 func addUsers(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
 	var newUser User
 
 	if err := context.BindJSON(&newUser); err != nil {
@@ -230,6 +263,14 @@ func addUsers(context *gin.Context) {
 }
 
 func deleteUser(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
 	id := context.Param("id")
 	user, err := getUserById(id)
 	if err != nil {
@@ -251,6 +292,14 @@ func deleteUser(context *gin.Context) {
 }
 
 func getMessages(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
 	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
 	if err != nil {
 		panic(err)
@@ -283,11 +332,15 @@ func getMessages(context *gin.Context) {
 func main() {
 
 	router := gin.Default()
+	router.Use(func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Next()
+	})
 	router.GET("/users", getUsers)
 	router.GET("/users/:id", getUser)
 	router.PATCH("/userpp/:id", change_imagepp)
 	router.POST("/adduser", addUsers)
 	router.DELETE("/deleteuser/:id", deleteUser)
 	router.GET("/messages", getMessages)
-	router.Run("localhost:9090")
+	router.Run("localhost:8000")
 }
