@@ -1,0 +1,16 @@
+:root {
+    --couleur_fond: #DAE0E6;
+    --couleur_principale: #FAFAFA;
+    --couleur_secondaire: #4F46E5;
+    --couleur_texte_principal: #1A1A1A;
+    --couleur_texte_secondaire: #404040ae;
+    --couleur_input: #EDEDED;
+
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
