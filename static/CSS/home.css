@@ -1,0 +1,343 @@
+@import url(./set.css);
+
+body {
+    background-color: #DAE0E6;
+}
+
+
+button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    line-height: 1;
+    color: black;
+    font-size: 20px;
+}
+
+@media (width >=500px) {
+    button {
+        font-size: 16px;
+    }
+}
+
+:is(.navbar, .burger, .dropdowns) {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: 72px;
+    background: #FAFAFA;
+    color: #000000;
+}
+
+.burger {
+    z-index: 3;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    background-image: url("../../Assets/Images/menu.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+body.open .burger {
+    background-image: url("../../Assets/Images/close.svg");
+}
+
+@media (width >=500px) {
+    .burger {
+        display: none;
+    }
+}
+
+.button {
+    height: 50px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: var(--couleur_secondaire);
+    color: var(--couleur_principale);
+    border: solid var(--couleur_principale) 2px;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background-color: var(--couleur_principale);
+    border: solid var(--couleur_secondaire) 2px;
+    color: #000000;
+}
+
+
+
+.button>img {
+    display: none;
+}
+
+@media (width >=500px) {
+    .button>img {
+        display: block;
+    }
+}
+
+@media (width >=500px) {
+    .dropdown:hover .button {
+        opacity: 1;
+    }
+}
+
+.dropdowns {
+    width: 80px;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    opacity: 0;
+    visibility: hidden;
+    transition-property: opacity, visibility;
+    transition-duration: 0.3s;
+}
+
+@media (width < 500px) {
+    body.open .dropdowns {
+        opacity: 1;
+        width: 100%;
+        visibility: visible;
+        left: 0;
+    }
+
+    button.button_user_img {
+        display: none;
+    }
+}
+
+@media (width >=500px) {
+    .dropdowns {
+        position: static;
+        flex-direction: row;
+        justify-content: flex-end;
+        background: transparent;
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.dropdown-menu {
+    display: grid;
+    margin-bottom: 28px;
+}
+
+@media (width >=500px) {
+    .dropdown {
+        height: 100%;
+        flex-direction: row;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 75px;
+        right: 10px;
+        width: 180px;
+        padding: 6px 24px 10px;
+        border-radius: 10px 25px 10px 25px / 10px 25px 10px 25px;
+        margin-bottom: 0;
+        place-items: start;
+        background: #FAFAFA;
+        opacity: 0;
+        visibility: hidden;
+        translate: 0 24px;
+        transition: 0.3s;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        translate: 0 0;
+    }
+}
+
+.dropdown-menu>button {
+    border-radius: 10px;
+    color: black;
+    opacity: 1;
+    height: 40px;
+}
+
+@media (width >=500px) {
+    .dropdown-menu>button {
+        opacity: 0.6;
+    }
+
+    .dropdown:hover .button {
+        opacity: 1;
+    }
+}
+
+.dropdown-menu>button:hover {
+    opacity: 1;
+    color: var(--couleur_secondaire);
+}
+
+
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
+
+
+
+
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    position: absolute;
+    overflow: hidden;
+    top: 72px;
+    left: 0;
+    width: 340px;
+    background: #FAFAFA;
+    border-top: 1px solid rgba(217, 217, 217, 0.4);
+    height: calc(100% - 72px);
+}
+
+.div_tags {
+    margin: 25px 20px 0 0;
+    font-size: large;
+}
+
+.element_tag {
+    margin: 20px 0 0 20px;
+
+}
+
+.tag {
+    font-weight: 400;
+    font-size: large;
+    position: relative;
+    padding: 10px;
+}
+
+
+
+.tag span {
+    padding-bottom: 7px;
+    letter-spacing: 4px;
+    font-size: 14px;
+    padding-right: 15px;
+    text-transform: uppercase;
+}
+
+
+.tag:hover svg {
+    transform: translateX(0);
+}
+
+.tag:active svg {
+    transform: scale(0.9);
+}
+
+.hover-underline-animation {
+    position: relative;
+    color: black;
+    padding-bottom: 20px;
+}
+
+.hover-underline-animation:after {
+    content: "";
+    position: absolute;
+    width: calc(100% + 40px);
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: -40px;
+    background-color: var(--couleur_secondaire);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.tag:hover .hover-underline-animation:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+
+.tag1::before {
+    content: url(../../Assets/Images/game.svg);
+    position: absolute;
+    left: -30px;
+}
+
+.tag2::before {
+    content: url(../../Assets/Images/football.svg);
+    position: absolute;
+    left: -30px;
+}
+
+.tag3::before {
+    content: url(../../Assets/Images/code-line.svg);
+    position: absolute;
+    left: -30px;
+}
+
+.tag4::before {
+    content: url(../../Assets/Images/cake.svg);
+    position: absolute;
+    left: -30px;
+}
+
+.info_aside {
+    margin: 10% 0 6% 10%;
+    width: 80%;
+    line-height: 28px;
+    text-align: center;
+}
+
+hr {
+    position: relative;
+    left: -100%;
+    width: 300%;
+    margin-bottom: 10%;
+}
+
+.button_secondary {
+    margin-top: 10%;
+    height: 50px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: var(--couleur_principale);
+    color: black;
+    border: solid var(--couleur_secondaire) 2px;
+    transition: 0.3s;
+}
