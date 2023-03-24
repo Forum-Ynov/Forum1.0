@@ -138,6 +138,58 @@ func getUser(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, user)
 }
 
+func getUserByPseudo(pseudo string) (*User, error) {
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM user WHERE pseudo = '" + pseudo + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var user User
+	var testuser User
+
+	for rows.Next() {
+
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp)
+		if err != nil {
+			return nil, errors.New("user not found")
+		}
+	}
+
+	if user == testuser {
+		return nil, errors.New("user not found")
+	}
+
+	return &user, nil
+}
+
+func getUserPseudo(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	pseudo := context.Param("pseudo")
+	user, err := getUserByPseudo(pseudo)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		return
+	}
+
+	context.IndentedJSON(http.StatusOK, user)
+}
+
 func change_imagepp(context *gin.Context) {
 	if context.Request.Method == "OPTIONS" {
 		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -338,6 +390,7 @@ func main() {
 	})
 	router.GET("/users", getUsers)
 	router.GET("/users/:id", getUser)
+	router.GET("/userpseudo/:pseudo", getUserPseudo)
 	router.PATCH("/userpp/:id", change_imagepp)
 	router.POST("/adduser", addUsers)
 	router.DELETE("/deleteuser/:id", deleteUser)

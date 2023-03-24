@@ -17,16 +17,20 @@
 <body>
     <div class="container">
         <h2>Log in to your account</h2>
-        <form action="" class="formulaire">
-            <input type="text" placeholder="Nom utilisateur" required name="pseudo">
-            <div class="div_input"><input type="password" placeholder="Mot de passe" required name="password">
+        <form action="" class="formulaire" id="form_log">
+            <input id="in_pseudo" type="text" placeholder="Nom utilisateur" required name="pseudo">
+            <div class="div_input"><input id="in_passwd" type="password" placeholder="Mot de passe" required name="password">
                 <span class="img_input">
                     <img src="../../Assets/Images/eye.svg" alt="eye">
                 </span>
             </div>
-        </form>
+        
 
-        <button>Sign Up</button>
+        <button type="submit" id="signup">Log In</button>
+    </form>
+    </div>
+    <div id="message">
+        
     </div>
 </body>
 
