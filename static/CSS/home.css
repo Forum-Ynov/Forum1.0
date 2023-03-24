@@ -337,7 +337,7 @@ hr {
     padding: 5px;
     border-radius: 10px;
     background-color: var(--couleur_principale);
-    color: black);
+    color: black;
     border: solid var(--couleur_secondaire) 2px;
     transition: 0.3s;
 }
