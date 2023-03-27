@@ -28,10 +28,12 @@ button {
 }
 
 .navbar {
+    position: fixed;
+    z-index: 99;
     display: flex;
     align-items: center;
     justify-content: end;
-    height: 72px;
+    height: 60px;
     background: #FAFAFA;
     color: #000000;
 }
@@ -77,6 +79,8 @@ body.open .burger {
     background-color: var(--couleur_principale);
     border: solid var(--couleur_secondaire) 2px;
     color: #000000;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
 }
 
 
@@ -123,6 +127,7 @@ body.open .burger {
     button.button_user_img {
         display: none;
     }
+
 }
 
 @media (width >=500px) {
@@ -175,6 +180,8 @@ body.open .burger {
         visibility: visible;
         translate: 0 0;
     }
+
+
 }
 
 .dropdown-menu>button {
@@ -217,14 +224,14 @@ body.open .burger {
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    position: absolute;
+    position: fixed;
     overflow: hidden;
-    top: 72px;
+    top: 60px;
     left: 0;
-    width: 340px;
+    width: 270px;
     background: #FAFAFA;
     border-top: 1px solid rgba(217, 217, 217, 0.4);
-    height: calc(100% - 72px);
+    height: calc(100% - 60px);
 }
 
 .div_tags {
@@ -272,11 +279,11 @@ body.open .burger {
 .hover-underline-animation:after {
     content: "";
     position: absolute;
-    width: calc(100% + 40px);
+    width: calc(100% + 30px);
     transform: scaleX(0);
     height: 2px;
     bottom: 0;
-    left: -40px;
+    left: -30px;
     background-color: var(--couleur_secondaire);
     transform-origin: bottom right;
     transition: transform 0.25s ease-out;
@@ -291,25 +298,25 @@ body.open .burger {
 .tag1::before {
     content: url(../../Assets/Images/game.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .tag2::before {
     content: url(../../Assets/Images/football.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .tag3::before {
     content: url(../../Assets/Images/code-line.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .tag4::before {
     content: url(../../Assets/Images/cake.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .info_aside {
@@ -340,4 +347,122 @@ hr {
     color: black;
     border: solid var(--couleur_secondaire) 2px;
     transition: 0.3s;
+}
+
+.button_secondary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
+}
+
+.tag_mobile {
+    margin-top: 20%;
+    text-align: center;
+}
+
+@media screen and (width < 500px) {
+    .sidebar {
+        display: none;
+    }
+
+    .tag1::before {
+        content: url(../../Assets/Images/game.svg);
+        position: absolute;
+        left: 0;
+    }
+
+    .tag2::before {
+        content: url(../../Assets/Images/football.svg);
+        position: absolute;
+        left: 0;
+    }
+
+    .tag3::before {
+        content: url(../../Assets/Images/code-line.svg);
+        position: absolute;
+        left: 0;
+    }
+
+    .tag4::before {
+        content: url(../../Assets/Images/cake.svg);
+        position: absolute;
+        left: 0;
+    }
+}
+
+
+
+
+
+
+
+/*--------------------------------------------------------*/
+/*---------------------------------------------------------*/
+/*---------------------------------------------------------*/
+/*---------------------------------------------------------*/
+/*----------------------------------------------------------*/
+
+@media screen and (width > 500px) {
+    .content {
+        margin: 3% 3% 3% calc(340px + 3%);
+    }
+}
+
+.content {
+    margin-top: 6%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
+
+.user_card {
+    margin: 0 8% 0 2%;
+}
+
+.user_card::before {
+    content: url(../../Assets/Images/user.svg);
+}
+
+
+@media screen and (width > 500px) {
+    .card {
+        max-width: 450px;
+    }
+}
+
+.card {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--couleur_principale);
+    height: 300px;
+}
+
+.top_card {
+    display: flex;
+    align-items: end;
+}
+
+.middle_card {
+    margin: 3%;
+}
+
+.title_topic {
+    text-align: center;
+
+}
+
+.title_topic::before {
+    content: url(../../Assets/Images/cake.svg);
+}
+
+.bottom_card {
+    height: 150px;
+    margin: 3%;
+    text-align: center;
+    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+    line-height: 22px;
 }

@@ -14,3 +14,25 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body::-webkit-scrollbar {
+    width: 8px;
+    /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--couleur_principale);
+    /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--couleur_secondaire);
+    /* color of the scroll thumb */
+    border-radius: 10px;
+    /* roundness of the scroll thumb */
+}
+
+::selection {
+    background-color: var(--couleur_principale);
+    color: var(--couleur_secondaire);
+}
