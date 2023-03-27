@@ -1,11 +1,17 @@
-:root {
+[data-theme=dark] {
+    --couleur_fond: #121212;
+    --couleur_principale: #2B2B2B;
+    --couleur_secondaire: #4F46E5;
+    --couleur_texte_principal: #fafafa;
+    --couleur_input: #EDEDED;
+}
+
+[data-theme=light] {
     --couleur_fond: #DAE0E6;
     --couleur_principale: #FAFAFA;
     --couleur_secondaire: #4F46E5;
     --couleur_texte_principal: #1A1A1A;
-    --couleur_texte_secondaire: #404040ae;
     --couleur_input: #EDEDED;
-
 }
 
 * {
@@ -13,9 +19,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: var(--couleur_texte_principal);
 }
 
-body::-webkit-scrollbar {
+
+p body::-webkit-scrollbar {
     width: 8px;
     /* width of the entire scrollbar */
 }

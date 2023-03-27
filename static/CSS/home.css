@@ -1,8 +1,9 @@
 @import url(./set.css);
 
 body {
-    background-color: #DAE0E6;
+    background-color: var(--couleur_fond);
 }
+
 
 
 button {
@@ -11,7 +12,6 @@ button {
     background: transparent;
     cursor: pointer;
     line-height: 1;
-    color: black;
     font-size: 20px;
 }
 
@@ -34,9 +34,68 @@ button {
     align-items: center;
     justify-content: end;
     height: 60px;
-    background: #FAFAFA;
-    color: #000000;
+    background: var(--couleur_principale);
 }
+
+
+/* The switch - the box around the slider */
+.switch {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 3.5em;
+    height: 2em;
+    margin-right: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    --background: skyblue;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background);
+    transition: .5s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.4em;
+    width: 1.4em;
+    border-radius: 50%;
+    left: 10%;
+    bottom: 15%;
+    box-shadow: inset 15px -4px 0px 15px #fff000;
+    background: var(--background);
+    transition: .5s;
+}
+
+input:checked+.slider {
+    --background: #28096b;
+    background-image: url(../../Assets/Images/rainbow.svg);
+
+}
+
+input:checked+.slider:before {
+    transform: translateX(100%);
+    box-shadow: inset -8px 0px 0px 0px #fff000;
+
+}
+
+
+
 
 .burger {
     z-index: 3;
@@ -70,7 +129,7 @@ body.open .burger {
     padding: 5px;
     border-radius: 10px;
     background-color: var(--couleur_secondaire);
-    color: var(--couleur_principale);
+    color: var(--couleur_input);
     border: solid var(--couleur_principale) 2px;
     transition: 0.3s;
 }
@@ -78,7 +137,7 @@ body.open .burger {
 .button:hover {
     background-color: var(--couleur_principale);
     border: solid var(--couleur_secondaire) 2px;
-    color: #000000;
+    color: var(--couleur_texte_principal);
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
 }
@@ -168,7 +227,7 @@ body.open .burger {
         border-radius: 10px 25px 10px 25px / 10px 25px 10px 25px;
         margin-bottom: 0;
         place-items: start;
-        background: #FAFAFA;
+        background: var(--couleur_principale);
         opacity: 0;
         visibility: hidden;
         translate: 0 24px;
@@ -186,7 +245,7 @@ body.open .burger {
 
 .dropdown-menu>button {
     border-radius: 10px;
-    color: black;
+    color: var(--couleur_texte_principal);
     opacity: 1;
     height: 40px;
 }
@@ -229,7 +288,7 @@ body.open .burger {
     top: 60px;
     left: 0;
     width: 270px;
-    background: #FAFAFA;
+    background: var(--couleur_principale);
     border-top: 1px solid rgba(217, 217, 217, 0.4);
     height: calc(100% - 60px);
 }
@@ -272,7 +331,6 @@ body.open .burger {
 
 .hover-underline-animation {
     position: relative;
-    color: black;
     padding-bottom: 20px;
 }
 
@@ -344,7 +402,7 @@ hr {
     padding: 5px;
     border-radius: 10px;
     background-color: var(--couleur_principale);
-    color: black;
+    color: var(--couleur_texte_principal);
     border: solid var(--couleur_secondaire) 2px;
     transition: 0.3s;
 }
@@ -444,6 +502,20 @@ hr {
 .top_card {
     display: flex;
     align-items: end;
+
+}
+
+.only-top {
+    border: 1px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+}
+
+.border-gradient-green {
+    border-image-source: linear-gradient(to right, var(--couleur_secondaire) 0%, #cffcff 100%);
 }
 
 .middle_card {

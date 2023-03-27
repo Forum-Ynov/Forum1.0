@@ -14,9 +14,13 @@
     <title>Home page</title>
 </head>
 
-<body>
+<body data-theme="light">
     <header>
         <nav class="navbar">
+            <label class="switch">
+                <input type="checkbox" name="switch_theme" id="test" onclick="switch_theme()">
+                <span class="slider"></span>
+            </label>
             <button onclick="toggleMenu()" class="burger"></button>
             <button class="button">Log in</button>
             <div class="dropdowns">
@@ -65,7 +69,7 @@
 
     <article class="content">
         <div class="card">
-            <div class="top_card">
+            <div class="top_card only-top border-gradient-green">
                 <h4 class="user_card">Nom utilisateur</h4>
                 <p>publié le 10/02/2018</p>
             </div>
@@ -126,8 +130,6 @@
         </div>
     </article>
 </body>
-<script>
-    const toggleMenu = () => document.body.classList.toggle("open");
-</script>
+<script src="../../JS/script.js"></script>
 
 </html>
