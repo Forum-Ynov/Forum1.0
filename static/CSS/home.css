@@ -1,8 +1,9 @@
 @import url(./set.css);
 
 body {
-    background-color: #DAE0E6;
+    background-color: var(--couleur_fond);
 }
+
 
 
 button {
@@ -11,7 +12,6 @@ button {
     background: transparent;
     cursor: pointer;
     line-height: 1;
-    color: black;
     font-size: 20px;
 }
 
@@ -28,13 +28,74 @@ button {
 }
 
 .navbar {
+    position: fixed;
+    z-index: 99;
     display: flex;
     align-items: center;
     justify-content: end;
-    height: 72px;
-    background: #FAFAFA;
-    color: #000000;
+    height: 60px;
+    background: var(--couleur_principale);
 }
+
+
+/* The switch - the box around the slider */
+.switch {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 3.5em;
+    height: 2em;
+    margin-right: 25px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    --background: skyblue;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--background);
+    transition: .5s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.4em;
+    width: 1.4em;
+    border-radius: 50%;
+    left: 10%;
+    bottom: 15%;
+    box-shadow: inset 15px -4px 0px 15px #fff000;
+    background: var(--background);
+    transition: .5s;
+}
+
+input:checked+.slider {
+    --background: #28096b;
+    background-image: url(../../Assets/Images/rainbow.svg);
+
+}
+
+input:checked+.slider:before {
+    transform: translateX(100%);
+    box-shadow: inset -8px 0px 0px 0px #fff000;
+
+}
+
+
+
 
 .burger {
     z-index: 3;
@@ -68,7 +129,7 @@ body.open .burger {
     padding: 5px;
     border-radius: 10px;
     background-color: var(--couleur_secondaire);
-    color: var(--couleur_principale);
+    color: var(--couleur_input);
     border: solid var(--couleur_principale) 2px;
     transition: 0.3s;
 }
@@ -76,7 +137,9 @@ body.open .burger {
 .button:hover {
     background-color: var(--couleur_principale);
     border: solid var(--couleur_secondaire) 2px;
-    color: #000000;
+    color: var(--couleur_texte_principal);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
 }
 
 
@@ -123,6 +186,7 @@ body.open .burger {
     button.button_user_img {
         display: none;
     }
+
 }
 
 @media (width >=500px) {
@@ -163,7 +227,7 @@ body.open .burger {
         border-radius: 10px 25px 10px 25px / 10px 25px 10px 25px;
         margin-bottom: 0;
         place-items: start;
-        background: #FAFAFA;
+        background: var(--couleur_principale);
         opacity: 0;
         visibility: hidden;
         translate: 0 24px;
@@ -175,11 +239,13 @@ body.open .burger {
         visibility: visible;
         translate: 0 0;
     }
+
+
 }
 
 .dropdown-menu>button {
     border-radius: 10px;
-    color: black;
+    color: var(--couleur_texte_principal);
     opacity: 1;
     height: 40px;
 }
@@ -217,14 +283,14 @@ body.open .burger {
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    position: absolute;
+    position: fixed;
     overflow: hidden;
-    top: 72px;
+    top: 60px;
     left: 0;
-    width: 340px;
-    background: #FAFAFA;
+    width: 270px;
+    background: var(--couleur_principale);
     border-top: 1px solid rgba(217, 217, 217, 0.4);
-    height: calc(100% - 72px);
+    height: calc(100% - 60px);
 }
 
 .div_tags {
@@ -265,18 +331,17 @@ body.open .burger {
 
 .hover-underline-animation {
     position: relative;
-    color: black;
     padding-bottom: 20px;
 }
 
 .hover-underline-animation:after {
     content: "";
     position: absolute;
-    width: calc(100% + 40px);
+    width: calc(100% + 30px);
     transform: scaleX(0);
     height: 2px;
     bottom: 0;
-    left: -40px;
+    left: -30px;
     background-color: var(--couleur_secondaire);
     transform-origin: bottom right;
     transition: transform 0.25s ease-out;
@@ -291,25 +356,25 @@ body.open .burger {
 .tag1::before {
     content: url(../../Assets/Images/game.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .tag2::before {
     content: url(../../Assets/Images/football.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .tag3::before {
     content: url(../../Assets/Images/code-line.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .tag4::before {
     content: url(../../Assets/Images/cake.svg);
     position: absolute;
-    left: -30px;
+    left: -20px;
 }
 
 .info_aside {
@@ -337,7 +402,139 @@ hr {
     padding: 5px;
     border-radius: 10px;
     background-color: var(--couleur_principale);
-    color: black;
+    color: var(--couleur_texte_principal);
     border: solid var(--couleur_secondaire) 2px;
     transition: 0.3s;
+}
+
+.button_secondary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
+}
+
+.tag_mobile {
+    margin-top: 20%;
+    text-align: center;
+}
+
+@media screen and (width < 500px) {
+    .sidebar {
+        display: none;
+    }
+
+    .tag1::before {
+        content: url(../../Assets/Images/game.svg);
+        position: absolute;
+        left: 0;
+    }
+
+    .tag2::before {
+        content: url(../../Assets/Images/football.svg);
+        position: absolute;
+        left: 0;
+    }
+
+    .tag3::before {
+        content: url(../../Assets/Images/code-line.svg);
+        position: absolute;
+        left: 0;
+    }
+
+    .tag4::before {
+        content: url(../../Assets/Images/cake.svg);
+        position: absolute;
+        left: 0;
+    }
+}
+
+
+
+
+
+
+
+/*--------------------------------------------------------*/
+/*---------------------------------------------------------*/
+/*---------------------------------------------------------*/
+/*---------------------------------------------------------*/
+/*----------------------------------------------------------*/
+
+@media screen and (width > 500px) {
+    .content {
+        margin: 3% 3% 3% calc(340px + 3%);
+    }
+}
+
+.content {
+    margin-top: 6%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+}
+
+
+.user_card {
+    margin: 0 8% 0 2%;
+}
+
+.user_card::before {
+    content: url(../../Assets/Images/user.svg);
+}
+
+
+@media screen and (width > 500px) {
+    .card {
+        max-width: 450px;
+    }
+}
+
+.card {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--couleur_principale);
+    height: 300px;
+}
+
+.top_card {
+    display: flex;
+    align-items: end;
+
+}
+
+.only-top {
+    border: 1px solid;
+    border-image-slice: 1;
+    border-width: 2px;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+}
+
+.border-gradient-green {
+    border-image-source: linear-gradient(to right, var(--couleur_secondaire) 0%, #cffcff 100%);
+}
+
+.middle_card {
+    margin: 3%;
+}
+
+.title_topic {
+    text-align: center;
+
+}
+
+.title_topic::before {
+    content: url(../../Assets/Images/cake.svg);
+}
+
+.bottom_card {
+    height: 150px;
+    margin: 3%;
+    text-align: center;
+    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+    line-height: 22px;
 }
