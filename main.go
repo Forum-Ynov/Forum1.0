@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
 type User struct {
@@ -31,12 +32,12 @@ type Tags struct {
 }
 
 type Topics struct {
-	Id_topics        int       `json:"id_topics"`
-	Titre            string    `json:"titre"`
-	Crea_date        time.Time `json:"crea_date"`
-	Format_crea_date string    `json:"format_crea_date"`
-	Id_tags          int       `json:"id_tags"`
-	Id_user          int       `json:"id_uer"`
+	Id_topics   int       `json:"id_topics"`
+	Titre       string    `json:"titre"`
+	Description string    `json:"description"`
+	Crea_date   time.Time `json:"crea_date"`
+	Id_tags     int       `json:"id_tags"`
+	Id_user     int       `json:"id_uer"`
 }
 
 type Messages struct {
@@ -46,6 +47,35 @@ type Messages struct {
 	Publi_time        time.Time `json:"publi_time"`
 	Format_publi_time string    `json:"format_publi_time"`
 	Id_topics         int       `json:"id_topics"`
+}
+
+func loginuser(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	var newUser User
+
+	if err := context.BindJSON(&newUser); err != nil {
+		return
+	}
+
+	user, err := getUserByPseudo(newUser.Pseudo)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		return
+	} else {
+		if user.Passwd != newUser.Passwd {
+			context.IndentedJSON(http.StatusNotFound, gin.H{"message": "password incorect"})
+			return
+		}
+	}
+
+	context.IndentedJSON(http.StatusOK, user)
 }
 
 func getUsers(context *gin.Context) {
@@ -305,7 +335,6 @@ func addUsers(context *gin.Context) {
 		if err != nil {
 			println(errors.New("user not found"))
 		}
-
 	}
 
 	newUser.Id_user = temp_user.Id_user
@@ -384,10 +413,13 @@ func getMessages(context *gin.Context) {
 func main() {
 
 	router := gin.Default()
-	router.Use(func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Next()
-	})
+	// router.Use(func(c *gin.Context) {
+	// 	c.Header("Access-Control-Allow-Origin", "*")
+	// 	c.Next()
+	// })
+	router.Use(cors.Default())
+
+	router.POST("/login", loginuser)
 	router.GET("/users", getUsers)
 	router.GET("/users/:id", getUser)
 	router.GET("/userpseudo/:pseudo", getUserPseudo)
