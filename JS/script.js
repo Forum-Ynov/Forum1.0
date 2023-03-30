@@ -3,7 +3,7 @@ const toggleMenu = () => document.body.classList.toggle("open");
 const body = document.querySelector('body');
 // const heart = document.getElementById('like');
 // const heart_red = document.getElementById('like_red')
-console.log(heart);
+// console.log(heart);
 function switch_theme() {
     if (test.checked) {
         console.log("dark");
