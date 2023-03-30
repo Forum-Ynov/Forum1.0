@@ -19,6 +19,7 @@ type User struct {
 	Email      string `json:"email"`
 	Passwd     string `json:"passwd"`
 	Id_imagepp int    `json:"id_imagepp"`
+	Darkmode   bool   `json:"darkmode"`
 }
 
 type Imagepp struct {
@@ -47,6 +48,13 @@ type Messages struct {
 	Publi_time        time.Time `json:"publi_time"`
 	Format_publi_time string    `json:"format_publi_time"`
 	Id_topics         int       `json:"id_topics"`
+}
+
+func bool2int(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }
 
 func loginuser(context *gin.Context) {
@@ -105,7 +113,7 @@ func getUsers(context *gin.Context) {
 	for rows.Next() {
 		var user User
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Darkmode)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -136,7 +144,7 @@ func getUserById(id string) (*User, error) {
 
 	for rows.Next() {
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Darkmode)
 		if err != nil {
 			return nil, errors.New("user not found")
 		}
@@ -188,7 +196,7 @@ func getUserByPseudo(pseudo string) (*User, error) {
 
 	for rows.Next() {
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Darkmode)
 		if err != nil {
 			return nil, errors.New("user not found")
 		}
@@ -284,7 +292,7 @@ func addUsers(context *gin.Context) {
 
 	var user_pseudo User
 	for rowspseudo.Next() {
-		err = rowspseudo.Scan(&user_pseudo.Id_user, &user_pseudo.Pseudo, &user_pseudo.Email, &user_pseudo.Passwd, &user_pseudo.Id_imagepp)
+		err = rowspseudo.Scan(&user_pseudo.Id_user, &user_pseudo.Pseudo, &user_pseudo.Email, &user_pseudo.Passwd, &user_pseudo.Id_imagepp, &user_pseudo.Darkmode)
 		if err != nil {
 			println(errors.New("user not found"))
 		}
@@ -306,7 +314,7 @@ func addUsers(context *gin.Context) {
 
 	var user_email User
 	for rowsemail.Next() {
-		err = rowsemail.Scan(&user_email.Id_user, &user_email.Pseudo, &user_email.Email, &user_email.Passwd, &user_email.Id_imagepp)
+		err = rowsemail.Scan(&user_email.Id_user, &user_email.Pseudo, &user_email.Email, &user_email.Passwd, &user_email.Id_imagepp, &user_email.Darkmode)
 		if err != nil {
 			println(errors.New("user not found"))
 		}
@@ -318,7 +326,7 @@ func addUsers(context *gin.Context) {
 		return
 	}
 
-	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "')"); err != nil {
+	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp, darkmode) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "', '" + strconv.Itoa(bool2int(newUser.Darkmode)) + "')"); err != nil {
 		fmt.Println(err)
 	}
 
@@ -331,7 +339,7 @@ func addUsers(context *gin.Context) {
 
 	var temp_user User
 	for rows.Next() {
-		err = rows.Scan(&temp_user.Id_user, &temp_user.Pseudo, &temp_user.Email, &temp_user.Passwd, &temp_user.Id_imagepp)
+		err = rows.Scan(&temp_user.Id_user, &temp_user.Pseudo, &temp_user.Email, &temp_user.Passwd, &temp_user.Id_imagepp, &temp_user.Darkmode)
 		if err != nil {
 			println(errors.New("user not found"))
 		}
