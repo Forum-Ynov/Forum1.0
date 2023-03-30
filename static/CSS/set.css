@@ -104,7 +104,7 @@
 
 input:checked+.slider {
     --background: #28096b;
-    background-image: url(../../Assets/Images/rainbow.svg);
+    background-image: url(/Forum1.0/Assets/Images/others/rainbow.svg);
 
 }
 

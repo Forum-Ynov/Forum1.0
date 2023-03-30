@@ -2,7 +2,7 @@
 
 
 body {
-    background-image: url(../../Assets/Images/fond_post.jpg);
+    background-image: url(/Forum1.0/Assets/Images/fond_comment/fond_post.jpg);
     background-size: cover;
     backdrop-filter: blur(3px) saturate(60%);
     display: flex;
@@ -80,7 +80,7 @@ body {
 }
 
 .user_card::before {
-    content: url(../../Assets/Images/user.svg);
+    content: url(/Forum1.0/Assets/Images/profil/user.svg);
     position: absolute;
     top: -5px;
     left: -25px;

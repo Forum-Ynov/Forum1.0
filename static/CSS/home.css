@@ -49,13 +49,13 @@ button {
     place-items: center;
     width: 72px;
     height: 72px;
-    background-image: url("../../Assets/Images/menu.svg");
+    background-image: url("/Forum1.0/Assets/Images/menu/menu.svg");
     background-repeat: no-repeat;
     background-position: center;
 }
 
 body.open .burger {
-    background-image: url("../../Assets/Images/close.svg");
+    background-image: url("/Forum1.0/Assets/Images/menu/close.svg");
 }
 
 @media (width >=500px) {
@@ -299,25 +299,25 @@ body.open .burger {
 
 
 .tag1::before {
-    content: url(../../Assets/Images/game.svg);
+    content: url(/Forum1.0/Assets/Images/icon_tag/game.svg);
     position: absolute;
     left: -20px;
 }
 
 .tag2::before {
-    content: url(../../Assets/Images/football.svg);
+    content: url(/Forum1.0/Assets/Images/icon_tag/football.svg);
     position: absolute;
     left: -20px;
 }
 
 .tag3::before {
-    content: url(../../Assets/Images/code-line.svg);
+    content: url(/Forum1.0/Assets/Images/icon_tag/code-line.svg);
     position: absolute;
     left: -20px;
 }
 
 .tag4::before {
-    content: url(../../Assets/Images/cake.svg);
+    content: url(/Forum1.0/Assets/Images/icon_tag/cake.svg);
     position: absolute;
     left: -20px;
 }
@@ -368,25 +368,25 @@ hr {
     }
 
     .tag1::before {
-        content: url(../../Assets/Images/game.svg);
+        content: url(/Forum1.0/Assets/Images/icon_tag/game.svg);
         position: absolute;
         left: 0;
     }
 
     .tag2::before {
-        content: url(../../Assets/Images/football.svg);
+        content: url(/Forum1.0/Assets/Images/icon_tag/football.svg);
         position: absolute;
         left: 0;
     }
 
     .tag3::before {
-        content: url(../../Assets/Images/code-line.svg);
+        content: url(/Forum1.0/Assets/Images/icon_tag/code-line.svg);
         position: absolute;
         left: 0;
     }
 
     .tag4::before {
-        content: url(../../Assets/Images/cake.svg);
+        content: url(/Forum1.0/Assets/Images/icon_tag/cake.svg);
         position: absolute;
         left: 0;
     }
@@ -425,7 +425,7 @@ hr {
 }
 
 .user_card::before {
-    content: url(../../Assets/Images/user.svg);
+    content: url(/Forum1.0/Assets/Images/profil/user.svg);
 }
 
 
@@ -473,7 +473,7 @@ hr {
 }
 
 .title_topic::before {
-    content: url(../../Assets/Images/cake.svg);
+    content: url(/Forum1.0/Assets/Images/icon_tag/cake.svg);
 }
 
 .bottom_card {
