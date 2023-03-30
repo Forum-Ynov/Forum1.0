@@ -15,25 +15,31 @@
 </head>
 
 <body>
+    <label class="switch switch_log">
+        <input type="checkbox" name="switch_theme" id="test" onclick="switch_theme()">
+        <span class="slider"></span>
+    </label>
     <div class="container">
         <h2>Log in to your account</h2>
         <form action="" class="formulaire" id="form_log">
             <input id="in_pseudo" type="text" placeholder="Nom utilisateur" required name="pseudo">
-            <div class="div_input"><input id="in_passwd" type="password" placeholder="Mot de passe" required name="passwd">
+            <div class="div_input"><input id="in_passwd" type="password" placeholder="Mot de passe" required
+                    name="passwd">
                 <span class="img_input" id="passtotext">
                     <img src="../../Assets/Images/eye.svg" alt="eye" id="imgpass">
                 </span>
             </div>
-        
 
-        <button type="submit" id="signup">Log In</button>
-    </form>
+
+            <button type="submit" id="signup">Log In</button>
+        </form>
     </div>
     <div id="message">
-        
+
     </div>
 </body>
 
 <script src="../../JS/log_in.js"></script>
+<script src="../../JS/script.js"></script>
 
 </html>
