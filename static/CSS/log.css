@@ -26,6 +26,7 @@ h2 {
 input {
     margin-bottom: 14px;
     background-color: var(--couleur_input);
+    color: var(--couleur_texte_input);
     border-radius: 10px;
     padding: 14px;
     border: none;

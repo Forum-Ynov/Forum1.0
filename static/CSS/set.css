@@ -3,6 +3,7 @@
     --couleur_principale: #2B2B2B;
     --couleur_secondaire: #4F46E5;
     --couleur_texte_principal: #fafafa;
+    --couleur_texte_input: #1a1a1a;
     --couleur_input: #EDEDED;
 }
 
@@ -11,6 +12,7 @@
     --couleur_principale: #FAFAFA;
     --couleur_secondaire: #4F46E5;
     --couleur_texte_principal: #1A1A1A;
+    --couleur_texte_input: #1a1a1a;
     --couleur_input: #EDEDED;
 }
 
