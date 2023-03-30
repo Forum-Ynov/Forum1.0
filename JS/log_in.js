@@ -58,3 +58,20 @@ form_log.addEventListener("submit", async function (event) {
             }
         });
 });
+
+
+
+
+let passtotext = document.getElementById("passtotext")
+let imgpass = document.getElementById("imgpass")
+
+passtotext.onclick = function () {
+    if (in_passwd.type == "password") {
+        in_passwd.type = "text"
+        imgpass.src = "../../Assets/Images/eye-off.svg"
+    } else {
+        in_passwd.type = "password"
+        imgpass.src = "../../Assets/Images/eye.svg"
+    }
+
+}
