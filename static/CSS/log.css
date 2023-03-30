@@ -57,7 +57,7 @@ button {
     margin-top: 24px;
     border-radius: 10px;
     background-color: var(--couleur_secondaire);
-    color: var(--couleur_principale);
+    color: var(--couleur_input);
     border: solid var(--couleur_principale) 2px;
     transition: 0.3s;
 }
