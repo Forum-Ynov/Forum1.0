@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	cors "github.com/rs/cors/wrapper/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
@@ -57,6 +58,16 @@ func bool2int(b bool) int {
 	return 0
 }
 
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
 func loginuser(context *gin.Context) {
 	if context.Request.Method == "OPTIONS" {
 		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -77,7 +88,7 @@ func loginuser(context *gin.Context) {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
 		return
 	} else {
-		if user.Passwd != newUser.Passwd {
+		if !CheckPasswordHash(newUser.Passwd, user.Passwd) {
 			context.IndentedJSON(http.StatusNotFound, gin.H{"message": "password incorect"})
 			return
 		}
@@ -325,6 +336,8 @@ func addUsers(context *gin.Context) {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "email already used "})
 		return
 	}
+
+	newUser.Passwd, _ = HashPassword(newUser.Passwd)
 
 	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp, darkmode) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "', '" + strconv.Itoa(bool2int(newUser.Darkmode)) + "')"); err != nil {
 		fmt.Println(err)
