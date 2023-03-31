@@ -27,6 +27,17 @@ button {
     width: 100%;
 }
 
+.logo {
+    position: absolute;
+    top: -30px;
+    left: 0px;
+    height: 130px;
+}
+
+#logo_dark {
+    opacity: 0;
+}
+
 .navbar {
     position: fixed;
     z-index: 99;
@@ -75,7 +86,6 @@ body.open .burger {
     border-radius: 10px;
     background-color: var(--couleur_secondaire);
     color: var(--couleur_input);
-    border: solid var(--couleur_principale) 2px;
     transition: 0.3s;
 }
 
