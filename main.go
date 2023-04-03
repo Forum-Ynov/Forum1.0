@@ -52,13 +52,6 @@ type Messages struct {
 	Id_topics         int       `json:"id_topics"`
 }
 
-func bool2int(b bool) int {
-	if b {
-		return 1
-	}
-	return 0
-}
-
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
@@ -567,7 +560,5 @@ func main() {
 
 	handler := c.Handler(router)
 	log.Fatal((http.ListenAndServe(":8000", handler)))
-	print("test")
-	// http.Handle("/", router)
 
 }
