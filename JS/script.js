@@ -63,13 +63,4 @@ swmode.onclick = async function switch_theme() {
     }
 }
 
-// heart.addEventListener("click", function (e) {
-//     console.log(e);
-//     heart.style.display = 'none';
-//     heart_red.style.opacity = 1
-// });
-
-// heart_red.addEventListener("click", function (e) {
-//     heart_red.style.opacity = '1'
-// })
 
