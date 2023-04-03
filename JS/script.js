@@ -3,9 +3,10 @@ const toggleMenu = () => document.body.classList.toggle("open");
 const body = document.querySelector('body');
 const logo_dark = document.getElementById('logo_dark')
 const logo_light = document.getElementById('logo_light')
-
-console.log(logo_dark);
-console.log(logo_light);
+let openpop = document.getElementsByName('openpop');
+let Popup = document.getElementById('favDialog');
+let close_popup = document.getElementById('close_pop')
+let content = document.getElementById('contenu')
 
 function switch_theme() {
     if (test.checked) {
@@ -23,4 +24,11 @@ function switch_theme() {
     }
 }
 
-
+function openpopup() {
+    Popup.showModal();
+    content.style.position = 'fixed';
+};
+close_popup.addEventListener('click', function onClose() {
+    Popup.close();
+    content.style.position = 'initial'
+});
