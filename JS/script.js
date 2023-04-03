@@ -6,15 +6,12 @@ const toggleMenu = () => document.body.classList.toggle("open");
 const swmode = document.getElementById("swmode")
 
 const body = document.querySelector('body');
-const logo_dark = document.getElementById('logo_dark')
-const logo_light = document.getElementById('logo_light')
-let openpop = document.getElementsByName('openpop');
-let Popup = document.getElementById('favDialog');
-let close_popup = document.getElementById('close_pop')
-let content = document.getElementById('contenu')
+// const heart = document.getElementById('like');
+// const heart_red = document.getElementById('like_red')
+// console.log(heart);
 
-function switch_theme() {
-    if (test.checked) {
+swmode.onclick = async function switch_theme() {
+    if (swmode.checked) {
         console.log("dark");
         body.setAttribute('data-theme', 'dark');
 
