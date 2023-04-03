@@ -20,7 +20,7 @@
             <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo" id="logo_light">
             <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" id="logo_dark">
             <label class="switch">
-                <input type="checkbox" name="switch_theme" id="test" onclick="switch_theme()">
+                <input type="checkbox" name="switch_theme" id="swmode">
                 <span class="slider"></span>
             </label>
             <button onclick="toggleMenu()" class="burger"></button>
@@ -70,7 +70,7 @@
     </aside>
 
     <article class="content" id="contenu">
-        <div class="card" onclick="openpopup()">
+        <div class="card" id="openpopup">
             <div class="top_card">
                 <h4 class="user_card">Nom utilisateur</h4>
                 <p>publié le 10/02/2018</p>
@@ -90,7 +90,7 @@
                     numquam dolor voluptatibus blanditiis assumenda.</p>
             </div>
         </div>
-        <div class="card" onclick="openpopup()">
+        <div class="card">
             <div class="top_card">
                 <h4 class="user_card">Nom utilisateur</h4>
                 <p>publié le 10/02/2018</p>
@@ -199,6 +199,7 @@
         </div>
     </dialog>
 </body>
-<script src="../../JS/script.js"></script>
+<script type="module" src="../../JS/script.js"></script>
+<script type="module" src="../../JS/home.js"></script>
 
 </html>
