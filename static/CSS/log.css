@@ -39,8 +39,8 @@ input {
 
 .img_input {
     position: absolute;
-    right: 10px;
-    top: calc(18%);
+    right: 20px;
+    top: 12px;
     opacity: 0.5;
 }
 
@@ -68,3 +68,22 @@ button:hover {
     border: solid var(--couleur_secondaire) 2px;
     color: var(--couleur_texte_principal);
 }
+
+#showpp{
+    cursor: pointer;
+    width: auto;
+    height: 64px;
+    background: no-repeat;
+}
+
+#ppcontent{
+    height: auto;
+    width: 100%;
+    max-width: 256px;
+    display: none;
+    flex-wrap: wrap;
+    animation: all 0.5s;
+}
+
+
+

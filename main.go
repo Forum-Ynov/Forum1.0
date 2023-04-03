@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	cors "github.com/rs/cors/wrapper/gin"
+	"github.com/rs/cors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,7 +21,7 @@ type User struct {
 	Email      string `json:"email"`
 	Passwd     string `json:"passwd"`
 	Id_imagepp int    `json:"id_imagepp"`
-	Darkmode   bool   `json:"darkmode"`
+	Theme      string `json:"theme"`
 }
 
 type Imagepp struct {
@@ -124,7 +125,7 @@ func getUsers(context *gin.Context) {
 	for rows.Next() {
 		var user User
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Darkmode)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Theme)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -155,7 +156,7 @@ func getUserById(id string) (*User, error) {
 
 	for rows.Next() {
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Darkmode)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Theme)
 		if err != nil {
 			return nil, errors.New("user not found")
 		}
@@ -207,7 +208,7 @@ func getUserByPseudo(pseudo string) (*User, error) {
 
 	for rows.Next() {
 
-		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Darkmode)
+		err = rows.Scan(&user.Id_user, &user.Pseudo, &user.Email, &user.Passwd, &user.Id_imagepp, &user.Theme)
 		if err != nil {
 			return nil, errors.New("user not found")
 		}
@@ -273,6 +274,39 @@ func change_imagepp(context *gin.Context) {
 
 }
 
+func change_theme(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	id := context.Param("id")
+	user, err := getUserById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+		return
+	}
+
+	if err := context.BindJSON(&user); err != nil {
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	if _, err := db.Exec("UPDATE user SET theme = '" + user.Theme + "'  WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
+		fmt.Println(err)
+	}
+
+	context.IndentedJSON(http.StatusOK, user)
+}
+
 func addUsers(context *gin.Context) {
 	if context.Request.Method == "OPTIONS" {
 		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -303,7 +337,7 @@ func addUsers(context *gin.Context) {
 
 	var user_pseudo User
 	for rowspseudo.Next() {
-		err = rowspseudo.Scan(&user_pseudo.Id_user, &user_pseudo.Pseudo, &user_pseudo.Email, &user_pseudo.Passwd, &user_pseudo.Id_imagepp, &user_pseudo.Darkmode)
+		err = rowspseudo.Scan(&user_pseudo.Id_user, &user_pseudo.Pseudo, &user_pseudo.Email, &user_pseudo.Passwd, &user_pseudo.Id_imagepp, &user_pseudo.Theme)
 		if err != nil {
 			println(errors.New("user not found"))
 		}
@@ -325,7 +359,7 @@ func addUsers(context *gin.Context) {
 
 	var user_email User
 	for rowsemail.Next() {
-		err = rowsemail.Scan(&user_email.Id_user, &user_email.Pseudo, &user_email.Email, &user_email.Passwd, &user_email.Id_imagepp, &user_email.Darkmode)
+		err = rowsemail.Scan(&user_email.Id_user, &user_email.Pseudo, &user_email.Email, &user_email.Passwd, &user_email.Id_imagepp, &user_email.Theme)
 		if err != nil {
 			println(errors.New("user not found"))
 		}
@@ -339,7 +373,7 @@ func addUsers(context *gin.Context) {
 
 	newUser.Passwd, _ = HashPassword(newUser.Passwd)
 
-	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp, darkmode) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "', '" + strconv.Itoa(bool2int(newUser.Darkmode)) + "')"); err != nil {
+	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp, theme) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "', '" + newUser.Theme + "')"); err != nil {
 		fmt.Println(err)
 	}
 
@@ -352,7 +386,7 @@ func addUsers(context *gin.Context) {
 
 	var temp_user User
 	for rows.Next() {
-		err = rows.Scan(&temp_user.Id_user, &temp_user.Pseudo, &temp_user.Email, &temp_user.Passwd, &temp_user.Id_imagepp, &temp_user.Darkmode)
+		err = rows.Scan(&temp_user.Id_user, &temp_user.Pseudo, &temp_user.Email, &temp_user.Passwd, &temp_user.Id_imagepp, &temp_user.Theme)
 		if err != nil {
 			println(errors.New("user not found"))
 		}
@@ -391,6 +425,82 @@ func deleteUser(context *gin.Context) {
 	}
 
 	getUsers(context)
+}
+
+func getPps(context *gin.Context) {
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM imagepp ")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var pps []Imagepp
+
+	for rows.Next() {
+		var pp Imagepp
+
+		err = rows.Scan(&pp.Id_pp, &pp.Image_loc)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		pps = append(pps, pp)
+	}
+
+	context.IndentedJSON(http.StatusOK, pps)
+}
+
+func getPpById(id string) (*Imagepp, error) {
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM imagepp WHERE id_pp = '" + id + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var pp Imagepp
+	var testpp Imagepp
+
+	for rows.Next() {
+
+		err = rows.Scan(&pp.Id_pp, &pp.Image_loc)
+		if err != nil {
+			return nil, errors.New("pp not found")
+		}
+	}
+
+	if pp == testpp {
+		return nil, errors.New("pp not found")
+	}
+
+	return &pp, nil
+}
+
+func getPp(context *gin.Context) {
+
+	id := context.Param("id")
+	pp, err := getPpById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "pp not found"})
+		return
+	}
+
+	context.IndentedJSON(http.StatusOK, pp)
 }
 
 func getMessages(context *gin.Context) {
@@ -434,19 +544,30 @@ func getMessages(context *gin.Context) {
 func main() {
 
 	router := gin.Default()
-	// router.Use(func(c *gin.Context) {
-	// 	c.Header("Access-Control-Allow-Origin", "*")
-	// 	c.Next()
-	// })
-	router.Use(cors.Default())
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "DELETE", "POST", "PUT", "PATCH"},
+	})
+
+	router.GET("/pp", getPps)
+	router.GET("/pp/:id", getPp)
 
 	router.POST("/login", loginuser)
 	router.GET("/users", getUsers)
 	router.GET("/users/:id", getUser)
 	router.GET("/userpseudo/:pseudo", getUserPseudo)
 	router.PATCH("/userpp/:id", change_imagepp)
+	router.PATCH("/usertheme/:id", change_theme)
 	router.POST("/adduser", addUsers)
 	router.DELETE("/deleteuser/:id", deleteUser)
+
 	router.GET("/messages", getMessages)
-	router.Run("localhost:8000")
+
+	handler := c.Handler(router)
+	log.Fatal((http.ListenAndServe(":8000", handler)))
+	print("test")
+	// http.Handle("/", router)
+
 }
