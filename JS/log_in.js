@@ -1,31 +1,20 @@
 
-class user {
-    constructor(id_user, pseudo, email, passwd, id_imagepp, darkmode) {
-        this.id_user = id_user
-        this.pseudo = pseudo
-        this.email = email
-        this.passwd = passwd
-        this.id_imagepp = id_imagepp
-        this.darkmode = darkmode
-    }
-}
-
+import {User} from "./user_class.js"
 
 let message = document.getElementById("message");
-let signup = document.getElementById("signup");
 let in_pseudo = document.getElementById("in_pseudo");
 let in_passwd = document.getElementById("in_passwd");
 let form_log = document.getElementById("form_log");
 
-let actual_user = new user("", "", "", "", "", "");
-let default_user = new user("", "", "", "", "", "");
+let actual_user = new User("", "", "", "", "", "");
+let default_user = new User("", "", "", "", "", "");
 
 form_log.addEventListener("submit", async function (event) {
     event.preventDefault();
     let names = in_pseudo.value;
     let pass = in_passwd.value;
 
-    if (storageUser.id_user == default_user.id_user && storageUser.pseudo == default_user.pseudo && storageUser.email == default_user.email && storageUser.passwd == default_user.passwd && storageUser.id_imagepp == default_user.id_imagepp && storageUser.darkmode == default_user.darkmode) {
+    if (storageUser.id_user == default_user.id_user && storageUser.pseudo == default_user.pseudo && storageUser.email == default_user.email && storageUser.passwd == default_user.passwd && storageUser.id_imagepp == default_user.id_imagepp && storageUser.theme == default_user.theme) {
 
         const r = await fetch("http://localhost:8000/login", {
             method: 'POST',
@@ -45,7 +34,7 @@ form_log.addEventListener("submit", async function (event) {
                         actual_user.email = data.email;
                         actual_user.passwd = data.passwd;
                         actual_user.id_imagepp = data.id_imagepp;
-                        actual_user.darkmode = data.darkmode
+                        actual_user.theme = data.theme
                         console.log(actual_user)
                         alert("connected")
                         localStorage.setItem("loged_user", JSON.stringify(actual_user))
@@ -60,44 +49,40 @@ form_log.addEventListener("submit", async function (event) {
                         actual_user.email = ""
                         actual_user.passwd = ""
                         actual_user.id_imagepp = ""
-                        actual_user.darkmode = ""
+                        actual_user.theme = ""
                     })
                 }
             });
     }
 });
 
+const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
-let storageUser = new user("", "", "", "", "", "");
+let storageUser = new User("", "", "", "", "", "");
 
 if (localUser) {
     console.log("auto connect")
     storageUser = JSON.parse(localUser)
     console.log(storageUser)
+
+    switch (storageUser.theme) {
+        case ("dark"):
+            document.querySelector('body').setAttribute('data-theme', 'dark');
+            console.log("default dark")
+            swmode.checked = true
+            break
+        case ("light"):
+            document.querySelector('body').setAttribute('data-theme', 'light');
+            console.log("default light")
+            swmode.checked = false
+            break
+    }
+
+
+
 } else {
     console.log("to connect")
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 let passtotext = document.getElementById("passtotext")
