@@ -35,12 +35,13 @@ type Tags struct {
 }
 
 type Topics struct {
-	Id_topics   int       `json:"id_topics"`
-	Titre       string    `json:"titre"`
-	Description string    `json:"description"`
-	Crea_date   time.Time `json:"crea_date"`
-	Id_tags     int       `json:"id_tags"`
-	Id_user     int       `json:"id_uer"`
+	Id_topics        int       `json:"id_topics"`
+	Titre            string    `json:"titre"`
+	Description      string    `json:"description"`
+	Crea_date        time.Time `json:"crea_date"`
+	Format_crea_date string    `json:"format_crea_date"`
+	Id_tags          int       `json:"id_tags"`
+	Id_user          int       `json:"id_uer"`
 }
 
 type Messages struct {
@@ -496,6 +497,191 @@ func getPp(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, pp)
 }
 
+func getTopics(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer rows.Close()
+
+	topics := []Topics{}
+	for rows.Next() {
+		var topic Topics
+		err := rows.Scan(&topic.Id_topics, &topic.Titre, &topic.Crea_date, &topic.Description, &topic.Id_tags, &topic.Id_user)
+		if err != nil {
+			panic(err.Error())
+		}
+		topic.Format_crea_date = topic.Crea_date.Format("2006-01-02 15:04:05")
+		topics = append(topics, topic)
+	}
+	if err != nil {
+		panic(err.Error())
+	}
+
+	context.IndentedJSON(http.StatusOK, topics)
+
+}
+
+func getTopicsById(id string) (*Topics, error) {
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_topics = '" + id + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var topics Topics
+	var testTopics Topics
+
+	for rows.Next() {
+
+		err = rows.Scan(&topics.Id_topics, &topics.Titre, &topics.Crea_date, &topics.Description, &topics.Id_tags, &topics.Id_user)
+		if err != nil {
+			return nil, errors.New("topics not found")
+		}
+	}
+
+	if topics == testTopics {
+		return nil, errors.New("topics not found")
+	}
+
+	return &topics, nil
+}
+
+func getTopic(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	id := context.Param("id")
+	topics, err := getTopicsById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "topics not found"})
+		return
+	}
+
+	context.IndentedJSON(http.StatusOK, topics)
+}
+
+func addTopic(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	var newTopic Topics
+
+	if err := context.BindJSON(&newTopic); err != nil {
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rowsTitre, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rowsTitre.Close()
+
+	var topic_Titre Topics
+	for rowsTitre.Next() {
+		err = rowsTitre.Scan(&topic_Titre.Id_topics, &topic_Titre.Titre, &topic_Titre.Crea_date, &topic_Titre.Description, &topic_Titre.Id_tags, &topic_Titre.Id_user)
+		if err != nil {
+			println(errors.New("Topics not found"))
+		}
+
+	}
+
+	var default_topic Topics
+	if topic_Titre != default_topic {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Topics already used "})
+		return
+	}
+
+	rowsdesc, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE description = '" + newTopic.Description + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rowsdesc.Close()
+
+	var topic_desc Topics
+	for rowsdesc.Next() {
+		err = rowsdesc.Scan(&topic_desc.Id_topics, &topic_desc.Titre, &topic_desc.Crea_date, &topic_desc.Description, &topic_desc.Id_tags, &topic_desc.Id_user)
+		if err != nil {
+			println(errors.New("topics not found"))
+		}
+
+	}
+
+	if topic_desc != default_topic {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "desc already used "})
+		return
+	}
+
+	currentTime := time.Now()
+	newTopic.Crea_date = currentTime
+	newTopic.Format_crea_date = newTopic.Crea_date.Format("2006-01-02 15:04:05")
+
+	if _, err := db.Exec("INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES ('" + newTopic.Titre + "', '" + newTopic.Description + "',  NOW() , '" + strconv.Itoa(newTopic.Id_tags) + "', '" + strconv.Itoa(newTopic.Id_user) + "')"); err != nil {
+		fmt.Println(err)
+	}
+
+	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "' AND description = '" + newTopic.Description + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var temp_topic Topics
+	for rows.Next() {
+		err = rows.Scan(&temp_topic.Id_topics, &temp_topic.Titre, &temp_topic.Crea_date, &temp_topic.Description, &temp_topic.Id_tags, &temp_topic.Id_user)
+		if err != nil {
+			println(errors.New("topic not found"))
+		}
+
+	}
+
+	newTopic.Id_topics = temp_topic.Id_topics
+
+	context.IndentedJSON(http.StatusCreated, newTopic)
+
+}
+
 func getMessages(context *gin.Context) {
 	if context.Request.Method == "OPTIONS" {
 		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -534,6 +720,195 @@ func getMessages(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, messages)
 }
 
+func getMessagesById(id string) (*Messages, error) {
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM messages WHERE id_message = '" + id + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var message Messages
+	var testmessage Messages
+
+	for rows.Next() {
+
+		err = rows.Scan(&message.Id_message, &message.Message, &message.Id_user, &message.Publi_time, &message.Id_topics)
+		if err != nil {
+			return nil, errors.New("message not found")
+		}
+	}
+
+	if message == testmessage {
+		return nil, errors.New("message not found")
+	}
+
+	return &message, nil
+}
+
+func getMessage(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	id := context.Param("id")
+	messages, err := getMessagesById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "message not found"})
+		return
+	}
+
+	context.IndentedJSON(http.StatusOK, messages)
+}
+
+func changeMessage(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	id := context.Param("id")
+	message, err := getMessagesById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "message not found"})
+		return
+	}
+
+	if err := context.BindJSON(&message); err != nil {
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	if _, err := db.Exec(`UPDATE messages SET message = "` + message.Message + `" , publi_time = NOW()  WHERE id_message = "` + strconv.Itoa(message.Id_message) + `"`); err != nil {
+		fmt.Println(err)
+	}
+
+	context.IndentedJSON(http.StatusOK, message)
+
+}
+
+func addMessage(context *gin.Context) {
+
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	var newMessage Messages
+
+	if err := context.BindJSON(&newMessage); err != nil {
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rowsMess, err := db.Query("SELECT * FROM messages WHERE message = '" + newMessage.Message + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rowsMess.Close()
+
+	var Message_Mess Messages
+	for rowsMess.Next() {
+		err = rowsMess.Scan(&Message_Mess.Id_message, &Message_Mess.Message, &Message_Mess.Id_user, &Message_Mess.Publi_time, &Message_Mess.Id_topics)
+		if err != nil {
+			println(errors.New("Messages not found"))
+		}
+
+	}
+
+	var default_message Messages
+	if Message_Mess != default_message {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Messages already used "})
+		return
+	}
+
+	currentTime := time.Now()
+	newMessage.Publi_time = currentTime
+	newMessage.Format_publi_time = newMessage.Publi_time.Format("2006-01-02 15:04:05")
+
+	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `",  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
+		fmt.Println(err)
+	}
+
+	rows, err := db.Query("SELECT message, id_user, publi_time, id_topics FROM messages WHERE message = '" + newMessage.Message + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var temp_message Messages
+	for rows.Next() {
+		err = rows.Scan(&temp_message.Id_message, &temp_message.Message, &temp_message.Id_user, &temp_message.Publi_time, &temp_message.Id_topics)
+		if err != nil {
+			println(errors.New("message not found"))
+		}
+
+	}
+
+	newMessage.Id_topics = temp_message.Id_topics
+
+	context.IndentedJSON(http.StatusCreated, newMessage)
+
+}
+
+func deleteMessage(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	id := context.Param("id")
+	message, err := getMessagesById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "message not found"})
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	if _, err := db.Exec("DELETE FROM messages WHERE id_message = '" + strconv.Itoa(message.Id_message) + "'"); err != nil {
+		fmt.Println(err)
+	}
+
+	getMessages(context)
+}
+
 func main() {
 
 	router := gin.Default()
@@ -556,7 +931,15 @@ func main() {
 	router.POST("/adduser", addUsers)
 	router.DELETE("/deleteuser/:id", deleteUser)
 
+	router.GET("/topics", getTopics)
+	router.GET("/topics/:id", getTopic)
+	router.POST("/addtopic", addTopic)
+
 	router.GET("/messages", getMessages)
+	router.GET("/messages/:id", getMessage)
+	router.PATCH("/message/:id", changeMessage)
+	router.POST("/addmessage", addMessage)
+	router.DELETE("/deletemessage/:id", deleteMessage)
 
 	handler := c.Handler(router)
 	log.Fatal((http.ListenAndServe(":8000", handler)))
