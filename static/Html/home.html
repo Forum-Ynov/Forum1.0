@@ -20,7 +20,7 @@
             <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo" id="logo_light">
             <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" id="logo_dark">
             <label class="switch">
-                <input type="checkbox" name="switch_theme" id="test" onclick="switch_theme()">
+                <input type="checkbox" name="switch_theme" id="swmode">
                 <span class="slider"></span>
             </label>
             <button onclick="toggleMenu()" class="burger"></button>
@@ -69,28 +69,8 @@
         </div>
     </aside>
 
-    <article class="content">
-        <div class="card">
-            <div class="top_card only-top border-gradient-green">
-                <h4 class="user_card">Nom utilisateur</h4>
-                <p>publié le 10/02/2018</p>
-            </div>
-            <div class="middle_card">
-                <h3 class="title_topic">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
-            </div>
-            <div class="bottom_card">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates illum facere, odio
-                    reprehenderit omnis? Ex voluptate, odit repellat neque itaque necessitatibus, mollitia, pariatur
-                    numquam dolor voluptatibus blanditiis assumenda.Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Dolor voluptates illum facere, odio
-                    reprehenderit omnis? Ex voluptate, odit repellat neque itaque necessitatibus, mollitia, pariatur
-                    numquam dolor voluptatibus blanditiis assumenda.Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Dolor voluptates illum facere, odio
-                    reprehenderit omnis? Ex voluptate, odit repellat neque itaque necessitatibus, mollitia, pariatur
-                    numquam dolor voluptatibus blanditiis assumenda.</p>
-            </div>
-        </div>
-        <div class="card">
+    <article class="content" id="contenu">
+        <div class="card" id="openpopup">
             <div class="top_card">
                 <h4 class="user_card">Nom utilisateur</h4>
                 <p>publié le 10/02/2018</p>
@@ -130,8 +110,96 @@
                     numquam dolor voluptatibus blanditiis assumenda.</p>
             </div>
         </div>
+        <div class="card" onclick="openpopup()">
+            <div class="top_card">
+                <h4 class="user_card">Nom utilisateur</h4>
+                <p>publié le 10/02/2018</p>
+            </div>
+            <div class="middle_card">
+                <h3 class="title_topic">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+            </div>
+            <div class="bottom_card">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor voluptates illum facere, odio
+                    reprehenderit omnis? Ex voluptate, odit repellat neque itaque necessitatibus, mollitia, pariatur
+                    numquam dolor voluptatibus blanditiis assumenda.Lorem ipsum dolor sit amet consectetur adipisicing
+                    elit. Dolor voluptates illum facere, odio
+                    reprehenderit omnis? Ex voluptate, odit repellat neque itaque necessitatibus, mollitia, pariatur
+                    numquam dolor voluptatibus blanditiis assumenda.Lorem ipsum dolor sit amet consectetur adipisicing
+                    elit. Dolor voluptates illum facere, odio
+                    reprehenderit omnis? Ex voluptate, odit repellat neque itaque necessitatibus, mollitia, pariatur
+                    numquam dolor voluptatibus blanditiis assumenda.</p>
+            </div>
+        </div>
+
     </article>
+    <dialog id="favDialog" class="popup">
+        <div class="container">
+            <div class="box">
+                <div class="part_left">
+                    <div class="post">
+                        <div class="top_post">
+                            <div class="info-top_post">
+                                <h4 class="user_card">Nom utilisateur</h4>
+                                <p>publié le 10/02/2018</p>
+                            </div>
+                            <!-- <div class="icon-top_post">
+                                    <img src="../../Assets/Images/heart-line-red.svg" alt="like-red" id="like-red"
+                                        class="icon like_red">
+                                    <img src="../../Assets/Images/heart-line.svg" alt="like" class="icon" id="like">
+                                    <img src="../../Assets/Images/chat-1-line.svg" alt="comment" class="icon">
+                                    <img src="../../Assets/Images/flag-line.svg" alt="report" class="icon">
+                                </div> -->
+                        </div>
+                        <div class="title_post">
+                            <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione et
+                                voluptatem itaque accusantium ?</h3>
+                        </div>
+                        <div class="main_post">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ducimus,
+                            molestiae temporibus animi iusto ullam beatae, provident cumque voluptatibus perferendis
+                            quam.
+                            Necessitatibus excepturi quasi fugiat mollitia repudiandae aperiam qui magni. Lorem
+                            ipsum dolor
+                            sit amet consectetur adipisicing elit.</div>
+                    </div>
+                    <div class="input_comment">
+                        <textarea name="comment" id="comment" cols="50" rows="10"
+                            placeholder="Write a comment..."></textarea>
+                        <button class="button_pop" id="publish">Publier</button>
+                    </div>
+                </div>
+                <div class="part_right">
+                    <img src="../../Assets/Images/menu/close.svg" alt="close" id="close_pop">
+                    <div class="comment">
+                        <div class="comment_top">
+                            <p>Commentaire :</p>
+                        </div>
+                        <div class="comment_main">
+                            <div class="comment_user">
+                                <div class="comment_user_name">
+                                    <h4 class="user_card">Nom utilisateur</h4>
+                                    <p>publié le 10/02/2018</p>
+                                </div>
+                                <div class="comment_user_text">Lorem ipsum dolor sit, amet consectetur adipisicing
+                                    elit.
+                                    Dignissimos voluptas deserunt unde accusantium voluptates.</div>
+                            </div>
+                            <div class="comment_user">
+                                <div class="comment_user_name">
+                                    <h4 class="user_card">Nom utilisateur</h4>
+                                    <p>publié le 10/02/2018</p>
+                                </div>
+                                <div class="comment_user_text">Lorem ipsum dolor sit, amet consectetur adipisicing
+                                    elit.
+                                    Dignissimos voluptas deserunt unde accusantium voluptates.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
 </body>
-<script src="../../JS/script.js"></script>
+<script type="module" src="../../JS/script.js"></script>
+<script type="module" src="../../JS/home.js"></script>
 
 </html>
