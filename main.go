@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -911,6 +913,12 @@ func deleteMessage(context *gin.Context) {
 
 func main() {
 
+	// load
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("err loading: %v", err)
+	}
+
 	router := gin.Default()
 
 	c := cors.New(cors.Options{
@@ -942,6 +950,7 @@ func main() {
 	router.DELETE("/deletemessage/:id", deleteMessage)
 
 	handler := c.Handler(router)
-	log.Fatal((http.ListenAndServe(":8000", handler)))
+	fmt.Println("the port : " + os.Getenv("PORT"))
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), handler))
 
 }
