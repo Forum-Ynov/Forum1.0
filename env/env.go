@@ -2,6 +2,7 @@ package env
 
 import "os"
 
+// Variables d'environnement
 var (
 	Api_port string
 	Password string
@@ -11,6 +12,7 @@ var (
 	Sql_db   string
 )
 
+// SetEnv récupère les variables d'environnement
 func SetEnv() {
 	Api_port = os.Getenv("API_PORT")
 	Password = os.Getenv("DB_PASSWORD")
