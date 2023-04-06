@@ -24,7 +24,7 @@
                 <span class="slider"></span>
             </label>
             <button onclick="toggleMenu()" class="burger"></button>
-            <button class="button">Log in</button>
+            <button class="button" onclick="open_create()" id="open_create">Log in</button>
             <div class="dropdowns">
                 <div class="dropdown">
                     <button class="button_user_img">
@@ -198,6 +198,17 @@
             </div>
         </div>
     </dialog>
+    <dialog id="Createpost" class="popup_create">
+        <div class="container_create">
+            <h3>Create a new post</h3>
+            <textarea name="" id="" cols="30" rows="10" class="area_title"></textarea>
+            <textarea name="" id="" cols="30" rows="10" class="area_description"></textarea>
+            <input type="text" class="input_tag">
+            <div class="select_tags"></div>
+            <button class="button_create">Publier</button>
+        </div>
+    </dialog>
+
 </body>
 <script type="module" src="../../JS/script.js"></script>
 <script type="module" src="../../JS/home.js"></script>

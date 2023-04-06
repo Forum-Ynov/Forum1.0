@@ -42,6 +42,7 @@ input {
     right: 20px;
     top: 12px;
     opacity: 0.5;
+    pointer-events: none;
 }
 
 
@@ -69,14 +70,14 @@ button:hover {
     color: var(--couleur_texte_principal);
 }
 
-#showpp{
+#showpp {
     cursor: pointer;
     width: auto;
     height: 64px;
     background: no-repeat;
 }
 
-#ppcontent{
+#ppcontent {
     height: auto;
     width: 100%;
     max-width: 256px;
@@ -84,6 +85,3 @@ button:hover {
     flex-wrap: wrap;
     animation: all 0.5s;
 }
-
-
-
