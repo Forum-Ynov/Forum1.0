@@ -660,10 +660,12 @@ hr {
         left: 0;
     }
 
-    .tag3::before {
-        content: url(../../Assets/Images/icon_tag/code-line.svg);
+    .tag4::before {
+        content: url(../../Assets/Images/icon_tag/cake.svg);
         position: absolute;
         left: 0;
+        height: 50px;
+        width: 50px;
     }
 
     .tag4::before {
