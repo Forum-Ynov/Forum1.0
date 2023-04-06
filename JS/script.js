@@ -1,10 +1,9 @@
 
-import {User} from "./user_class.js"
+import { User } from "./user_class.js"
 
 const toggleMenu = () => document.body.classList.toggle("open");
 
 const swmode = document.getElementById("swmode")
-
 const body = document.querySelector('body');
 // const heart = document.getElementById('like');
 // const heart_red = document.getElementById('like_red')
@@ -62,5 +61,4 @@ swmode.onclick = async function switch_theme() {
 
     }
 }
-
 

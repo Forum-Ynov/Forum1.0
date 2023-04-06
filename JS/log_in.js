@@ -2,7 +2,6 @@
 import {User} from "./user_class.js"
 
 let message = document.getElementById("message");
-let signup = document.getElementById("signup");
 let in_pseudo = document.getElementById("in_pseudo");
 let in_passwd = document.getElementById("in_passwd");
 let form_log = document.getElementById("form_log");
@@ -84,27 +83,6 @@ if (localUser) {
 } else {
     console.log("to connect")
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 let passtotext = document.getElementById("passtotext")
