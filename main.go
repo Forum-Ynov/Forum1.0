@@ -499,6 +499,95 @@ func getPp(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, pp)
 }
 
+func getTags(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT id_tags, tags FROM tags")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer rows.Close()
+
+	tags := []Tags{}
+	for rows.Next() {
+		var tag Tags
+		err := rows.Scan(&tag.Id_tags, &tag.Tags)
+		if err != nil {
+			panic(err.Error())
+		}
+		tags = append(tags, tag)
+	}
+	if err != nil {
+		panic(err.Error())
+	}
+
+	context.IndentedJSON(http.StatusOK, tags)
+}
+
+func getTagsById(id string) (*Tags, error) {
+
+	db, err := sql.Open("mysql", "sql7606458:S4G39HTa1z@tcp(sql7.freesqldatabase.com:3306)/sql7606458?parseTime=true")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT id_tags, tags FROM tags WHERE id_tags = '" + id + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer rows.Close()
+
+	var tags Tags
+	var testTags Tags
+
+	for rows.Next() {
+
+		err = rows.Scan(&tags.Id_tags, &tags.Tags)
+		if err != nil {
+			return nil, errors.New("tags not found")
+		}
+	}
+
+	if tags == testTags {
+		return nil, errors.New("tags not found")
+	}
+
+	return &tags, nil
+}
+
+func getTag(context *gin.Context) {
+	if context.Request.Method == "OPTIONS" {
+		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		context.Header("Access-Control-Allow-Origin", "*")
+		context.AbortWithStatus(204)
+		return
+	}
+
+	id := context.Param("id")
+	tags, err := getTagsById(id)
+	if err != nil {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "tags not found"})
+		return
+	}
+
+	context.IndentedJSON(http.StatusOK, tags)
+}
+
 func getTopics(context *gin.Context) {
 	if context.Request.Method == "OPTIONS" {
 		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -938,6 +1027,9 @@ func main() {
 	router.PATCH("/usertheme/:id", change_theme)
 	router.POST("/adduser", addUsers)
 	router.DELETE("/deleteuser/:id", deleteUser)
+
+	router.GET("/tags", getTags)
+	router.GET("/tags/:id", getTag)
 
 	router.GET("/topics", getTopics)
 	router.GET("/topics/:id", getTopic)
