@@ -15,13 +15,6 @@ import (
 )
 
 func GetTopics(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	db, err := sql.Open("mysql", env.Sql_db)
 	if err != nil {
@@ -87,13 +80,6 @@ func GetTopicsById(id string) (*models.Topics, error) {
 }
 
 func GetTopic(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	topics, err := GetTopicsById(id)
@@ -106,13 +92,6 @@ func GetTopic(context *gin.Context) {
 }
 
 func AddTopic(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	var newTopic models.Topics
 

@@ -16,13 +16,6 @@ import (
 )
 
 func GetMessages(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	db, err := sql.Open("mysql", env.Sql_db)
 	if err != nil {
@@ -87,13 +80,6 @@ func GetMessagesById(id string) (*models.Messages, error) {
 }
 
 func GetMessage(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	messages, err := GetMessagesById(id)
@@ -106,13 +92,6 @@ func GetMessage(context *gin.Context) {
 }
 
 func ChangeMessage(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	message, err := GetMessagesById(id)
@@ -140,14 +119,6 @@ func ChangeMessage(context *gin.Context) {
 }
 
 func AddMessage(context *gin.Context) {
-
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	var newMessage models.Messages
 
@@ -214,13 +185,6 @@ func AddMessage(context *gin.Context) {
 }
 
 func DeleteMessage(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	message, err := GetMessagesById(id)

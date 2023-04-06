@@ -25,13 +25,6 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 func Loginuser(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	var newUser models.User
 
@@ -54,13 +47,6 @@ func Loginuser(context *gin.Context) {
 }
 
 func GetUsers(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	db, err := sql.Open("mysql", env.Sql_db)
 	if err != nil {
@@ -125,13 +111,6 @@ func GetUserById(id string) (*models.User, error) {
 }
 
 func GetUser(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	user, err := GetUserById(id)
@@ -177,13 +156,6 @@ func GetUserByPseudo(pseudo string) (*models.User, error) {
 }
 
 func GetUserPseudo(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	pseudo := context.Param("pseudo")
 	user, err := GetUserByPseudo(pseudo)
@@ -196,13 +168,6 @@ func GetUserPseudo(context *gin.Context) {
 }
 
 func Change_imagepp(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	user, err := GetUserById(id)
@@ -230,13 +195,6 @@ func Change_imagepp(context *gin.Context) {
 }
 
 func Change_theme(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	user, err := GetUserById(id)
@@ -263,13 +221,6 @@ func Change_theme(context *gin.Context) {
 }
 
 func AddUsers(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	var newUser models.User
 
@@ -354,13 +305,6 @@ func AddUsers(context *gin.Context) {
 }
 
 func DeleteUser(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	user, err := GetUserById(id)

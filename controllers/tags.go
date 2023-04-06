@@ -12,13 +12,6 @@ import (
 )
 
 func GetTags(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	db, err := sql.Open("mysql", env.Sql_db)
 	if err != nil {
@@ -82,13 +75,6 @@ func GetTagsById(id string) (*models.Tags, error) {
 }
 
 func GetTag(context *gin.Context) {
-	if context.Request.Method == "OPTIONS" {
-		context.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		context.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		context.Header("Access-Control-Allow-Origin", "*")
-		context.AbortWithStatus(204)
-		return
-	}
 
 	id := context.Param("id")
 	tags, err := GetTagsById(id)
