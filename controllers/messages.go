@@ -145,7 +145,7 @@ func ChangeMessage(context *gin.Context) {
 }
 
 func GetMessagesByTopics(context *gin.Context) {
-	// Récupération de l'id_tags
+	// Récupération de l'id_topics
 	id_topics := context.Param("id_topics")
 
 	// Ouverture de la connexion à la base de données
@@ -155,7 +155,7 @@ func GetMessagesByTopics(context *gin.Context) {
 	}
 	defer db.Close()
 
-	// Récupération des topics correspondants à l'id_tags donné
+	// Récupération des messages correspondants à l'id_topics donné
 	rows, err := db.Query("SELECT * FROM messages WHERE id_topics = ?", id_topics)
 	if err != nil {
 		panic(err.Error())
@@ -181,7 +181,7 @@ func GetMessagesByTopics(context *gin.Context) {
 		messages = append(messages, message)
 	}
 
-	context.IndentedJSON(http.StatusOK, messages) // Renvoie la liste des topics sous forme de JSON
+	context.IndentedJSON(http.StatusOK, messages) // Renvoie la liste des messages sous forme de JSON
 }
 
 // AddMessage ajoute un message dans la base de données

@@ -21,8 +21,13 @@ func GetTags(context *gin.Context) {
 	}
 	defer db.Close()
 
-	// Récupération des tags
-	rows, err := db.Query("SELECT id_tags, tags FROM tags")
+	stmt, err := db.Prepare("SELECT id_tags, tags FROM tags")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -60,12 +65,16 @@ func GetTagsById(id string) (*models.Tags, error) {
 	defer db.Close()
 
 	// Récupération des tags
-	rows, err := db.Query("SELECT id_tags, tags FROM tags WHERE id_tags = '" + id + "'")
+	stmt, err := db.Prepare("SELECT id_tags, tags FROM tags WHERE id_tags = '" + id + "'")
 	if err != nil {
 		panic(err.Error())
 	}
+	defer stmt.Close()
 
-	// Fermeture de la connexion à la base de données
+	rows, err := stmt.Query()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer rows.Close()
 
 	// Création d'un tableau de tags
