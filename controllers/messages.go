@@ -194,7 +194,7 @@ func AddMessage(context *gin.Context) {
 	newMessage.Format_publi_time = newMessage.Publi_time.Format("2006-01-02 15:04:05")
 
 	// Insertion du message dans la base de données
-	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `",  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
+	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `,  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
 		// Si l'insertion échoue, renvoyer une erreur
 		fmt.Println(err)
 	}

@@ -168,7 +168,7 @@ func AddTopic(context *gin.Context) {
 	currentTime := time.Now()
 	newTopic.Crea_date = currentTime
 	newTopic.Format_crea_date = newTopic.Crea_date.Format("2006-01-02 15:04:05")
-	if _, err := db.Exec("INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES ('" + newTopic.Titre + "', '" + newTopic.Description + "',  NOW() , '" + strconv.Itoa(newTopic.Id_tags) + "', '" + strconv.Itoa(newTopic.Id_user) + "')"); err != nil {
+	if _, err := db.Exec(`INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES ("` + newTopic.Titre + `", "` + newTopic.Description + `",  NOW() , ` + strconv.Itoa(newTopic.Id_tags) + `, ` + strconv.Itoa(newTopic.Id_user) + `)`); err != nil {
 		fmt.Println(err)
 	}
 
