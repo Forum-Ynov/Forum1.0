@@ -31,7 +31,7 @@ async function loadpp() {
                         display_tags.innerHTML += `<h4 class="tag tags${elt.id_tags}" style= ""><span class="hover-underline-animation">${elt.tags}</span></h4>`
                         style_mod.innerHTML += `
 .tags${elt.id_tags}::before{
-    content: url(../../Assets/Images/icon_tag/code-line.svg);
+    content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
     position: absolute;
     left: -20px;
 }`
