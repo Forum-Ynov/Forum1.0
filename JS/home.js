@@ -5,12 +5,56 @@ import { Tags } from "./tags_class.js";
 import { Topics } from "./topics_class.js";
 import { Messages } from "./messages_class.js";
 
+class Cards {
+    constructor(Topics, Tags, User) {
+        this.Topics = Topics
+        this.Tags = Tags
+        this.User = User
+    }
+}
+
+
+const swmode = document.getElementById("swmode")
+const localUser = localStorage.getItem("loged_user")?.toString()
+let storageUser = new User("", "", "", "", "", "");
+
+if (localUser) {
+    console.log("auto connect")
+    storageUser = JSON.parse(localUser)
+    console.log(storageUser)
+
+    switch (storageUser.theme) {
+        case ("dark"):
+            document.querySelector('body').setAttribute('data-theme', 'dark');
+            console.log("default dark")
+            swmode.checked = true
+            break
+        case ("light"):
+            document.querySelector('body').setAttribute('data-theme', 'light');
+            console.log("default light")
+            swmode.checked = false
+            break
+    }
+
+} else {
+    console.log("to connect")
+}
+
+
+
+
+
+let publisher
+let pp_publi
 let list_tags = []
+let list_topics = []
+let list_cards = []
 const display_tags = document.getElementById("display_tags")
+const display_topics = document.getElementById("display_topics")
 const style_mod = document.getElementById("style_mod")
 
-async function loadpp() {
-    const r = await fetch("http://localhost:8000/tags", {
+async function fetch_all() {
+    const tagsload = await fetch("http://localhost:8000/tags", {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -35,7 +79,6 @@ async function loadpp() {
     position: absolute;
     left: -20px;
 }`
-
                     })
 
                     // list_pp.forEach(elt => {
@@ -51,9 +94,129 @@ async function loadpp() {
                 console.log("res.ok false")
             }
         });
+
+
+
+    const topicsload = await fetch("http://localhost:8000/topics", {
+        method: 'GET',
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then((res) => {
+            // console.log(res)
+            if (res.ok) {
+                // console.log("res.ok true")
+                res.json().then(data => {
+                    data.forEach(elt => {
+
+                        let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
+                        list_topics.push(actual_topic)
+
+                        const topicsload = fetch(`http://localhost:8000/users/${elt.id_user}`, {
+                            method: 'GET',
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                            .then((res) => {
+                                // console.log(res)
+                                if (res.ok) {
+                                    // console.log("res.ok true")
+                                    res.json().then(data => {
+                                        publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
+                                        console.log(publisher)
+                                        console.log(actual_topic)
+
+                                        display_topics.innerHTML += `
+                                            <div class="card">
+                                                <div class="top_card">
+                                                    <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
+                                                    <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
+                                                </div>
+                                                <div class="middle_card">
+                                                    <h3 class="title_topic${actual_topic.id_tags}">${actual_topic.titre}</h3>
+                                                </div>
+                                                <div class="bottom_card">
+                                                    <p>${actual_topic.description}</p>
+                                                </div>
+                                            </div>`
+
+                                        style_mod.innerHTML += `
+.title_topic${actual_topic.id_tags}::before {
+    content: url(../../Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
+}
+.title_topic${actual_topic.id_tags} {
+    text-align: center;
+}`
+
+                                        const ppload = fetch(`http://localhost:8000/pp/${publisher.id_imagepp}`, {
+                                            method: 'GET',
+                                            headers: {
+                                                "Accept": "application/json",
+                                                "Content-type": "application/json; charset=UTF-8"
+                                            }
+                                        })
+                                            .then((res) => {
+                                                // console.log(res)
+                                                if (res.ok) {
+                                                    // console.log("res.ok true")
+                                                    res.json().then(data => {
+                                                        pp_publi = new Imagepp(data.id_pp, data.image_loc)
+
+                                                        style_mod.innerHTML += `
+.user_card${data.id_pp}::before {
+    content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+}`
+
+
+                                                    })
+                                                } else {
+                                                    console.log("res.ok false")
+                                                }
+                                            });
+
+                                    })
+                                } else {
+                                    console.log("res.ok false")
+                                }
+                            });
+
+
+                    });
+                    console.log(list_topics)
+
+                    //             list_topics.forEach(elt => {
+                    //                 display_topics.innerHTML += `
+                    //                 <div class="card">
+                    //     <div class="top_card">
+                    //         <h4 class="user_card">${elt.id_user}</h4>
+                    //         <p>publié le ${elt.format_crea_date}</p>
+                    //     </div>
+                    //     <div class="middle_card">
+                    //         <h3 class="title_topic">${elt.titre}</h3>
+                    //     </div>
+                    //     <div class="bottom_card">
+                    //         <p>${elt.description}</p>
+                    //     </div>
+                    // </div>`
+
+                    //             })
+
+                })
+            } else {
+                console.log("res.ok false")
+            }
+        });
 }
 
-loadpp()
+
+
+fetch_all()
+
+
 
 
 
@@ -94,9 +257,9 @@ close_popup.addEventListener('click', function onClose() {
 open_create.onclick = function open_create() {
     Createpost.showModal();
 };
-close_create.addEventListener('click', function onClose_create() {
-    Createpost.close();
-});
+// close_create.addEventListener('click', function onClose_create() {
+//     Createpost.close();
+// });
 
 
 

@@ -578,31 +578,6 @@ body.open .burger {
     transform-origin: bottom left;
 }
 
-
-.tag1::before {
-    content: url(../../Assets/Images/icon_tag/game.svg);
-    position: absolute;
-    left: -20px;
-}
-
-.tag2::before {
-    content: url(../../Assets/Images/icon_tag/football.svg);
-    position: absolute;
-    left: -20px;
-}
-
-.tag3::before {
-    content: url(../../Assets/Images/icon_tag/code-line.svg);
-    position: absolute;
-    left: -20px;
-}
-
-.tag4::before {
-    content: url(../../Assets/Images/icon_tag/cake.svg);
-    position: absolute;
-    left: -20px;
-}
-
 .info_aside {
     margin: 10% 0 6% 10%;
     width: 80%;
@@ -661,7 +636,7 @@ hr {
     }
 
     .tag4::before {
-        content: url(../../Assets/Images/icon_tag/cake.svg);
+        content: url(../../Assets/Images/icon_tag/tags3.svg);
         position: absolute;
         left: 0;
         height: 50px;
@@ -669,7 +644,7 @@ hr {
     }
 
     .tag4::before {
-        content: url(../../Assets/Images/icon_tag/cake.svg);
+        content: url(../../Assets/Images/icon_tag/tags3.svg);
         position: absolute;
         left: 0;
     }
@@ -690,11 +665,13 @@ hr {
 
 .content {
     margin-top: 6%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(1vw + 5px);
+    /* grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-row-gap: 20px;*/
 }
 
 
@@ -720,6 +697,7 @@ hr {
     width: 100%;
     background-color: var(--couleur_principale);
     height: 300px;
+    cursor: pointer;
 }
 
 .top_card {
@@ -737,11 +715,10 @@ hr {
 
 .title_topic {
     text-align: center;
-
 }
 
 .title_topic::before {
-    content: url(../../Assets/Images/icon_tag/cake.svg);
+    content: url(../../Assets/Images/icon_tag/tags1.svg);
 }
 
 .bottom_card {
