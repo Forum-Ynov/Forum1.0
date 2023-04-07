@@ -93,13 +93,18 @@ passtotext.onclick = function () {
 const showpp = document.getElementById("showpp")
 const ppcontent = document.getElementById("ppcontent")
 const hiddenppvalue = document.getElementById("hiddenppvalue")
+const arrow_down = document.getElementById('arrow_down');
 
 showpp.onclick = toggleselector
 
 function toggleselector() {
     if (ppcontent.style.display != "none") {
         ppcontent.style.display = "none"
+        arrow_down.classList.add("img_input");
+        arrow_down.classList.remove("img_input_rotate");
     } else {
+        arrow_down.classList.remove("img_input");
+        arrow_down.classList.add("img_input_rotate");
         ppcontent.style.display = "flex"
     }
 
@@ -176,5 +181,10 @@ form_sign.addEventListener("submit", async function (event) {
 
 
 
+
+
+
+
+/*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*//*----------------------------------------------------*/
 
 
