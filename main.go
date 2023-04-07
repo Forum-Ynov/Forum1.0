@@ -53,11 +53,13 @@ func main() {
 	// Routes pour les opérations sur les topics
 	router.GET("/topics", controllers.GetTopics)
 	router.GET("/topics/:id", controllers.GetTopic)
+	router.GET("/topics/tags/:id_tags", controllers.GetTopicsByTags)
 	router.POST("/addtopic", controllers.AddTopic)
 
 	// Routes pour les opérations sur les messages
 	router.GET("/messages", controllers.GetMessages)
 	router.GET("/messages/:id", controllers.GetMessage)
+	router.GET("/messages/topics/:id_topics", controllers.GetMessagesByTopics)
 	router.PATCH("/message/:id", controllers.ChangeMessage)
 	router.POST("/addmessage", controllers.AddMessage)
 	router.DELETE("/deletemessage/:id", controllers.DeleteMessage)

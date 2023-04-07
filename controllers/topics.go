@@ -111,6 +111,49 @@ func GetTopic(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, topics)
 }
 
+// GetTopicsByTags récupère les topics correspondants à un id_tags donné
+func GetTopicsByTags(context *gin.Context) {
+	// Récupération de l'id_tags
+	id_tags := context.Param("id_tags")
+
+	// Ouverture de la connexion à la base de données
+	db, err := sql.Open("mysql", env.Sql_db)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	// Récupération des topics correspondants à l'id_tags donné
+	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_tags = ?", id_tags)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// Fermeture de la requête
+	defer rows.Close()
+
+	// Création d'un tableau de topics
+	topics := []models.Topics{}
+
+	// Parcours des topics
+	for rows.Next() {
+		// Récupération des données pour chaque topic
+		var topic models.Topics
+		err := rows.Scan(&topic.Id_topics, &topic.Titre, &topic.Crea_date, &topic.Description, &topic.Id_tags, &topic.Id_user)
+		if err != nil {
+			panic(err.Error())
+		}
+		// Formatage de la date de création
+		topic.Format_crea_date = topic.Crea_date.Format("2006-01-02 15:04:05")
+		topics = append(topics, topic) // Ajout du topic à la liste des topics
+	}
+	if err != nil {
+		panic(err.Error())
+	}
+
+	context.IndentedJSON(http.StatusOK, topics) // Renvoie la liste des topics sous forme de JSON
+}
+
 // AddTopic permet d'ajouter un nouveau sujet à la base de données en vérifiant d'abord si le titre et la description ne sont pas déjà utilisés
 func AddTopic(context *gin.Context) {
 

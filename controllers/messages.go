@@ -144,6 +144,46 @@ func ChangeMessage(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, message)
 }
 
+func GetMessagesByTopics(context *gin.Context) {
+	// Récupération de l'id_tags
+	id_topics := context.Param("id_topics")
+
+	// Ouverture de la connexion à la base de données
+	db, err := sql.Open("mysql", env.Sql_db)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	// Récupération des topics correspondants à l'id_tags donné
+	rows, err := db.Query("SELECT * FROM messages WHERE id_topics = ?", id_topics)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// Fermeture de la requête
+	defer rows.Close()
+
+	// Création d'un tableau de topics
+	var messages []models.Messages
+	for rows.Next() {
+		var message models.Messages
+
+		// Associer les colonnes de la base de données à des variables de type message
+		err = rows.Scan(&message.Id_message, &message.Message, &message.Id_user, &message.Publi_time, &message.Id_topics)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		// Formater la date du message pour l'afficher en sortie
+		message.Format_publi_time = message.Publi_time.Format("15:04:05 02/01/2006")
+		// Ajouter le message au slice de messages
+		messages = append(messages, message)
+	}
+
+	context.IndentedJSON(http.StatusOK, messages) // Renvoie la liste des topics sous forme de JSON
+}
+
 // AddMessage ajoute un message dans la base de données
 func AddMessage(context *gin.Context) {
 
@@ -182,19 +222,13 @@ func AddMessage(context *gin.Context) {
 
 	}
 
-	var default_message models.Messages
-	if Message_Mess != default_message {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Messages already used "})
-		return
-	}
-
 	// Obtention de l'heure actuelle pour le moment de la publication du message
 	currentTime := time.Now()
 	newMessage.Publi_time = currentTime
 	newMessage.Format_publi_time = newMessage.Publi_time.Format("2006-01-02 15:04:05")
 
 	// Insertion du message dans la base de données
-	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `",  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
+	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `,  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
 		// Si l'insertion échoue, renvoyer une erreur
 		fmt.Println(err)
 	}

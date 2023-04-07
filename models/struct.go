@@ -34,7 +34,7 @@ type Topics struct {
 	Crea_date        time.Time `json:"crea_date"`
 	Format_crea_date string    `json:"format_crea_date"`
 	Id_tags          int       `json:"id_tags"`
-	Id_user          int       `json:"id_uer"`
+	Id_user          int       `json:"id_user"`
 }
 
 // Messages représente un message
