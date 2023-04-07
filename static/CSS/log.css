@@ -39,10 +39,22 @@ input {
 
 .img_input {
     position: absolute;
+    transform: rotate(0);
     right: 20px;
     top: 12px;
     opacity: 0.5;
     pointer-events: none;
+    transition: .5s;
+}
+
+.img_input_rotate {
+    position: absolute;
+    transform: rotate(180deg);
+    right: 20px;
+    top: 12px;
+    opacity: 0.5;
+    pointer-events: none;
+    transition: .5s;
 }
 
 
@@ -77,11 +89,22 @@ button:hover {
     background: no-repeat;
 }
 
+
+
 #ppcontent {
     height: auto;
     width: 100%;
     max-width: 256px;
     display: none;
     flex-wrap: wrap;
-    animation: all 0.5s;
+    animation: 0.5s;
 }
+
+/* 
+.showpp {
+    background-image: url(../../Assets/Images/profil/anonymous.svg)
+}
+
+.hidepp {
+    display: none;
+} */
