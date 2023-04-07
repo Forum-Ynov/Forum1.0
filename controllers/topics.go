@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 
 	"Forum1.0/env"
@@ -24,13 +23,18 @@ func GetTopics(context *gin.Context) {
 	}
 	defer db.Close() // Ferme la connexion à la base de données à la fin de la fonction
 
-	// Récupération des topics de la table 'topics'
-	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics")
+	// Préparation de la requête SQL
+	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics")
 	if err != nil {
-		panic(err.Error()) // Si erreur lors de la récupération des topics, affiche une erreur et arrête le programme
+		panic(err.Error())
 	}
+	defer stmt.Close()
 
-	// Fermeture de la requête
+	// Exécution de la requête SQL
+	rows, err := stmt.Query()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer rows.Close()
 
 	// Création d'un tableau de topics
@@ -65,13 +69,18 @@ func GetTopicsById(id string) (*models.Topics, error) {
 	}
 	defer db.Close()
 
-	// Récupération du topic par son id
-	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_topics = '" + id + "'")
+	// Préparation de la requête SQL
+	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_topics = '" + id + "'")
 	if err != nil {
 		panic(err.Error())
 	}
+	defer stmt.Close()
 
-	// Fermeture de la requête
+	// Exécution de la requête SQL
+	rows, err := stmt.Query()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer rows.Close()
 
 	var topics models.Topics
@@ -123,13 +132,18 @@ func GetTopicsByTags(context *gin.Context) {
 	}
 	defer db.Close()
 
-	// Récupération des topics correspondants à l'id_tags donné
-	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_tags = ?", id_tags)
+	// Préparation de la requête SQL
+	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_tags = '" + id_tags + "'")
 	if err != nil {
 		panic(err.Error())
 	}
+	defer stmt.Close()
 
-	// Fermeture de la requête
+	// Exécution de la requête SQL
+	rows, err := stmt.Query()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer rows.Close()
 
 	// Création d'un tableau de topics
@@ -169,13 +183,20 @@ func AddTopic(context *gin.Context) {
 		panic(err)
 	}
 	defer db.Close()
+	// Préparation de la requête SQL
+	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "'")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer stmt.Close()
 
-	// Vérification que le titre n'est pas déjà utilisé
-	rowsTitre, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "'")
+	// Exécution de la requête SQL
+	rowsTitre, err := stmt.Query()
 	if err != nil {
 		panic(err.Error())
 	}
 	defer rowsTitre.Close()
+
 	var topic_Titre models.Topics
 	for rowsTitre.Next() {
 		err = rowsTitre.Scan(&topic_Titre.Id_topics, &topic_Titre.Titre, &topic_Titre.Crea_date, &topic_Titre.Description, &topic_Titre.Id_tags, &topic_Titre.Id_user)
@@ -190,11 +211,19 @@ func AddTopic(context *gin.Context) {
 	}
 
 	// Vérification que la description n'est pas déjà utilisée
-	rowsdesc, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE description = '" + newTopic.Description + "'")
+	// Préparation de la requête SQL
+	stmts, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE description = '" + newTopic.Description + "'")
 	if err != nil {
 		panic(err.Error())
 	}
-	defer rowsdesc.Close()
+	defer stmts.Close()
+
+	// Exécution de la requête SQL
+	rowsdesc, err := stmts.Query()
+	if err != nil {
+		panic(err.Error())
+	}
+	defer rowsTitre.Close()
 	var topic_desc models.Topics
 	for rowsdesc.Next() {
 		err = rowsdesc.Scan(&topic_desc.Id_topics, &topic_desc.Titre, &topic_desc.Crea_date, &topic_desc.Description, &topic_desc.Id_tags, &topic_desc.Id_user)
@@ -211,16 +240,33 @@ func AddTopic(context *gin.Context) {
 	currentTime := time.Now()
 	newTopic.Crea_date = currentTime
 	newTopic.Format_crea_date = newTopic.Crea_date.Format("2006-01-02 15:04:05")
-	if _, err := db.Exec(`INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES ("` + newTopic.Titre + `", "` + newTopic.Description + `",  NOW() , ` + strconv.Itoa(newTopic.Id_tags) + `, ` + strconv.Itoa(newTopic.Id_user) + `)`); err != nil {
+
+	stmt2, err := db.Prepare("INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES (?, ?, NOW(), ?, ?)")
+	if err != nil {
 		fmt.Println(err)
+		return
+	}
+	defer stmt2.Close()
+
+	// Exécution de la requête préparée avec les paramètres de la struct newTopic
+	_, err = stmt2.Exec(newTopic.Titre, newTopic.Description, newTopic.Id_tags, newTopic.Id_user)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	// Récupération du sujet ajouté pour renvoyer une réponse au client
-	rows, err := db.Query("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "' AND description = '" + newTopic.Description + "'")
+	stmt3, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "' AND description = '" + newTopic.Description + "'")
 	if err != nil {
 		panic(err.Error())
 	}
-	defer rows.Close()
+	defer stmt3.Close()
+
+	// Exécution de la requête SQL
+	rows, err := stmt3.Query()
+	if err != nil {
+		panic(err.Error())
+	}
+	defer rowsTitre.Close()
 
 	// On initialise une variable temporaire pour stocker les données du topic nouvellement créé
 	var temp_topic models.Topics

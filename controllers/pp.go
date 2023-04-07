@@ -21,13 +21,16 @@ func GetPps(context *gin.Context) {
 	}
 	defer db.Close()
 
-	// Récupération des pp
-	rows, err := db.Query("SELECT * FROM imagepp ")
+	stmt, err := db.Prepare("SELECT * FROM imagepp")
 	if err != nil {
 		panic(err.Error())
 	}
+	defer stmt.Close()
 
-	// Fermeture de la connexion à la base de données
+	rows, err := stmt.Query()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer rows.Close()
 
 	// Création d'un tableau de pp
@@ -62,12 +65,16 @@ func GetPpById(id string) (*models.Imagepp, error) {
 	defer db.Close()
 
 	// Récupération des pp
-	rows, err := db.Query("SELECT * FROM imagepp WHERE id_pp = '" + id + "'")
+	stmt, err := db.Prepare("SELECT * FROM imagepp WHERE id_pp = '" + id + "'")
 	if err != nil {
 		panic(err.Error())
 	}
+	defer stmt.Close()
 
-	// Fermeture de la connexion à la base de données
+	rows, err := stmt.Query()
+	if err != nil {
+		panic(err.Error())
+	}
 	defer rows.Close()
 
 	// Création d'un tableau de pp
