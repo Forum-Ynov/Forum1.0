@@ -54,6 +54,109 @@ const display_topics = document.getElementById("display_topics")
 const style_mod = document.getElementById("style_mod")
 
 async function fetch_all() {
+
+    const topicsload = await fetch("http://localhost:8000/topics", {
+        method: 'GET',
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then((res) => {
+            // console.log(res)
+            if (res.ok) {
+                // console.log("res.ok true")
+                res.json().then(data => {
+                    display_topics.innerHTML = ""
+                    data.forEach(elt => {
+
+                        let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
+                        list_topics.push(actual_topic)
+
+                        const topicsload = fetch(`http://localhost:8000/users/${elt.id_user}`, {
+                            method: 'GET',
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                            .then((res) => {
+                                // console.log(res)
+                                if (res.ok) {
+                                    // console.log("res.ok true")
+                                    res.json().then(data => {
+                                        publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
+                                        console.log(publisher)
+                                        console.log(actual_topic)
+
+                                        display_topics.innerHTML += `
+                                            <div class="card">
+                                                <div class="top_card">
+                                                    <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
+                                                    <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
+                                                </div>
+                                                <div class="middle_card">
+                                                    <h3 class="title_topic${actual_topic.id_tags}">${actual_topic.titre}</h3>
+                                                </div>
+                                                <div class="bottom_card">
+                                                    <p>${actual_topic.description}</p>
+                                                </div>
+                                            </div>`
+
+                                        style_mod.innerHTML += `
+.title_topic${actual_topic.id_tags}::before {
+    content: url(../../Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
+}
+.title_topic${actual_topic.id_tags} {
+    text-align: center;
+}`
+
+                                        const ppload = fetch(`http://localhost:8000/pp/${publisher.id_imagepp}`, {
+                                            method: 'GET',
+                                            headers: {
+                                                "Accept": "application/json",
+                                                "Content-type": "application/json; charset=UTF-8"
+                                            }
+                                        })
+                                            .then((res) => {
+                                                // console.log(res)
+                                                if (res.ok) {
+                                                    // console.log("res.ok true")
+                                                    res.json().then(data => {
+                                                        pp_publi = new Imagepp(data.id_pp, data.image_loc)
+
+                                                        style_mod.innerHTML += `
+.user_card${data.id_pp}::before {
+    content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+}`
+
+
+                                                    })
+                                                } else {
+                                                    console.log("res.ok false")
+                                                }
+                                            });
+
+                                    })
+                                } else {
+                                    console.log("res.ok false")
+                                }
+                            });
+
+
+                    });
+                    console.log(list_topics)
+
+                })
+            } else {
+                console.log("res.ok false")
+            }
+        });
+}
+
+
+async function fetch_tags() {
+
     const tagsload = await fetch("http://localhost:8000/tags", {
         method: 'GET',
         headers: {
@@ -71,8 +174,16 @@ async function fetch_all() {
                     });
                     console.log(list_tags)
 
+                    display_tags.innerHTML += `<h4 class="tag tagsall" id="tagsall"><span class="hover-underline-animation">All Tags</span></h4>`
+                    style_mod.innerHTML += `
+.tagsall::before{
+    content: url(../../Assets/Images/icon_input/arobase.svg);
+    position: absolute;
+    left: -20px;
+}`
+
                     list_tags.forEach(elt => {
-                        display_tags.innerHTML += `<h4 class="tag tags${elt.id_tags}" style= ""><span class="hover-underline-animation">${elt.tags}</span></h4>`
+                        display_tags.innerHTML += `<h4 class="tag tags${elt.id_tags}" id="tags${elt.id_tags}" style= ""><span class="hover-underline-animation">${elt.tags}</span></h4>`
                         style_mod.innerHTML += `
 .tags${elt.id_tags}::before{
     content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
@@ -81,12 +192,15 @@ async function fetch_all() {
 }`
                     })
 
-                    // list_pp.forEach(elt => {
-                    //     document.getElementById(`imgpp${elt.id_pp}`).onclick = setpp
-                    // })
+                    document.getElementById(`tagsall`).onclick = function () {
+                        fetch_all()
+                    }
 
-                    // hiddenppvalue.value = document.getElementById(`imgpp${list_pp[0].id_pp}`).value
-                    // showpp.style.backgroundImage = document.getElementById(`imgpp${list_pp[0].id_pp}`).style.backgroundImage
+                    list_tags.forEach(elt => {
+                        document.getElementById(`tags${elt.id_tags}`).onclick = function () {
+                            fetch_by_tags(`${elt.id_tags}`)
+                        }
+                    })
 
 
                 })
@@ -94,10 +208,17 @@ async function fetch_all() {
                 console.log("res.ok false")
             }
         });
+}
 
 
+fetch_tags()
+fetch_all()
+// fetch_by_tags(5)
 
-    const topicsload = await fetch("http://localhost:8000/topics", {
+
+async function fetch_by_tags(tag) {
+    
+    const topicsload = await fetch(`http://localhost:8000/topics/tags/${tag}`, {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -109,6 +230,7 @@ async function fetch_all() {
             if (res.ok) {
                 // console.log("res.ok true")
                 res.json().then(data => {
+                    display_topics.innerHTML = ""
                     data.forEach(elt => {
 
                         let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
@@ -214,13 +336,6 @@ async function fetch_all() {
 
 
 
-fetch_all()
-
-
-
-
-
-
 
 
 
@@ -245,10 +360,10 @@ const close_create = document.getElementById("close_create")
 
 
 
-openpopup.onclick = function switch_theme() {
-    Popup.showModal();
-    content.style.position = 'fixed';
-};
+// openpopup.onclick = function switch_theme() {
+//     Popup.showModal();
+//     content.style.position = 'fixed';
+// };
 close_popup.addEventListener('click', function onClose() {
     Popup.close();
     content.style.position = 'initial'
