@@ -18,6 +18,7 @@ const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
 let storageUser = new User("", "", "", "", "", "");
 
+
 if (localUser) {
     console.log("auto connect")
     storageUser = JSON.parse(localUser)
