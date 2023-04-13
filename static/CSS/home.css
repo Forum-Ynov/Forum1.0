@@ -536,6 +536,7 @@ body.open .burger {
     font-size: large;
     position: relative;
     padding: 10px;
+    cursor: pointer;
 }
 
 
@@ -625,31 +626,7 @@ hr {
         display: none;
     }
 
-    .tag1::before {
-        content: url(../../Assets/Images/icon_tag/game.svg);
-        position: absolute;
-        left: 0;
-    }
-
-    .tag2::before {
-        content: url(../../Assets/Images/icon_tag/football.svg);
-        position: absolute;
-        left: 0;
-    }
-
-    .tag4::before {
-        content: url(../../Assets/Images/icon_tag/tags3.svg);
-        position: absolute;
-        left: 0;
-        height: 50px;
-        width: 50px;
-    }
-
-    .tag4::before {
-        content: url(../../Assets/Images/icon_tag/tags3.svg);
-        position: absolute;
-        left: 0;
-    }
+    
 }
 
 /*!------------fin sidebar----------*/
