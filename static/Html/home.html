@@ -15,14 +15,19 @@
 </head>
 
 <style id="style_mod">
+    .tagsall::before{
+    content: url(../../Assets/Images/icon_input/arobase.svg);
+    position: absolute;
+    left: -20px;
+}
 
 </style>
 
 <body data-theme="light">
     <header>
         <nav class="navbar">
-            <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo" id="logo_light">
-            <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" id="logo_dark">
+            <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
+            <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
             <label class="switch">
                 <input type="checkbox" name="switch_theme" id="swmode">
                 <span class="slider"></span>
@@ -30,6 +35,7 @@
             <button onclick="toggleMenu()" class="burger"></button>
             <button class="button" id="open_create">Log in</button>
             <div class="dropdowns">
+                <div id="profil_pseudo"></div>
                 <div class="dropdown">
                     <button class="button_user_img">
                         <img src="../../Assets/Images/profil/user.svg" alt="user">
@@ -49,12 +55,15 @@
         <div class="div_tags">
             <h3>Tags:</h3>
             <div class="element_tag" id="display_tags">
-                
+
             </div>
         </div>
         <div class="div_text">
             <p class="info_aside">Connectez vous pour profiter des fonctionnalités de création de post, réponse au post
                 ... et bien plus encore</p>
+        </div>
+        <div class="div_text_connect">
+            <p class="info_aside">Pour créer un topic, cliquez sur le bouton "Create Post" et remplissez les informations demandées. C'est simple !</p>
         </div>
         <div class="div_button_aside">
             <hr>

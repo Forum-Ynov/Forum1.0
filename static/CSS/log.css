@@ -37,13 +37,16 @@ input {
     position: relative;
 }
 
+#arrow_down{
+    pointer-events: none;
+}
+
 .img_input {
     position: absolute;
     transform: rotate(0);
     right: 20px;
     top: 12px;
     opacity: 0.5;
-    pointer-events: none;
     transition: .5s;
 }
 
@@ -53,7 +56,6 @@ input {
     right: 20px;
     top: 12px;
     opacity: 0.5;
-    pointer-events: none;
     transition: .3s;
 }
 
