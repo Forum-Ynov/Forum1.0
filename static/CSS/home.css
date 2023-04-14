@@ -113,12 +113,19 @@
 
 textarea {
     border-radius: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 10px;
     width: 80%;
     resize: none;
     background-color: var(--couleur_principale);
     border: 1px solid black;
+}
+
+.label_title {
+    margin-top: 10px;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
 }
 
 .title_post {
@@ -200,6 +207,7 @@ input {
 /*?------------debut popUP creation de topic----------*/
 
 .popup_create {
+    display: none;
     position: fixed;
     top: 10vh;
     left: 25%;
@@ -244,9 +252,20 @@ input {
 
 .input_tag {
     margin-top: 24px;
+    display: flex;
+    flex-direction: column;
     width: 50%;
     height: 40px;
-    border: 1px solid var(--couleur_secondaire);
+}
+
+#tag-dropdown {
+    margin-top: 5px;
+    margin-right: 25px;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--couleur_secondaire);
+    color: var(--couleur_input);
 }
 
 .select_tags {
@@ -258,7 +277,7 @@ input {
 }
 
 .button_create {
-    margin-top: 32px;
+    margin-top: 110px;
     height: 50px;
     width: 100px;
     display: flex;
@@ -270,6 +289,13 @@ input {
     background-color: var(--couleur_secondaire);
     color: var(--couleur_input);
     transition: 0.3s;
+}
+
+.post_close {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    cursor: pointer;
 }
 
 /*!------------fin popUP creation de topic----------*/
@@ -592,7 +618,7 @@ hr {
     margin-bottom: 10%;
 }
 
-.button_secondary {
+/* .button_secondary {
     margin-top: 10%;
     height: 50px;
     width: 100px;
@@ -606,7 +632,7 @@ hr {
     color: var(--couleur_texte_principal);
     border: solid var(--couleur_secondaire) 2px;
     transition: 0.3s;
-}
+} */
 
 .button_secondary:hover {
     transform: translateY(-5px);

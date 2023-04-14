@@ -42,8 +42,6 @@ if (localUser) {
 
 
 
-
-
 let publisher
 let pp_publi
 let list_tags = []
@@ -216,51 +214,139 @@ async function fetch_all() {
 
 fetch_all()
 
+const tagDropdown = document.getElementById("tag-dropdown");
+
+async function post_tag() {
+  const tagsload = await fetch("http://localhost:8000/tags", {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      data.forEach((tag) => {
+        const option = document.createElement("option");
+        option.value = tag.id_tags;
+        option.text = tag.tags;
+        tagDropdown.appendChild(option);
+      });
+    })
+    .catch((error) => console.error(error));
+}
+
+post_tag();
+
+const form = document.getElementById("Createpost");
+const statusMessage = document.getElementById("status-message");
 
 
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
+  const titre = document.getElementById("post-title").value;
+  const userId = storageUser.id_user;
+  const description = document.getElementById("post-description").value;
+  const selectedTag = tagDropdown.value;
 
+  const response = await fetch("http://localhost:8000/addtopic", {
+    method: "POST",
+    headers: {
+        "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8"
+    },
+    body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: userId  })
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-const openpopup = document.getElementById("openpopup")
-const Popup = document.getElementById("favDialog")
-const content = document.getElementById("contenu")
-const close_popup = document.getElementById('close_pop')
-
-const Createpost = document.getElementById('Createpost')
-const open_create = document.getElementById("open_create")
-const close_create = document.getElementById("close_create")
-
-
-
-
-openpopup.onclick = function switch_theme() {
-    Popup.showModal();
-    content.style.position = 'fixed';
-};
-close_popup.addEventListener('click', function onClose() {
-    Popup.close();
-    content.style.position = 'initial'
+  if (response.ok) {
+    statusMessage.textContent = `Message ajouté avec succès`;
+  } else {
+    statusMessage.textContent = "Erreur lors de l'ajout du message";
+  }
 });
 
-open_create.onclick = function open_create() {
-    Createpost.showModal();
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const openpopup = document.getElementById("openpopup")
+// const Popup = document.getElementById("favDialog")
+// const content = document.getElementById("contenu")
+// const close_popup = document.getElementById('close_pop')
+
+// const Createpost = document.getElementById('Createpost')
+// const close_create = document.getElementById("close_create")
+
+
+
+// openpopup.onclick = function switch_theme() {
+//     Popup.showModal();
+//     content.style.position = 'fixed';
+// };
+// close_popup.addEventListener('click', function onClose() {
+//     Popup.close();
+//     content.style.position = 'initial'
+// });
+
+// open_create.onclick = function open_create() {
+//     Createpost.showModal();
+// };
+
 // close_create.addEventListener('click', function onClose_create() {
 //     Createpost.close();
 // });
 
+const open_create = document.getElementById("open_create");
 
+open_create.addEventListener("click", function() {
+    document.location.href="/static/Html/log_in.html";
+});
 
+const myBtn = document.getElementById("myBtn");
+const popup_create = document.querySelector(".popup_create");
+const post_close = document.querySelector(".post_close");
+
+myBtn.addEventListener("click", function() {
+
+if(localUser) {
+    // When the user clicks on the button, open the modal
+    myBtn.onclick = function() {
+        popup_create.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    post_close.onclick = function() {
+        popup_create.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+    if (event.target == popup_create) {
+        popup_create.style.display = "none";
+    }
+    }
+} else {
+    document.location.href="/static/Html/log_in.html";
+}
+});
 
