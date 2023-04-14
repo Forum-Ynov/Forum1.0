@@ -64,9 +64,7 @@ async function fetch_all() {
         }
     })
         .then((res) => {
-            // console.log(res)
             if (res.ok) {
-                // console.log("res.ok true")
                 res.json().then(data => {
                     display_topics.innerHTML = ""
                     data.forEach(elt => {
@@ -82,9 +80,7 @@ async function fetch_all() {
                             }
                         })
                             .then((res) => {
-                                // console.log(res)
                                 if (res.ok) {
-                                    // console.log("res.ok true")
                                     res.json().then(data => {
                                         publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
                                         console.log(publisher)
@@ -120,9 +116,7 @@ async function fetch_all() {
                                             }
                                         })
                                             .then((res) => {
-                                                // console.log(res)
                                                 if (res.ok) {
-                                                    // console.log("res.ok true")
                                                     res.json().then(data => {
                                                         pp_publi = new Imagepp(data.id_pp, data.image_loc)
 
@@ -214,11 +208,10 @@ async function fetch_tags() {
 
 fetch_tags()
 fetch_all()
-// fetch_by_tags(5)
 
 
 async function fetch_by_tags(tag) {
-    
+
     const topicsload = await fetch(`http://localhost:8000/topics/tags/${tag}`, {
         method: 'GET',
         headers: {
@@ -227,9 +220,7 @@ async function fetch_by_tags(tag) {
         }
     })
         .then((res) => {
-            // console.log(res)
             if (res.ok) {
-                // console.log("res.ok true")
                 res.json().then(data => {
                     display_topics.innerHTML = ""
                     data.forEach(elt => {
@@ -245,9 +236,7 @@ async function fetch_by_tags(tag) {
                             }
                         })
                             .then((res) => {
-                                // console.log(res)
                                 if (res.ok) {
-                                    // console.log("res.ok true")
                                     res.json().then(data => {
                                         publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
                                         console.log(publisher)
@@ -283,9 +272,7 @@ async function fetch_by_tags(tag) {
                                             }
                                         })
                                             .then((res) => {
-                                                // console.log(res)
                                                 if (res.ok) {
-                                                    // console.log("res.ok true")
                                                     res.json().then(data => {
                                                         pp_publi = new Imagepp(data.id_pp, data.image_loc)
 
@@ -311,23 +298,6 @@ async function fetch_by_tags(tag) {
                     });
                     console.log(list_topics)
 
-                    //             list_topics.forEach(elt => {
-                    //                 display_topics.innerHTML += `
-                    //                 <div class="card">
-                    //     <div class="top_card">
-                    //         <h4 class="user_card">${elt.id_user}</h4>
-                    //         <p>publié le ${elt.format_crea_date}</p>
-                    //     </div>
-                    //     <div class="middle_card">
-                    //         <h3 class="title_topic">${elt.titre}</h3>
-                    //     </div>
-                    //     <div class="bottom_card">
-                    //         <p>${elt.description}</p>
-                    //     </div>
-                    // </div>`
-
-                    //             })
-
                 })
             } else {
                 console.log("res.ok false")
@@ -350,7 +320,7 @@ async function fetch_by_tags(tag) {
 
 
 const openpopup = document.getElementById("openpopup")
-const Popup = document.getElementById("favDialog")
+const favDialog = document.getElementById("favDialog")
 const content = document.getElementById("contenu")
 const close_popup = document.getElementById('close_pop')
 
@@ -361,12 +331,12 @@ const close_create = document.getElementById("close_create")
 
 
 
-// openpopup.onclick = function switch_theme() {
-//     Popup.showModal();
-//     content.style.position = 'fixed';
-// };
+openpopup.onclick = function () {
+    favDialog.showModal();
+    content.style.position = 'fixed';
+};
 close_popup.addEventListener('click', function onClose() {
-    Popup.close();
+    favDialog.close();
     content.style.position = 'initial'
 });
 
