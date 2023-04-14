@@ -1,0 +1,137 @@
+@import url(../CSS/set.css);
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--couleur_fond);
+}
+
+.containers {
+    border-radius: 5px;
+    width: 70%;
+    height: 60vh;
+    background-color: var(--couleur_principale);
+}
+
+
+.top_info {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.left_top_info {
+    width: 20%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+}
+
+.left_top_info>h3 {
+    margin-left: 10%;
+}
+
+.left_top_info>img {
+    position: relative;
+    top: -25px;
+    border: solid 5px var(--couleur_principale);
+    border-radius: 15px;
+    background-color: var(--couleur_principale);
+}
+
+
+/*------------------------------------------------*/
+.info {
+    margin-top: 1%;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: rgb(222, 224, 227);
+    background: radial-gradient(circle, rgba(222, 224, 227, 1) 60%, rgba(222, 224, 227, 0.05) 90%);
+}
+
+h5 {
+    font-weight: 400;
+}
+
+.left_col_info {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+input {
+    margin: 2% 0 0 2%;
+    border-radius: 10px;
+    background-color: var(--couleur_principale);
+    border: 2px solid var(--couleur_principale);
+    padding: 7px;
+}
+
+.name_info {
+    width: 50%;
+    height: 25%;
+}
+
+.mail_info {
+    width: 50%;
+    height: 25%;
+}
+
+.mdp_info {
+    width: 50%;
+    height: 25%;
+}
+
+.right_col_info {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button_simple_update {
+    padding: 8px 18px;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--couleur_principale);
+    color: var(--couleur_secondaire);
+    transition: 0.3s;
+}
+
+.btn_name_info {
+    width: 50%;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_mail_info {
+    width: 50%;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_mdp_info {
+    width: 50%;
+    height: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
