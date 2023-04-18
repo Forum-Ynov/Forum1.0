@@ -155,12 +155,13 @@ input {
 .comment_main {
     margin-top: 10px;
     height: 95%;
+    overflow-y: scroll;
 }
 
 .comment_user {
     margin-top: 5px;
     border-bottom: 1px solid var(--couleur_secondaire);
-    padding: 10px;
+    padding: 10px 15px;
 }
 
 .comment_user_text {
@@ -626,7 +627,7 @@ hr {
         display: none;
     }
 
-    
+
 }
 
 /*!------------fin sidebar----------*/
