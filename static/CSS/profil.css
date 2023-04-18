@@ -113,6 +113,13 @@ input {
     transition: 0.3s;
 }
 
+
+.button_simple_update:hover {
+    border: none;
+    background-color: var(--couleur_secondaire);
+    color: var(--couleur_principale);
+}
+
 .btn_name_info {
     width: 50%;
     height: 25%;
