@@ -309,6 +309,14 @@ async function fetch_by_tags(tag) {
         });
 }
 
+async function fetch_by_topics() {
+    
+}
+
+
+
+
+
 const tagDropdown = document.getElementById("tag-dropdown");
 
 async function post_tag() {
