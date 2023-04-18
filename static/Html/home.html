@@ -32,8 +32,9 @@
                 <span class="slider"></span>
             </label>
             <button onclick="toggleMenu()" class="burger"></button>
-            <button class="button" onclick="open_create()" id="open_create">Log in</button>
+            <button class="button" id="open_create">Log in</button>
             <div class="dropdowns">
+                <div id="profil_pseudo"></div>
                 <div class="dropdown">
                     <button class="button_user_img">
                         <img src="../../Assets/Images/profil/user.svg" alt="user">
@@ -60,10 +61,12 @@
             <p class="info_aside">Connectez vous pour profiter des fonctionnalités de création de post, réponse au post
                 ... et bien plus encore</p>
         </div>
+        <div class="div_text_connect">
+            <p class="info_aside">Pour créer un topic, cliquez sur le bouton "Create Post" et remplissez les informations demandées. C'est simple !</p>
+        </div>
         <div class="div_button_aside">
             <hr>
-            <button class="button">Log in</button>
-            <button class="button_secondary">Sign up</button>
+            <button class="button" id="myBtn">Create Post</button>
         </div>
     </aside>
 
@@ -223,16 +226,25 @@
             </div>
         </div>
     </dialog>
-    <dialog id="Createpost" class="popup_create">
+    <form action="" id="Createpost" class="popup_create">
         <div class="container_create">
-            <h3>Create a new post</h3>
-            <textarea name="" id="" cols="30" rows="10" class="area_title"></textarea>
-            <textarea name="" id="" cols="30" rows="10" class="area_description"></textarea>
-            <input type="text" class="input_tag">
-            <div class="select_tags"></div>
-            <button class="button_create">Publier</button>
+            <div class="post_close">
+                <img src="../../Assets/Images/menu/close.svg" alt="fermeture popup"/>
+            </div>
+          <h3>Create a new post</h3>
+          <label for="" class="label_title">Titre :</label>
+          <textarea name="title" id="post-title" cols="30" rows="10" class="area_title"></textarea>
+          <label for="" class="label_title">Description :</label>
+          <textarea name="description" id="post-description" cols="30" rows="10" class="area_description"></textarea>
+          <div class="input_tag">
+            <select id="tag-dropdown">
+              <option value="">Select a tag</option>
+            </select>
+          </div>
+          <div id="status-message"></div>
+          <button type="submit" class="button_create">Publier</button>
         </div>
-    </dialog>
+      </form>
 
 </body>
 <script type="module" src="../../JS/script.js"></script>
