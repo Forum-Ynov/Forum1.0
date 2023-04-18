@@ -36,8 +36,8 @@ form_log.addEventListener("submit", async function (event) {
                         actual_user.id_imagepp = data.id_imagepp;
                         actual_user.theme = data.theme
                         console.log(actual_user)
-                        alert("connected")
                         localStorage.setItem("loged_user", JSON.stringify(actual_user))
+                        window.location.href = "http://127.0.0.1:5500/static/Html/home.html"
                     })
                 } else {
                     console.log("res.ok false")

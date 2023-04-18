@@ -40,7 +40,12 @@ if (localUser) {
     console.log("to connect")
 }
 
+const btn_deconenxion = document.getElementById("btn_deconenxion")
 
+btn_deconenxion.addEventListener("click", () => {
+    localStorage.removeItem("loged_user")
+    window.location.href = "http://127.0.0.1:5500/static/Html/home.html"
+});
 
 
 
