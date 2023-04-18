@@ -429,7 +429,9 @@ function log_In() {
         div_text.style.display = "none";
         div_text_connect.style.display = "block";
         profil_pseudo.innerHTML = storageUser.pseudo;
+        display_topics.style.position = 'inherit';
     } else {
+        display_topics.style.position = 'fixed';
         open_create.style.display = "block";
         div_text.style.display = "block";
         div_text_connect.style.display = "none";

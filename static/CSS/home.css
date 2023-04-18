@@ -202,6 +202,7 @@ input {
     position: absolute;
     top: 10px;
     right: 10px;
+    cursor: pointer;
 }
 
 /*!------------fin popUP commentaire de topic----------*/
@@ -306,6 +307,7 @@ input {
 
 body {
     background-color: var(--couleur_fond);
+    transition: background 1.0s ease, color 1.0s ease;
 }
 
 
@@ -352,6 +354,7 @@ button {
     justify-content: end;
     height: 60px;
     background: var(--couleur_principale);
+    transition: background 1.0s ease, color 1.0s ease;
 }
 
 
@@ -546,6 +549,7 @@ body.open .burger {
     background: var(--couleur_principale);
     border-top: 1px solid rgba(217, 217, 217, 0.4);
     height: calc(100% - 60px);
+    transition: background 1.0s ease, color 1.0s ease;
 }
 
 .div_tags {
@@ -704,6 +708,8 @@ hr {
     background-color: var(--couleur_principale);
     height: 300px;
     cursor: pointer;
+    transition: background 1.0s ease, color 1.0s ease;
+
 }
 
 .top_card {
