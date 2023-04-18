@@ -16,6 +16,8 @@ import (
 
 func main() {
 
+	apiName := "apiForum"
+
 	// Charger les variables d'environnement à partir du fichier .env
 	err := godotenv.Load()
 	if err != nil {
@@ -33,35 +35,35 @@ func main() {
 	})
 
 	// Routes pour les manipulations des images de profil utilisateur
-	router.GET("/pp", controllers.GetPps)
-	router.GET("/pp/:id", controllers.GetPp)
+	router.GET("/"+apiName+"/pp", controllers.GetPps)
+	router.GET("/"+apiName+"/pp/:id", controllers.GetPp)
 
 	// Routes pour les opérations d'authentification et de gestion des utilisateurs
-	router.POST("/login", controllers.Loginuser)
-	router.GET("/users", controllers.GetUsers)
-	router.GET("/users/:id", controllers.GetUser)
-	router.GET("/userpseudo/:pseudo", controllers.GetUserPseudo)
-	router.PATCH("/users/:id", controllers.UpdateUser)
-	router.POST("/users", controllers.AddUsers)
-	router.DELETE("/users/:id", controllers.DeleteUser)
+	router.POST("/"+apiName+"/login", controllers.Loginuser)
+	router.GET("/"+apiName+"/users", controllers.GetUsers)
+	router.GET("/"+apiName+"/users/:id", controllers.GetUser)
+	router.GET("/"+apiName+"/userpseudo/:pseudo", controllers.GetUserPseudo)
+	router.PATCH("/"+apiName+"/users/:id", controllers.UpdateUser)
+	router.POST("/"+apiName+"/users", controllers.AddUsers)
+	router.DELETE("/"+apiName+"/users/:id", controllers.DeleteUser)
 
 	// Routes pour les opérations sur les tags
-	router.GET("/tags", controllers.GetTags)
-	router.GET("/tags/:id", controllers.GetTag)
+	router.GET("/"+apiName+"/tags", controllers.GetTags)
+	router.GET("/"+apiName+"/tags/:id", controllers.GetTag)
 
 	// Routes pour les opérations sur les topics
-	router.GET("/topics", controllers.GetTopics)
-	router.GET("/topics/:id", controllers.GetTopic)
-	router.GET("/topics/tags/:id_tags", controllers.GetTopicsByTags)
-	router.POST("/addtopic", controllers.AddTopic)
+	router.GET("/"+apiName+"/topics", controllers.GetTopics)
+	router.GET("/"+apiName+"/topics/:id", controllers.GetTopic)
+	router.GET("/"+apiName+"/topicstags/:id_tags", controllers.GetTopicsByTags)
+	router.POST("/"+apiName+"/addtopic", controllers.AddTopic)
 
 	// Routes pour les opérations sur les messages
-	router.GET("/messages", controllers.GetMessages)
-	router.GET("/messages/:id", controllers.GetMessage)
-	router.GET("/messages/topics/:id_topics", controllers.GetMessagesByTopics)
-	router.PATCH("/message/:id", controllers.ChangeMessage)
-	router.POST("/addmessage", controllers.AddMessage)
-	router.DELETE("/deletemessage/:id", controllers.DeleteMessage)
+	router.GET("/"+apiName+"/messages", controllers.GetMessages)
+	router.GET("/"+apiName+"/messages/:id", controllers.GetMessage)
+	router.GET("/"+apiName+"/messagestopics/:id_topics", controllers.GetMessagesByTopics)
+	router.PATCH("/"+apiName+"/message/:id", controllers.ChangeMessage)
+	router.POST("/"+apiName+"/addmessage", controllers.AddMessage)
+	router.DELETE("/"+apiName+"/deletemessage/:id", controllers.DeleteMessage)
 
 	// Créer un handler avec CORS middleware et le router
 	handler := c.Handler(router)

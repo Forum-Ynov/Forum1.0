@@ -5,7 +5,7 @@ import { Imagepp } from "./pp_class.js"
 let list_pp = []
 
 async function loadpp() {
-    const r = await fetch("http://localhost:8000/pp", {
+    const r = await fetch("http://localhost:8000/apiForum/pp", {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -138,7 +138,7 @@ form_sign.addEventListener("submit", async function (event) {
     let user_theme = body.getAttribute('data-theme');
 
 
-    const r = await fetch("http://localhost:8000/users", {
+    const r = await fetch("http://localhost:8000/apiForum/users", {
         method: 'POST',
         headers: {
             "Accept": "application/json",
