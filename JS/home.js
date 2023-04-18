@@ -40,7 +40,12 @@ if (localUser) {
     console.log("to connect")
 }
 
+const btn_deconenxion = document.getElementById("btn_deconenxion")
 
+btn_deconenxion.addEventListener("click", () => {
+    localStorage.removeItem("loged_user")
+    window.location.href = "http://127.0.0.1:5500/static/Html/home.html"
+});
 
 
 
@@ -334,12 +339,12 @@ const statusMessage = document.getElementById("status-message");
 
 
 form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  const titre = document.getElementById("post-title").value;
-  const userId = storageUser.id_user;
-  const description = document.getElementById("post-description").value;
-  const selectedTag = tagDropdown.value;
+    const titre = document.getElementById("post-title").value;
+    const userId = storageUser.id_user;
+    const description = document.getElementById("post-description").value;
+    const selectedTag = tagDropdown.value;
 
   const response = await fetch("http://localhost:8000/apiForum/addtopic", {
     method: "POST",
@@ -350,11 +355,11 @@ form.addEventListener("submit", async (event) => {
     body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: userId  })
   });
 
-  if (response.ok) {
-    statusMessage.textContent = `Message ajouté avec succès`;
-  } else {
-    statusMessage.textContent = "Erreur lors de l'ajout du message";
-  }
+    if (response.ok) {
+        statusMessage.textContent = `Message ajouté avec succès`;
+    } else {
+        statusMessage.textContent = "Erreur lors de l'ajout du message";
+    }
 });
 
 const myBtn = document.getElementById("myBtn");
@@ -362,48 +367,67 @@ const popup_create = document.querySelector(".popup_create");
 const post_close = document.querySelector(".post_close");
 const profil_pseudo = document.getElementById("profil_pseudo");
 
-myBtn.addEventListener("click", function() {
 
-if(localUser) {
-    // When the user clicks on the button, open the modal
-    myBtn.onclick = function() {
-        popup_create.style.display = "block";
-    }
+myBtn.addEventListener("click", function () {
 
-    // When the user clicks on <span> (x), close the modal
-    post_close.onclick = function() {
-        popup_create.style.display = "none";
-    }
+    if (localUser) {
+        // When the user clicks on the button, open the modal
+        myBtn.onclick = function () {
+            popup_create.style.display = "block";
+        }
 
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-    if (event.target == popup_create) {
-        popup_create.style.display = "none";
+        // When the user clicks on <span> (x), close the modal
+        post_close.onclick = function () {
+            popup_create.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == popup_create) {
+                popup_create.style.display = "none";
+            }
+        }
+    } else {
+        document.location.href = "/static/Html/log_in.html";
     }
-    }
-} else {
-    document.location.href="/static/Html/log_in.html";
-}
 });
 
 const div_text = document.querySelector(".div_text");
 const div_text_connect = document.querySelector(".div_text_connect");
 
 function log_In() {
-    if(localUser) {
+    if (localUser) {
         open_create.style.display = "none";
         div_text.style.display = "none";
         div_text_connect.style.display = "block";
         profil_pseudo.innerHTML = storageUser.pseudo;
-     } else {
+    } else {
         open_create.style.display = "block";
         div_text.style.display = "block";
         div_text_connect.style.display = "none";
-     }
+    }
 }
 
 log_In();
 
-open_create.addEventListener("click", function() {
-    document.location.href="/static/Html/log_in.html";
+open_create.addEventListener("click", function () {
+    document.location.href = "/static/Html/log_in.html";
 });
+
+
+//pop-up commentaire
+const close_pop = document.getElementById("close_pop");
+const favDialog = document.getElementById("favDialog");
+const openpopup = document.getElementById("openpopup");
+
+openpopup.addEventListener("click", function () {
+    favDialog.style.display = 'block'
+    display_topics.style.position = 'fixed';
+})
+
+close_pop.addEventListener("click", function () {
+    favDialog.style.display = 'none';
+    display_topics.style.position = 'inherit';
+})
+
+
