@@ -16,7 +16,7 @@ form_log.addEventListener("submit", async function (event) {
 
     if (storageUser.id_user == default_user.id_user && storageUser.pseudo == default_user.pseudo && storageUser.email == default_user.email && storageUser.passwd == default_user.passwd && storageUser.id_imagepp == default_user.id_imagepp && storageUser.theme == default_user.theme) {
 
-        const r = await fetch("http://localhost:8000/login", {
+        const r = await fetch("http://localhost:8000/apiForum/login", {
             method: 'POST',
             headers: {
                 "Accept": "application/json",

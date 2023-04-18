@@ -55,7 +55,7 @@ const style_mod = document.getElementById("style_mod")
 
 async function fetch_all() {
 
-    const topicsload = await fetch("http://localhost:8000/topics", {
+    const topicsload = await fetch("http://localhost:8000/apiForum/topics", {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -71,7 +71,7 @@ async function fetch_all() {
                         let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
                         list_topics.push(actual_topic)
 
-                        const topicsload = fetch(`http://localhost:8000/users/${elt.id_user}`, {
+                        const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
                             method: 'GET',
                             headers: {
                                 "Accept": "application/json",
@@ -107,7 +107,7 @@ async function fetch_all() {
     text-align: center;
 }`
 
-                                        const ppload = fetch(`http://localhost:8000/pp/${publisher.id_imagepp}`, {
+                                        const ppload = fetch(`http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`, {
                                             method: 'GET',
                                             headers: {
                                                 "Accept": "application/json",
@@ -151,7 +151,7 @@ async function fetch_all() {
 
 async function fetch_tags() {
 
-    const tagsload = await fetch("http://localhost:8000/tags", {
+    const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -211,7 +211,7 @@ fetch_all()
 
 async function fetch_by_tags(tag) {
 
-    const topicsload = await fetch(`http://localhost:8000/topics/tags/${tag}`, {
+    const topicsload = await fetch(`http://localhost:8000/apiForum/topicstags/${tag}`, {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -227,7 +227,7 @@ async function fetch_by_tags(tag) {
                         let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
                         list_topics.push(actual_topic)
 
-                        const topicsload = fetch(`http://localhost:8000/users/${elt.id_user}`, {
+                        const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
                             method: 'GET',
                             headers: {
                                 "Accept": "application/json",
@@ -263,7 +263,7 @@ async function fetch_by_tags(tag) {
     text-align: center;
 }`
 
-                                        const ppload = fetch(`http://localhost:8000/pp/${publisher.id_imagepp}`, {
+                                        const ppload = fetch(`http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`, {
                                             method: 'GET',
                                             headers: {
                                                 "Accept": "application/json",
@@ -307,7 +307,7 @@ async function fetch_by_tags(tag) {
 const tagDropdown = document.getElementById("tag-dropdown");
 
 async function post_tag() {
-  const tagsload = await fetch("http://localhost:8000/tags", {
+  const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -341,7 +341,7 @@ form.addEventListener("submit", async (event) => {
   const description = document.getElementById("post-description").value;
   const selectedTag = tagDropdown.value;
 
-  const response = await fetch("http://localhost:8000/addtopic", {
+  const response = await fetch("http://localhost:8000/apiForum/addtopic", {
     method: "POST",
     headers: {
         "Accept": "application/json",
