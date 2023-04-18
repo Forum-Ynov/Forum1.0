@@ -41,10 +41,9 @@ func main() {
 	router.GET("/users", controllers.GetUsers)
 	router.GET("/users/:id", controllers.GetUser)
 	router.GET("/userpseudo/:pseudo", controllers.GetUserPseudo)
-	router.PATCH("/userpp/:id", controllers.Change_imagepp)
-	router.PATCH("/usertheme/:id", controllers.Change_theme)
-	router.POST("/adduser", controllers.AddUsers)
-	router.DELETE("/deleteuser/:id", controllers.DeleteUser)
+	router.PATCH("/users/:id", controllers.UpdateUser)
+	router.POST("/users", controllers.AddUsers)
+	router.DELETE("/users/:id", controllers.DeleteUser)
 
 	// Routes pour les opérations sur les tags
 	router.GET("/tags", controllers.GetTags)

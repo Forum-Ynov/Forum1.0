@@ -138,7 +138,7 @@ form_sign.addEventListener("submit", async function (event) {
     let user_theme = body.getAttribute('data-theme');
 
 
-    const r = await fetch("http://localhost:8000/adduser", {
+    const r = await fetch("http://localhost:8000/users", {
         method: 'POST',
         headers: {
             "Accept": "application/json",

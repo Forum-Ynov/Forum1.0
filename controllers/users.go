@@ -204,35 +204,8 @@ func GetUserPseudo(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, user)
 }
 
-func Change_imagepp(context *gin.Context) {
-
-	id := context.Param("id")
-	user, err := GetUserById(id)
-	if err != nil {
-		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
-		return
-	}
-
-	if err := context.BindJSON(&user); err != nil {
-		return
-	}
-
-	db, err := sql.Open("mysql", env.Sql_db)
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
-
-	if _, err := db.Exec("UPDATE user SET id_imagepp = " + strconv.Itoa(user.Id_imagepp) + "  WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
-		fmt.Println(err)
-	}
-
-	context.IndentedJSON(http.StatusOK, user)
-
-}
-
-// Change_theme permet de changer le thème de l'utilisateur
-func Change_theme(context *gin.Context) {
+// Met à jour le info de l'utilisateur
+func UpdateUser(context *gin.Context) {
 
 	// Récupération de l'ID de l'utilisateur depuis le paramètre de la requête
 	id := context.Param("id")
@@ -243,7 +216,7 @@ func Change_theme(context *gin.Context) {
 		return
 	}
 
-	// Récupération du thème à partir du corps de la requête
+	// Récupération des nouvelles infos à partir du corps de la requête
 	if err := context.BindJSON(&user); err != nil {
 		return
 	}
@@ -255,12 +228,12 @@ func Change_theme(context *gin.Context) {
 	}
 	defer db.Close()
 
-	// Exécution de la requête pour changer le thème de l'utilisateur
-	if _, err := db.Exec("UPDATE user SET theme = '" + user.Theme + "'  WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
+	// Exécution de la requête pour changer les infos de l'utilisateur
+	if _, err := db.Exec("UPDATE user SET pseudo = '" + user.Pseudo + "', email = '" + user.Email + "', passwd ='" + user.Passwd + "', id_imagepp= '" + strconv.Itoa(user.Id_imagepp) + "', theme = '" + user.Theme + "'  WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
 		fmt.Println(err)
 	}
 
-	// Renvoyer l'utilisateur avec le thème modifié
+	// Renvoyer l'utilisateur avec les infos modifié
 	context.IndentedJSON(http.StatusOK, user)
 }
 

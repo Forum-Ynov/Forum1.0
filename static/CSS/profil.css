@@ -10,7 +10,7 @@ body {
 
 .containers {
     border-radius: 5px;
-    width: 70%;
+    width: 60%;
     height: 60vh;
     background-color: var(--couleur_principale);
 }
@@ -49,8 +49,9 @@ body {
 /*------------------------------------------------*/
 .info {
     margin-top: 1%;
-    width: 100%;
+    width: 80%;
     height: 70%;
+    margin-left: 10%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
