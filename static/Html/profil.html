@@ -10,10 +10,33 @@
 </head>
 
 <body>
-    <label class="switch switch_log">
-        <input type="checkbox" name="switch_theme" id="swmode">
-        <span class="slider"></span>
-    </label>
+    <header>
+        <nav class="navbar">
+            <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
+            <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
+            <label class="switch">
+                <input type="checkbox" name="switch_theme" id="swmode">
+                <span class="slider"></span>
+            </label>
+            <button onclick="toggleMenu()" class="burger"></button>
+            <button class="button" id="open_create">Log in</button>
+            <div class="dropdowns">
+                <div id="profil_pseudo"></div>
+                <div class="dropdown">
+                    <button class="button_user_img">
+                        <img src="../../Assets/Images/profil/user.svg" alt="user">
+                        <img src="../../Assets/Images/menu/arrow_down.svg" />
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profil.html"><button class="button_user">profil</button></a>
+                        <button class="button_user">paramètres</button>
+                        <button class="button_user" id="btn_deconenxion">déconnexion</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </nav>
+    </header>
     <div class="containers">
         <div class="top_info">
             <div class="left_top_info"><img src="../../Assets/Images/profil/chat.svg" alt="profil">
@@ -46,6 +69,6 @@
         </div>
     </div>
 </body>
-<script  type="module" src="../../JS/profil.js"></script>
+<script type="module" src="../../JS/profil.js"></script>
 
 </html>
