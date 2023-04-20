@@ -3,6 +3,7 @@ import { Imagepp } from "./pp_class.js";
 
 const profil_pseudo = document.getElementById("profil_pseudo");
 const user_pp = document.getElementById("user_pp");
+const user_pseudo = document.getElementById("user_pseudo");
 const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
 let storageUser = new User("", "", "", "", "", "");
@@ -45,18 +46,34 @@ btn_deconenxion.addEventListener("click", () => {
 function log_In() {
     if (localUser) {
         profil_pseudo.innerHTML = storageUser.pseudo;
+        user_pseudo.innerHTML = storageUser.pseudo;
+        user_pp.src = "../../Assets/Images/profil/homer.svg"
+
+        const ppload = fetch(`http://localhost:8000/apiForum/pp/${storageUser.id_imagepp}`, {
+            method: 'GET',
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then((res) => {
+                if (res.ok) {
+                    res.json().then(data => {
+                        user_pp.src = `../../Assets/Images/profil/${data.image_loc}`
+                    })
+                } else {
+                    console.log("res.ok false")
+                }
+            });
 
 
 
-
-
-        
     }
 }
 
 
 
-user_pp.src = "../../Assets/Images/profil/homer.svg"
+
 
 
 
@@ -94,7 +111,7 @@ update_name.addEventListener('click', event => {
 
     } else {
         update_name.innerHTML = "Modifier le nom"
-        update_name.style.backgroundColor = "var(--couleur_fond)"
+        update_name.style.backgroundColor = "var(--couleur_principale)"
         update_name.style.color = "var(--couleur_secondaire)"
         name_user.disabled = true;
 
@@ -116,7 +133,7 @@ update_mail.addEventListener('click', event => {
 
     } else {
         update_mail.innerHTML = "Modifier le mail"
-        update_mail.style.backgroundColor = "var(--couleur_fond)"
+        update_mail.style.backgroundColor = "var(--couleur_principale)"
         update_mail.style.color = "var(--couleur_secondaire)"
         mail.disabled = true;
     }
@@ -134,7 +151,7 @@ update_mdp.addEventListener('click', event => {
         password.type = "text"
     } else {
         update_mdp.innerHTML = "Modifier le mdp"
-        update_mdp.style.backgroundColor = "var(--couleur_fond)"
+        update_mdp.style.backgroundColor = "var(--couleur_principale)"
         update_mdp.style.color = "var(--couleur_secondaire)"
         password.disabled = true;
         password.type = "password"
