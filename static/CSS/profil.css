@@ -1,11 +1,16 @@
 @import url(../CSS/set.css);
 
+* {
+    transition: 1s;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: var(--couleur_fond);
+
 }
 
 .containers {
@@ -23,6 +28,7 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+
 }
 
 
@@ -55,8 +61,8 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    background: rgb(222, 224, 227);
-    background: radial-gradient(circle, rgba(222, 224, 227, 1) 60%, rgba(222, 224, 227, 0.05) 90%);
+    border-radius: 100px;
+    background: radial-gradient(circle, var(--couleur_fond) 60%, var(--couleur_principale) 90%);
 }
 
 h5 {
