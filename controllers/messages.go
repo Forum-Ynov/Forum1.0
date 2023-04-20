@@ -25,7 +25,7 @@ func GetMessages(context *gin.Context) {
 	defer db.Close()
 
 	// Requête SQL pour récupérer tous les messages
-	rows2, err := db.Query("SELECT * FROM messages ")
+	rows2, err := db.Query("SELECT * FROM messages ORDER BY publi_time DESC")
 	if err != nil {
 		panic(err.Error())
 	}
