@@ -1,6 +1,8 @@
 import { User } from "./user_class.js";
 import { Imagepp } from "./pp_class.js";
 
+const profil_pseudo = document.getElementById("profil_pseudo");
+const user_pp = document.getElementById("user_pp");
 const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
 let storageUser = new User("", "", "", "", "", "");
@@ -24,6 +26,8 @@ if (localUser) {
             break
     }
 
+    log_In()
+
 } else {
     document.location.href = "/static/Html/home.html";
     console.log("to connect")
@@ -36,41 +40,22 @@ btn_deconenxion.addEventListener("click", () => {
     document.location.href = "/static/Html/home.html";
 });
 
-const popup_create = document.querySelector(".popup_create");
-const post_close = document.querySelector(".post_close");
-const profil_pseudo = document.getElementById("profil_pseudo");
 
-
-if (localUser) {
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == popup_create) {
-            popup_create.style.display = "none";
-        }
-    }
-} else {
-    myBtn.onclick = function () {
-        document.location.href = "/static/Html/log_in.html";
-    }
-}
-
-const div_text = document.querySelector(".div_text");
-const div_text_connect = document.querySelector(".div_text_connect");
 
 function log_In() {
     if (localUser) {
-        open_create.style.display = "none";
         profil_pseudo.innerHTML = storageUser.pseudo;
-    } else {
-        display_topics.style.position = 'fixed';
-        open_create.style.display = "block";
+
+
+
+
+
+        
     }
 }
 
-log_In();
 
-const user_pp = document.getElementById("user_pp");
+
 user_pp.src = "../../Assets/Images/profil/homer.svg"
 
 
