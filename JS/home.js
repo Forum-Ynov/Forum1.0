@@ -105,8 +105,6 @@ async function fetch_all() {
                                     data.id_imagepp,
                                     data.theme
                                 );
-                                // console.log(publisher)
-                                // console.log(actual_topic)
 
                                 display_topics.innerHTML += `
                                         <div class="card" id="topics${elt.id_topics}" onclick=openmessage(${elt.id_topics})>
@@ -169,7 +167,6 @@ async function fetch_all() {
 }
 
 export function openmessage(id_topic) {
-    console.log("the topic to open :" + id_topic);
     fetch_by_topics(id_topic);
     fetch_by_topics_messages(id_topic);
     selectedTopic = id_topic
@@ -187,14 +184,11 @@ async function fetch_tags() {
             "Content-type": "application/json; charset=UTF-8",
         },
     }).then((res) => {
-        // console.log(res)
         if (res.ok) {
-            // console.log("res.ok true")
             res.json().then((data) => {
                 data.forEach((elt) => {
                     list_tags.push(new Tags(elt.id_tags, elt.tags));
                 });
-                // console.log(list_tags)
 
                 display_tags.innerHTML += `<h4 class="tag tagsall" id="tagsall"><span class="hover-underline-animation">All Tags</span></h4>`;
                 style_mod.innerHTML += `
@@ -245,118 +239,120 @@ async function fetch_by_tags(tag) {
         }
     ).then((res) => {
         if (res.ok) {
-            res.json().then((data) => {
+            res.json().then((datas) => {
                 display_topics.innerHTML = "";
-                data.forEach((elt) => {
-                    let time = new Date(elt.crea_date)
-                    elt.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
-                    let actual_topic = new Topics(
-                        elt.id_topics,
-                        elt.titre,
-                        elt.description,
-                        elt.crea_date,
-                        elt.id_tags,
-                        elt.id_user
-                    );
-                    list_topics.push(actual_topic);
+                list_topics = []
 
-                    const topicsload = fetch(
-                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
-                        {
-                            method: "GET",
-                            headers: {
-                                Accept: "application/json",
-                                "Content-type": "application/json; charset=UTF-8",
-                            },
-                        }
-                    ).then((res) => {
-                        if (res.ok) {
-                            res.json().then((data) => {
-                                publisher = new User(
-                                    data.id_user,
-                                    data.pseudo,
-                                    data.email,
-                                    data.passwd,
-                                    data.id_imagepp,
-                                    data.theme
-                                );
-                                // console.log(publisher)
-                                // console.log(actual_topic)
+                if (datas.length != 0) {
+                    datas.forEach((elt) => {
+                        let time = new Date(elt.crea_date)
+                        elt.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
+                        let actual_topic = new Topics(
+                            elt.id_topics,
+                            elt.titre,
+                            elt.description,
+                            elt.crea_date,
+                            elt.id_tags,
+                            elt.id_user
+                        );
+                        list_topics.push(actual_topic);
 
-                                let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.id_tags, elt.id_user)
-                                list_topics.push(actual_topic)
-
-                                const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
-                                    method: 'GET',
-                                    headers: {
-                                        "Accept": "application/json",
-                                        "Content-type": "application/json; charset=UTF-8"
-                                    }
-                                })
-                                    .then((res) => {
-                                        if (res.ok) {
-                                            res.json().then(data => {
-                                                publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
-                                                // console.log(publisher)
-                                                // console.log(actual_topic)
-
-                                                display_topics.innerHTML += `
-                                            <div class="card"  id="topics${actual_topic.id_topics}" onclick=openmessage(${actual_topic.id_topics})>
-                                                <div class="top_card">
-                                                    <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
-                                                    <p> &ensp; publié le ${actual_topic.crea_date}</p>
-                                                </div>
-                                                <div class="middle_card">
-                                                    <h3 class="title_topic${actual_topic.id_tags}">${actual_topic.titre}</h3>
-                                                </div>
-                                                <div class="bottom_card">
-                                                    <p>${actual_topic.description}</p>
-                                                </div>
-                                            </div>`;
-
-                                                style_mod.innerHTML += `
-.title_topic${actual_topic.id_tags}::before {
-    content: url(../../Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
-}
-.title_topic${actual_topic.id_tags} {
-    text-align: center;
-}`;
-
-                                                const ppload = fetch(
-                                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
-                                                    {
-                                                        method: "GET",
-                                                        headers: {
-                                                            Accept: "application/json",
-                                                            "Content-type": "application/json; charset=UTF-8",
-                                                        },
-                                                    }
-                                                ).then((res) => {
-                                                    if (res.ok) {
-                                                        res.json().then((data) => {
-                                                            pp_publi = new Imagepp(data.id_pp, data.image_loc);
-
-                                                            style_mod.innerHTML += `
-.user_card${data.id_pp}::before {
-    content: url(../../Assets/Images/profil/${pp_publi.image_loc});
-}`;
-                                                        });
-                                                    } else {
-                                                        console.log("res.ok false");
-                                                    }
-                                                });
-                                            });
-                                        } else {
-                                            console.log("res.ok false");
-                                        }
-                                    });
-                            });
-                            console.log(list_topics);
-                        } else {
-                            console.log("res.ok false");
-                        }
                     });
-                });
+
+                    list_topics.forEach(elt => {
+
+                        const topicsload = fetch(
+                            `http://localhost:8000/apiForum/users/${elt.id_user}`,
+                            {
+                                method: "GET",
+                                headers: {
+                                    Accept: "application/json",
+                                    "Content-type": "application/json; charset=UTF-8",
+                                },
+                            }
+                        ).then((res) => {
+                            if (res.ok) {
+                                res.json().then((data) => {
+                                    publisher = new User(
+                                        data.id_user,
+                                        data.pseudo,
+                                        data.email,
+                                        data.passwd,
+                                        data.id_imagepp,
+                                        data.theme
+                                    );
+
+                                    const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
+                                        method: 'GET',
+                                        headers: {
+                                            "Accept": "application/json",
+                                            "Content-type": "application/json; charset=UTF-8"
+                                        }
+                                    })
+                                        .then((res) => {
+                                            if (res.ok) {
+                                                res.json().then(data => {
+                                                    publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
+
+                                                    display_topics.innerHTML += `
+                                        <div class="card"  id="topics${elt.id_topics}" onclick=openmessage(${elt.id_topics})>
+                                            <div class="top_card">
+                                                <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
+                                                <p> &ensp; publié le ${elt.crea_date}</p>
+                                            </div>
+                                            <div class="middle_card">
+                                                <h3 class="title_topic${elt.id_tags}">${elt.titre}</h3>
+                                            </div>
+                                            <div class="bottom_card">
+                                                <p>${elt.description}</p>
+                                            </div>
+                                        </div>`;
+
+                                                    style_mod.innerHTML += `
+.title_topic${elt.id_tags}::before {
+content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
+}
+.title_topic${elt.id_tags} {
+text-align: center;
+}`;
+
+                                                    const ppload = fetch(
+                                                        `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
+                                                        {
+                                                            method: "GET",
+                                                            headers: {
+                                                                Accept: "application/json",
+                                                                "Content-type": "application/json; charset=UTF-8",
+                                                            },
+                                                        }
+                                                    ).then((res) => {
+                                                        if (res.ok) {
+                                                            res.json().then((data) => {
+                                                                pp_publi = new Imagepp(data.id_pp, data.image_loc);
+
+                                                                style_mod.innerHTML += `
+.user_card${data.id_pp}::before {
+content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+}`;
+                                                            });
+                                                        } else {
+                                                            console.log("res.ok false");
+                                                        }
+                                                    });
+                                                });
+                                            } else {
+                                                console.log("res.ok false");
+                                            }
+                                        });
+                                });
+                            } else {
+                                console.log("res.ok false");
+                            }
+                        });
+                    })
+                }else{
+                    display_topics.innerHTML += `<h3>Aucun topic trouvé</h3>`
+                }                
             });
         } else {
             console.log("res.ok false");
@@ -410,8 +406,6 @@ async function fetch_by_topics(id_topics) {
                                 data.id_imagepp,
                                 data.theme
                             );
-                            // console.log(publisher)
-                            // console.log(actual_topic)
                             left_container.innerHTML = "";
                             left_container.innerHTML += `
                     <div class="post">
@@ -466,8 +460,6 @@ async function fetch_by_topics(id_topics) {
                         console.log("res.ok false");
                     }
                 });
-
-                console.log(actual_topic);
             });
         } else {
             console.log("res.ok false");
@@ -490,9 +482,9 @@ async function fetch_by_topics_messages(id_topics) {
     ).then((res) => {
         if (res.ok) {
             res.json().then((data) => {
+                comment_container.innerHTML = "";
+                list_messages = []
                 if (data) {
-                    comment_container.innerHTML = "";
-                    list_messages = []
                     data.forEach((elt) => {
                         let time = new Date(elt.publi_time)
                         elt.publi_time = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
@@ -508,7 +500,7 @@ async function fetch_by_topics_messages(id_topics) {
 
                     });
                 } else {
-                    console.log("Erreur : pas de données renvoyées par la requête.");
+                    comment_container.innerHTML += `<h3>Aucun message trouvé</h3>`
                 }
 
                 list_messages.forEach(elt => {
@@ -533,8 +525,6 @@ async function fetch_by_topics_messages(id_topics) {
                                     data.id_imagepp,
                                     data.theme
                                 );
-                                // console.log(publisher)
-                                // console.log(actual_topic)
 
                                 comment_container.innerHTML += `
                                 <div class="comment_user">
@@ -624,7 +614,6 @@ async function post_tag() {
     })
         .then((response) => response.json())
         .then((data) => {
-            // console.log(data);
             data.forEach((tag) => {
                 const option = document.createElement("option");
                 option.value = tag.id_tags;
