@@ -55,15 +55,15 @@ func main() {
 	router.GET("/"+apiName+"/topics", controllers.GetTopics)
 	router.GET("/"+apiName+"/topics/:id", controllers.GetTopic)
 	router.GET("/"+apiName+"/topicstags/:id_tags", controllers.GetTopicsByTags)
-	router.POST("/"+apiName+"/addtopic", controllers.AddTopic)
+	router.POST("/"+apiName+"/topics", controllers.AddTopic)
 
 	// Routes pour les opérations sur les messages
 	router.GET("/"+apiName+"/messages", controllers.GetMessages)
 	router.GET("/"+apiName+"/messages/:id", controllers.GetMessage)
 	router.GET("/"+apiName+"/messagestopics/:id_topics", controllers.GetMessagesByTopics)
-	router.PATCH("/"+apiName+"/message/:id", controllers.ChangeMessage)
-	router.POST("/"+apiName+"/addmessage", controllers.AddMessage)
-	router.DELETE("/"+apiName+"/deletemessage/:id", controllers.DeleteMessage)
+	router.PATCH("/"+apiName+"/messages/:id", controllers.ChangeMessage)
+	router.POST("/"+apiName+"/messages", controllers.AddMessage)
+	router.DELETE("/"+apiName+"/messages/:id", controllers.DeleteMessage)
 
 	// Créer un handler avec CORS middleware et le router
 	handler := c.Handler(router)
