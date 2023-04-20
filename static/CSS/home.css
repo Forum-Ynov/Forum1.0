@@ -311,9 +311,6 @@ input {
 /*?------------debut sidebar----------*/
 
 
-
-
-
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -328,6 +325,13 @@ input {
     border-top: 1px solid rgba(217, 217, 217, 0.4);
     height: calc(100% - 60px);
     transition: background 1.0s ease, color 1.0s ease;
+}
+
+
+@media screen and (max-width:800px) {
+    .sidebar {
+        display: none;
+    }
 }
 
 .div_tags {
@@ -430,13 +434,6 @@ hr {
     text-align: center;
 }
 
-@media screen and (width < 500px) {
-    .sidebar {
-        display: none;
-    }
-
-
-}
 
 /*!------------fin sidebar----------*/
 
@@ -445,21 +442,23 @@ hr {
 /*?------------debut contenu----------*/
 
 
-@media screen and (width > 500px) {
+@media screen and (width > 800px) {
     .content {
-        margin: 3% 3% 3% calc(340px + 3%);
+        margin: 8% 3% 3% calc(340px + 3%);
+    }
+}
+
+@media screen and (width < 800px) {
+    .content {
+        margin: 15% 5% 5% 5%;
     }
 }
 
 .content {
-    margin-top: 7%;
     display: flex;
     flex-wrap: wrap;
     gap: calc(1vw + 5px);
-    /* grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;*/
+
 }
 
 
@@ -472,7 +471,7 @@ hr {
 }
 
 
-@media screen and (width > 500px) {
+@media screen and (width > 800px) {
     .card {
         max-width: 450px;
     }
