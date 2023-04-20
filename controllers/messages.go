@@ -25,7 +25,7 @@ func GetMessages(context *gin.Context) {
 	defer db.Close()
 
 	// Requête SQL pour récupérer tous les messages
-	rows2, err := db.Query("SELECT * FROM messages ")
+	rows2, err := db.Query("SELECT * FROM messages ORDER BY publi_time DESC")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -202,25 +202,6 @@ func AddMessage(context *gin.Context) {
 		panic(err)
 	}
 	defer db.Close()
-
-	// Vérification si le message existe déjà dans la base de données
-	rowsMess, err := db.Query("SELECT * FROM messages WHERE message = '" + newMessage.Message + "'")
-	if err != nil {
-		// Si la requête échoue, renvoyer une erreur
-		panic(err.Error())
-	}
-
-	defer rowsMess.Close()
-
-	var Message_Mess models.Messages
-	for rowsMess.Next() {
-		// Si un message est trouvé avec le même contenu, renvoyer une réponse indiquant qu'il est déjà utilisé
-		err = rowsMess.Scan(&Message_Mess.Id_message, &Message_Mess.Message, &Message_Mess.Id_user, &Message_Mess.Publi_time, &Message_Mess.Id_topics)
-		if err != nil {
-			println(errors.New("Messages not found"))
-		}
-
-	}
 
 	// Obtention de l'heure actuelle pour le moment de la publication du message
 	currentTime := time.Now()

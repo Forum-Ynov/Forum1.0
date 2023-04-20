@@ -24,7 +24,7 @@ func GetTopics(context *gin.Context) {
 	defer db.Close() // Ferme la connexion à la base de données à la fin de la fonction
 
 	// Préparation de la requête SQL
-	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics")
+	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics ORDER BY crea_date DESC")
 	if err != nil {
 		panic(err.Error())
 	}

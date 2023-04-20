@@ -87,11 +87,11 @@ async function fetch_all() {
                                 if (res.ok) {
                                     res.json().then(data => {
                                         publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
-                                        console.log(publisher)
-                                        console.log(actual_topic)
+                                        // console.log(publisher)
+                                        // console.log(actual_topic)
 
                                         display_topics.innerHTML += `
-                                            <div class="card">
+                                            <div class="card" id="topics${actual_topic.id_topics}" onclick=openmessage(${actual_topic.id_topics})>
                                                 <div class="top_card">
                                                     <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
                                                     <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
@@ -129,7 +129,6 @@ async function fetch_all() {
     content: url(../../Assets/Images/profil/${pp_publi.image_loc});
 }`
 
-
                                                     })
                                                 } else {
                                                     console.log("res.ok false")
@@ -137,20 +136,40 @@ async function fetch_all() {
                                             });
 
                                     })
+
+
+
                                 } else {
                                     console.log("res.ok false")
                                 }
                             });
 
+                        // list_topics.forEach(elt => {
+                        //     // document.getElementById(`topics${elt.id_topics}`).onclick = function () {
+                        //     //     console.log("TEST OK")
+                        //     // }
+
+                        //     console.log(document.getElementById(`topics${elt.id_topics}`))
+                        // })
 
                     });
-                    console.log(list_topics)
+                    // console.log(list_topics)
 
                 })
+
             } else {
                 console.log("res.ok false")
             }
+
+
         });
+
+}
+
+export function openmessage(id_topic) {
+    console.log("the topic to open :" + id_topic)
+    favDialog.style.display = 'block'
+    display_topics.style.position = 'fixed';
 }
 
 
@@ -164,14 +183,14 @@ async function fetch_tags() {
         }
     })
         .then((res) => {
-            console.log(res)
+            // console.log(res)
             if (res.ok) {
-                console.log("res.ok true")
+                // console.log("res.ok true")
                 res.json().then(data => {
                     data.forEach(elt => {
                         list_tags.push(new Tags(elt.id_tags, elt.tags))
                     });
-                    console.log(list_tags)
+                    // console.log(list_tags)
 
                     display_tags.innerHTML += `<h4 class="tag tagsall" id="tagsall"><span class="hover-underline-animation">All Tags</span></h4>`
                     style_mod.innerHTML += `
@@ -243,8 +262,8 @@ async function fetch_by_tags(tag) {
                                 if (res.ok) {
                                     res.json().then(data => {
                                         publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
-                                        console.log(publisher)
-                                        console.log(actual_topic)
+                                        // console.log(publisher)
+                                        // console.log(actual_topic)
 
                                         display_topics.innerHTML += `
                                             <div class="card">
@@ -320,24 +339,24 @@ async function fetch_by_topics() {
 const tagDropdown = document.getElementById("tag-dropdown");
 
 async function post_tag() {
-  const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      data.forEach((tag) => {
-        const option = document.createElement("option");
-        option.value = tag.id_tags;
-        option.text = tag.tags;
-        tagDropdown.appendChild(option);
-      });
+    const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-type": "application/json; charset=UTF-8",
+        },
     })
-    .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((data) => {
+            // console.log(data);
+            data.forEach((tag) => {
+                const option = document.createElement("option");
+                option.value = tag.id_tags;
+                option.text = tag.tags;
+                tagDropdown.appendChild(option);
+            });
+        })
+        .catch((error) => console.error(error));
 }
 
 post_tag();
@@ -354,20 +373,28 @@ form.addEventListener("submit", async (event) => {
     const description = document.getElementById("post-description").value;
     const selectedTag = tagDropdown.value;
 
-  const response = await fetch("http://localhost:8000/apiForum/addtopic", {
-    method: "POST",
-    headers: {
-        "Accept": "application/json",
-      "Content-Type": "application/json; charset=UTF-8"
-    },
-    body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: userId  })
-  });
+    if (selectedTag == "") {
+        statusMessage.textContent = "Choisissez un tag";
+        return
+    }
+
+    const response = await fetch("http://localhost:8000/apiForum/addtopic", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: userId })
+    });
 
     if (response.ok) {
         statusMessage.textContent = `Message ajouté avec succès`;
     } else {
         statusMessage.textContent = "Erreur lors de l'ajout du message";
     }
+    setTimeout(function () {
+        popup_create.style.display = "none";
+    }, 3000)
 });
 
 const myBtn = document.getElementById("myBtn");
@@ -376,29 +403,30 @@ const post_close = document.querySelector(".post_close");
 const profil_pseudo = document.getElementById("profil_pseudo");
 
 
-myBtn.addEventListener("click", function () {
+if (localUser) {
+    // When the user clicks on the button, open the modal
+    myBtn.onclick = function () {
+        popup_create.style.display = "block";
+        display_topics.style.position = 'fixed';
+    }
 
-    if (localUser) {
-        // When the user clicks on the button, open the modal
-        myBtn.onclick = function () {
-            popup_create.style.display = "block";
-        }
+    // When the user clicks on <span> (x), close the modal
+    post_close.onclick = function () {
+        popup_create.style.display = "none";
+        display_topics.style.position = 'inherit';
+    }
 
-        // When the user clicks on <span> (x), close the modal
-        post_close.onclick = function () {
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == popup_create) {
             popup_create.style.display = "none";
         }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == popup_create) {
-                popup_create.style.display = "none";
-            }
-        }
-    } else {
+    }
+} else {
+    myBtn.onclick = function () {
         document.location.href = "/static/Html/log_in.html";
     }
-});
+}
 
 const div_text = document.querySelector(".div_text");
 const div_text_connect = document.querySelector(".div_text_connect");
@@ -409,7 +437,9 @@ function log_In() {
         div_text.style.display = "none";
         div_text_connect.style.display = "block";
         profil_pseudo.innerHTML = storageUser.pseudo;
+        display_topics.style.position = 'inherit';
     } else {
+        display_topics.style.position = 'fixed';
         open_create.style.display = "block";
         div_text.style.display = "block";
         div_text_connect.style.display = "none";
