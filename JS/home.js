@@ -474,6 +474,7 @@ async function fetch_by_topics(id_topics) {
 const comment_container = document.getElementById("comment_container");
 
 async function fetch_by_topics_messages(id_topics) {
+    comment_container.innerHTML = "";
     const messagesload = await fetch(
         `http://localhost:8000/apiForum/messagestopics/${id_topics}`,
         {
@@ -486,7 +487,6 @@ async function fetch_by_topics_messages(id_topics) {
     ).then((res) => {
         if (res.ok) {
             res.json().then((data) => {
-                comment_container.innerHTML = "";
                 if (data) {
                     data.forEach((elt) => {
                         let actual_message = new Messages(
@@ -584,18 +584,24 @@ async function post_message(id_topics) {
         const userId = storageUser.id_user;
         const topics = id_topics;
 
-        const response = await fetch("http://localhost:8000/apiForum/messages", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json; charset=UTF-8",
-            },
-            body: JSON.stringify({
-                message: message,
-                id_topics: parseInt(topics),
-                id_user: userId,
-            }),
-        });
+        if (document.getElementById("comment").value != "") {
+
+            const response = await fetch("http://localhost:8000/apiForum/messages", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json; charset=UTF-8",
+                },
+                body: JSON.stringify({
+                    message: message,
+                    id_topics: parseInt(topics),
+                    id_user: userId,
+                }),
+            })
+            setTimeout(function () {
+                fetch_by_topics_messages(id_topics)
+            },500)
+        }
     });
 }
 
@@ -717,12 +723,6 @@ open_create.addEventListener("click", function () {
 //pop-up commentaire
 const close_pop = document.getElementById("close_pop");
 const favDialog = document.getElementById("favDialog");
-const openpopup = document.getElementById("openpopup");
-
-openpopup.addEventListener("click", function () {
-    favDialog.style.display = "block";
-    display_topics.style.position = "fixed";
-});
 
 close_pop.addEventListener("click", function () {
     favDialog.style.display = "none";
