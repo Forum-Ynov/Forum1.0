@@ -70,6 +70,8 @@ function log_In() {
 
 log_In();
 
+const user_pp = document.getElementById("user_pp");
+user_pp.src = "../../Assets/Images/profil/homer.svg"
 
 
 
