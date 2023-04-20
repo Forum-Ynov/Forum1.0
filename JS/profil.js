@@ -107,7 +107,7 @@ update_name.addEventListener('click', event => {
 
     } else {
         update_name.innerHTML = "Modifier le nom"
-        update_name.style.backgroundColor = "var(--couleur_principale)"
+        update_name.style.backgroundColor = "var(--couleur_fond)"
         update_name.style.color = "var(--couleur_secondaire)"
         name_user.disabled = true;
 
@@ -129,7 +129,7 @@ update_mail.addEventListener('click', event => {
 
     } else {
         update_mail.innerHTML = "Modifier le mail"
-        update_mail.style.backgroundColor = "var(--couleur_principale)"
+        update_mail.style.backgroundColor = "var(--couleur_fond)"
         update_mail.style.color = "var(--couleur_secondaire)"
         mail.disabled = true;
     }
@@ -147,7 +147,7 @@ update_mdp.addEventListener('click', event => {
         password.type = "text"
     } else {
         update_mdp.innerHTML = "Modifier le mdp"
-        update_mdp.style.backgroundColor = "var(--couleur_principale)"
+        update_mdp.style.backgroundColor = "var(--couleur_fond)"
         update_mdp.style.color = "var(--couleur_secondaire)"
         password.disabled = true;
         password.type = "password"

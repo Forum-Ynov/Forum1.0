@@ -22,6 +22,12 @@ body {
     background-color: var(--couleur_principale);
 }
 
+@media screen and (max-width:1000px) {
+    .containers {
+        width: 90%;
+        margin-left: 5%;
+    }
+}
 
 .top_info {
     width: 100%;
@@ -63,8 +69,15 @@ body {
     display: flex;
     flex-direction: row;
     border-radius: 125px;
-    justify-content: space-around;
+    justify-content: space-between;
     /* background: radial-gradient(circle, var(--couleur_fond) 40%, var(--couleur_principale) 80%); */
+}
+
+@media screen and (max-width:1000px) {
+    .info {
+        width: 90%;
+        margin-left: 5%;
+    }
 }
 
 h5 {
@@ -81,6 +94,7 @@ h5 {
 }
 
 input {
+    width: 150px;
     margin: 2% 0 0 2%;
     border-radius: 10px;
     background-color: var(--couleur_fond);
@@ -91,16 +105,25 @@ input {
 .name_info {
     width: 50%;
     height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .mail_info {
     width: 50%;
     height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .mdp_info {
     width: 50%;
     height: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .right_col_info {
@@ -122,11 +145,11 @@ input {
 }
 
 
-.button_simple_update:hover {
+/* .button_simple_update:hover {
     border: none;
     background-color: var(--couleur_secondaire);
     color: var(--couleur_principale);
-}
+} */
 
 .btn_name_info {
     width: 50%;
