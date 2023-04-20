@@ -1,3 +1,5 @@
+import { User } from "./user_class.js"
+
 const update_name = document.getElementById('update_name')
 const update_mail = document.getElementById('update_mail')
 const update_mdp = document.getElementById('update_mdp')
@@ -70,3 +72,29 @@ update_mdp.addEventListener('click', event => {
 
 
 
+const swmode = document.getElementById("swmode")
+const localUser = localStorage.getItem("loged_user")?.toString()
+let storageUser = new User("", "", "", "", "", "");
+
+
+if (localUser) {
+    console.log("auto connect")
+    storageUser = JSON.parse(localUser)
+    console.log(storageUser)
+
+    switch (storageUser.theme) {
+        case ("dark"):
+            document.querySelector('body').setAttribute('data-theme', 'dark');
+            console.log("default dark")
+            swmode.checked = true
+            break
+        case ("light"):
+            document.querySelector('body').setAttribute('data-theme', 'light');
+            console.log("default light")
+            swmode.checked = false
+            break
+    }
+
+} else {
+    console.log("to connect")
+}
