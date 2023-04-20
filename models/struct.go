@@ -28,21 +28,19 @@ type Tags struct {
 
 // Topics représente un topic
 type Topics struct {
-	Id_topics        int       `json:"id_topics"`
-	Titre            string    `json:"titre"`
-	Description      string    `json:"description"`
-	Crea_date        time.Time `json:"crea_date"`
-	Format_crea_date string    `json:"format_crea_date"`
-	Id_tags          int       `json:"id_tags"`
-	Id_user          int       `json:"id_user"`
+	Id_topics   int       `json:"id_topics"`
+	Titre       string    `json:"titre"`
+	Description string    `json:"description"`
+	Crea_date   time.Time `json:"crea_date"`
+	Id_tags     int       `json:"id_tags"`
+	Id_user     int       `json:"id_user"`
 }
 
 // Messages représente un message
 type Messages struct {
-	Id_message        int       `json:"id_message"`
-	Message           string    `json:"message"`
-	Id_user           int       `json:"id_user"`
-	Publi_time        time.Time `json:"publi_time"`
-	Format_publi_time string    `json:"format_publi_time"`
-	Id_topics         int       `json:"id_topics"`
+	Id_message int       `json:"id_message"`
+	Message    string    `json:"message"`
+	Id_user    int       `json:"id_user"`
+	Publi_time time.Time `json:"publi_time"`
+	Id_topics  int       `json:"id_topics"`
 }

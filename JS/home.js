@@ -12,6 +12,7 @@ class Cards {
     }
 }
 
+const CreateMessage = document.getElementById("CreateMessage");
 const swmode = document.getElementById("swmode");
 const localUser = localStorage.getItem("loged_user")?.toString();
 let storageUser = new User("", "", "", "", "", "");
@@ -35,6 +36,7 @@ if (localUser) {
     }
 } else {
     console.log("to connect");
+    CreateMessage.style.display = "none"
 }
 
 const btn_deconenxion = document.getElementById("btn_deconenxion");
@@ -65,19 +67,25 @@ async function fetch_all() {
         if (res.ok) {
             res.json().then((data) => {
                 display_topics.innerHTML = "";
+                list_topics = []
                 data.forEach((elt) => {
+                    let time = new Date(elt.crea_date)
+                    elt.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
                     let actual_topic = new Topics(
                         elt.id_topics,
                         elt.titre,
                         elt.description,
                         elt.crea_date,
-                        elt.format_crea_date,
                         elt.id_tags,
                         elt.id_user
                     );
                     list_topics.push(actual_topic);
 
-                    const topicsload = fetch(
+                });
+
+                list_topics.forEach(elt => {
+
+                    const topicsuserload = fetch(
                         `http://localhost:8000/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
@@ -101,26 +109,26 @@ async function fetch_all() {
                                 // console.log(actual_topic)
 
                                 display_topics.innerHTML += `
-                                            <div class="card" id="topics${actual_topic.id_topics}" onclick=openmessage(${actual_topic.id_topics})>
-                                                <div class="top_card">
-                                                    <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
-                                                    <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
-                                                </div>
-                                                <div class="middle_card">
-                                                    <h3 class="title_topic${actual_topic.id_tags}">${actual_topic.titre}</h3>
-                                                </div>
-                                                <div class="bottom_card">
-                                                    <p>${actual_topic.description}</p>
-                                                </div>
-                                            </div>`;
+                                        <div class="card" id="topics${elt.id_topics}" onclick=openmessage(${elt.id_topics})>
+                                            <div class="top_card">
+                                                <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
+                                                <p> &ensp; publié le ${elt.crea_date}</p>
+                                            </div>
+                                            <div class="middle_card">
+                                                <h3 class="title_topic${elt.id_tags}">${elt.titre}</h3>
+                                            </div>
+                                            <div class="bottom_card">
+                                                <p>${elt.description}</p>
+                                            </div>
+                                        </div>`;
 
                                 style_mod.innerHTML += `
-.title_topic${actual_topic.id_tags}::before {
-    content: url(../../Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
-}
-.title_topic${actual_topic.id_tags} {
-    text-align: center;
-}`;
+            .title_topic${elt.id_tags}::before {
+            content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
+            }
+            .title_topic${elt.id_tags} {
+            text-align: center;
+            }`;
 
                                 const ppload = fetch(
                                     `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
@@ -137,9 +145,9 @@ async function fetch_all() {
                                             pp_publi = new Imagepp(data.id_pp, data.image_loc);
 
                                             style_mod.innerHTML += `
-.user_card${data.id_pp}::before {
-    content: url(../../Assets/Images/profil/${pp_publi.image_loc});
-}`;
+            .user_card${data.id_pp}::before {
+            content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+            }`;
                                         });
                                     } else {
                                         console.log("res.ok false");
@@ -150,16 +158,9 @@ async function fetch_all() {
                             console.log("res.ok false");
                         }
                     });
+                })
 
-                    // list_topics.forEach(elt => {
-                    //     // document.getElementById(`topics${elt.id_topics}`).onclick = function () {
-                    //     //     console.log("TEST OK")
-                    //     // }
 
-                    //     console.log(document.getElementById(`topics${elt.id_topics}`))
-                    // })
-                });
-                // console.log(list_topics)
             });
         } else {
             console.log("res.ok false");
@@ -171,10 +172,12 @@ export function openmessage(id_topic) {
     console.log("the topic to open :" + id_topic);
     fetch_by_topics(id_topic);
     fetch_by_topics_messages(id_topic);
-    post_message(id_topic);
+    selectedTopic = id_topic
     favDialog.style.display = "block";
     display_topics.style.position = "fixed";
 }
+
+let selectedTopic = 0;
 
 async function fetch_tags() {
     const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
@@ -245,12 +248,13 @@ async function fetch_by_tags(tag) {
             res.json().then((data) => {
                 display_topics.innerHTML = "";
                 data.forEach((elt) => {
+                    let time = new Date(elt.crea_date)
+                    elt.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
                     let actual_topic = new Topics(
                         elt.id_topics,
                         elt.titre,
                         elt.description,
                         elt.crea_date,
-                        elt.format_crea_date,
                         elt.id_tags,
                         elt.id_user
                     );
@@ -279,7 +283,7 @@ async function fetch_by_tags(tag) {
                                 // console.log(publisher)
                                 // console.log(actual_topic)
 
-                                let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
+                                let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.id_tags, elt.id_user)
                                 list_topics.push(actual_topic)
 
                                 const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
@@ -300,7 +304,7 @@ async function fetch_by_tags(tag) {
                                             <div class="card"  id="topics${actual_topic.id_topics}" onclick=openmessage(${actual_topic.id_topics})>
                                                 <div class="top_card">
                                                     <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
-                                                    <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
+                                                    <p> &ensp; publié le ${actual_topic.crea_date}</p>
                                                 </div>
                                                 <div class="middle_card">
                                                     <h3 class="title_topic${actual_topic.id_tags}">${actual_topic.titre}</h3>
@@ -375,13 +379,13 @@ async function fetch_by_topics(id_topics) {
     ).then((res) => {
         if (res.ok) {
             res.json().then((data) => {
-                left_container.innerHTML = "";
+                let time = new Date(data.crea_date)
+                data.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
                 let actual_topic = new Topics(
                     data.id_topics,
                     data.titre,
                     data.description,
                     data.crea_date,
-                    data.format_crea_date,
                     data.id_tags,
                     data.id_user
                 );
@@ -408,13 +412,13 @@ async function fetch_by_topics(id_topics) {
                             );
                             // console.log(publisher)
                             // console.log(actual_topic)
-
+                            left_container.innerHTML = "";
                             left_container.innerHTML += `
                     <div class="post">
                         <div class="top_post">
                                 <div class="info-top_post">
                                     <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
-                                    <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
+                                    <p> &ensp; publié le ${actual_topic.crea_date}</p>
                                 </div>
                             </div>
                             <div class="title_post">
@@ -474,7 +478,6 @@ async function fetch_by_topics(id_topics) {
 const comment_container = document.getElementById("comment_container");
 
 async function fetch_by_topics_messages(id_topics) {
-    comment_container.innerHTML = "";
     const messagesload = await fetch(
         `http://localhost:8000/apiForum/messagestopics/${id_topics}`,
         {
@@ -488,122 +491,126 @@ async function fetch_by_topics_messages(id_topics) {
         if (res.ok) {
             res.json().then((data) => {
                 if (data) {
+                    comment_container.innerHTML = "";
+                    list_messages = []
                     data.forEach((elt) => {
+                        let time = new Date(elt.publi_time)
+                        elt.publi_time = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
+
                         let actual_message = new Messages(
                             elt.id_message,
                             elt.message,
                             elt.id_user,
                             elt.publi_time,
-                            elt.format_publi_time,
                             elt.id_topics
                         );
                         list_messages.push(actual_message);
 
-                        const userload = fetch(
-                            `http://localhost:8000/apiForum/users/${elt.id_user}`,
-                            {
-                                method: "GET",
-                                headers: {
-                                    Accept: "application/json",
-                                    "Content-type": "application/json; charset=UTF-8",
-                                },
-                            }
-                        ).then((res) => {
-                            if (res.ok) {
-                                res.json().then((data) => {
-                                    let publisher = new User(
-                                        data.id_user,
-                                        data.pseudo,
-                                        data.email,
-                                        data.passwd,
-                                        data.id_imagepp,
-                                        data.theme
-                                    );
-                                    // console.log(publisher)
-                                    // console.log(actual_topic)
-
-                                    comment_container.innerHTML += `
-                                        <div class="comment_user">
-                                            <div class="comment_user_name">
-                                                <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
-                                                <p> &ensp; publié le ${actual_message.publi_time}</p>
-                                            </div>
-                                            <div class="comment_user_text">
-                                                <p>${actual_message.message}</p>
-                                            </div>
-                                        </div>`;
-
-                                    const ppload = fetch(
-                                        `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
-                                        {
-                                            method: "GET",
-                                            headers: {
-                                                Accept: "application/json",
-                                                "Content-type": "application/json; charset=UTF-8",
-                                            },
-                                        }
-                                    ).then((res) => {
-                                        if (res.ok) {
-                                            res.json().then((data) => {
-                                                let pp_publi = new Imagepp(data.id_pp, data.image_loc);
-
-                                                style_mod.innerHTML += `
-                          .user_card${data.id_pp}::before {
-                            content: url(../../Assets/Images/profil/${pp_publi.image_loc});
-                          }`;
-                                            });
-                                        } else {
-                                            console.log("res.ok false");
-                                        }
-                                    });
-                                });
-                            } else {
-                                console.log("res.ok false");
-                            }
-                        });
                     });
                 } else {
                     console.log("Erreur : pas de données renvoyées par la requête.");
                 }
-                console.log(list_messages);
+
+                list_messages.forEach(elt => {
+
+                    const userload = fetch(
+                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-type": "application/json; charset=UTF-8",
+                            },
+                        }
+                    ).then((res) => {
+                        if (res.ok) {
+                            res.json().then((data) => {
+                                let publisher = new User(
+                                    data.id_user,
+                                    data.pseudo,
+                                    data.email,
+                                    data.passwd,
+                                    data.id_imagepp,
+                                    data.theme
+                                );
+                                // console.log(publisher)
+                                // console.log(actual_topic)
+
+                                comment_container.innerHTML += `
+                                <div class="comment_user">
+                                    <div class="comment_user_name">
+                                        <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
+                                        <p> &ensp; publié le ${elt.publi_time}</p>
+                                    </div>
+                                    <div class="comment_user_text">
+                                        <p>${elt.message}</p>
+                                    </div>
+                                </div>`;
+
+                                const ppload = fetch(
+                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
+                                    {
+                                        method: "GET",
+                                        headers: {
+                                            Accept: "application/json",
+                                            "Content-type": "application/json; charset=UTF-8",
+                                        },
+                                    }
+                                ).then((res) => {
+                                    if (res.ok) {
+                                        res.json().then((data) => {
+                                            let pp_publi = new Imagepp(data.id_pp, data.image_loc);
+
+                                            style_mod.innerHTML += `
+                  .user_card${data.id_pp}::before {
+                    content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+                  }`;
+                                        });
+                                    } else {
+                                        console.log("res.ok false");
+                                    }
+                                });
+                            });
+                        } else {
+                            console.log("res.ok false");
+                        }
+                    });
+                })
+
             });
         } else {
             console.log("res.ok false");
         }
     });
-    comment_container.innerHTML = ""
 }
 
-const CreateMessage = document.getElementById("CreateMessage");
+CreateMessage.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-async function post_message(id_topics) {
-    CreateMessage.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    const message = document.getElementById("comment").value;
+    const userId = storageUser.id_user;
+    const topics = selectedTopic;
 
-        const message = document.getElementById("comment").value;
-        const userId = storageUser.id_user;
-        const topics = id_topics;
+    if (document.getElementById("comment").value != "") {
 
-        if (document.getElementById("comment").value != "") {
+        const response = await fetch("http://localhost:8000/apiForum/messages", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: JSON.stringify({
+                message: message,
+                id_topics: parseInt(topics),
+                id_user: userId,
+            }),
+        })
+        setTimeout(function () {
+            fetch_by_topics_messages(selectedTopic)
+        }, 500)
+    }
+});
 
-            const response = await fetch("http://localhost:8000/apiForum/messages", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json; charset=UTF-8",
-                },
-                body: JSON.stringify({
-                    message: message,
-                    id_topics: parseInt(topics),
-                    id_user: userId,
-                }),
-            })
-            setTimeout(function () {
-                fetch_by_topics_messages(id_topics)
-            },500)
-        }
-    });
-}
 
 const tagDropdown = document.getElementById("tag-dropdown");
 
@@ -657,13 +664,13 @@ form.addEventListener("submit", async (event) => {
 
     if (response.ok) {
         statusMessage.textContent = `Message ajouté avec succès`;
+        setTimeout(function () {
+            popup_create.style.display = "none";
+            fetch_by_tags(selectedTag)
+        }, 2000)
     } else {
         statusMessage.textContent = "Erreur lors de l'ajout du message";
     }
-    setTimeout(function () {
-        popup_create.style.display = "none";
-        fetch_by_tags(selectedTag)
-    }, 2000)
 });
 
 const myBtn = document.getElementById("myBtn");
