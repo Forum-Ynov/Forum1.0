@@ -444,22 +444,24 @@ hr {
 
 /*?------------debut contenu----------*/
 
-
-@media screen and (width > 500px) {
-    .content {
-        margin: 3% 3% 3% calc(340px + 3%);
-    }
-}
-
 .content {
-    margin-top: 7%;
+    margin-top: 6vh;    
+    margin-right: 3vW;
+    margin-left: calc(270px + 3vw);
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: calc(1vw + 5px);
     /* grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 20px;
     grid-row-gap: 20px;*/
+}
+
+@media screen and (width < 500px) {
+    .content {
+        margin-left: 3vW;
+    }
 }
 
 
