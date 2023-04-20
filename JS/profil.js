@@ -73,28 +73,59 @@ update_mdp.addEventListener('click', event => {
 
 
 const swmode = document.getElementById("swmode")
-const localUser = localStorage.getItem("loged_user")?.toString()
-let storageUser = new User("", "", "", "", "", "");
+const body = document.querySelector('body');
 
 
-if (localUser) {
-    console.log("auto connect")
-    storageUser = JSON.parse(localUser)
-    console.log(storageUser)
+swmode.onclick = async function switch_theme() {
+    if (swmode.checked) {
+        console.log("dark");
+        body.setAttribute('data-theme', 'dark');
 
-    switch (storageUser.theme) {
-        case ("dark"):
-            document.querySelector('body').setAttribute('data-theme', 'dark');
-            console.log("default dark")
-            swmode.checked = true
-            break
-        case ("light"):
-            document.querySelector('body').setAttribute('data-theme', 'light');
-            console.log("default light")
-            swmode.checked = false
-            break
+        const localUser = localStorage.getItem("loged_user")?.toString()
+        let storageUser = new User("", "", "", "", "", "");
+
+        if (localUser) {
+            storageUser = JSON.parse(localUser)
+            console.log(storageUser)
+
+            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ theme: "dark" })
+            })
+            storageUser.theme = "dark"
+            localStorage.setItem("loged_user", JSON.stringify(storageUser))
+
+        }
+
     }
+    else {
+        console.log("light");
+        body.setAttribute('data-theme', 'light');
 
-} else {
-    console.log("to connect")
+        const localUser = localStorage.getItem("loged_user")?.toString()
+        let storageUser = new User("", "", "", "", "", "");
+
+        if (localUser) {
+            storageUser = JSON.parse(localUser)
+            console.log(storageUser)
+
+            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ theme: "light" })
+            })
+            storageUser.theme = "light"
+            localStorage.setItem("loged_user", JSON.stringify(storageUser))
+
+        }
+
+    }
 }
+
