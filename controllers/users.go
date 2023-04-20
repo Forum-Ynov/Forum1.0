@@ -221,6 +221,8 @@ func UpdateUser(context *gin.Context) {
 		return
 	}
 
+	user.Passwd, _ = HashPassword(user.Passwd)
+
 	// Ouverture d'une connexion à la base de données
 	db, err := sql.Open("mysql", env.Sql_db)
 	if err != nil {
