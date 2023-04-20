@@ -266,7 +266,7 @@ async function fetch_by_tags(tag) {
                                         // console.log(actual_topic)
 
                                         display_topics.innerHTML += `
-                                            <div class="card">
+                                            <div class="card"  id="topics${actual_topic.id_topics}" onclick=openmessage(${actual_topic.id_topics})>
                                                 <div class="top_card">
                                                     <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
                                                     <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
@@ -370,13 +370,13 @@ form.addEventListener("submit", async (event) => {
         return
     }
 
-    const response = await fetch("http://localhost:8000/apiForum/addtopic", {
+    const response = await fetch("http://localhost:8000/apiForum/topics", {
         method: "POST",
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json; charset=UTF-8"
         },
-        body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: userId })
+        body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: parseInt(userId) })
     });
 
     if (response.ok) {
@@ -386,7 +386,8 @@ form.addEventListener("submit", async (event) => {
     }
     setTimeout(function () {
         popup_create.style.display = "none";
-    }, 3000)
+        fetch_by_tags(selectedTag)
+    }, 2000)
 });
 
 const myBtn = document.getElementById("myBtn");

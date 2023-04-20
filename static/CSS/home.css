@@ -357,10 +357,9 @@ button {
     transition: background 1.0s ease, color 1.0s ease;
 }
 
-
-
-
-
+#profil_pseudo{
+    cursor: pointer;
+}
 
 .burger {
     z-index: 3;

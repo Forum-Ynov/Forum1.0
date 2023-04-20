@@ -184,7 +184,7 @@ func AddTopic(context *gin.Context) {
 	}
 	defer db.Close()
 	// Préparation de la requête SQL
-	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "'")
+	stmt, err := db.Prepare(`SELECT * FROM topics WHERE titre = "` + newTopic.Titre + `"`)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -212,7 +212,7 @@ func AddTopic(context *gin.Context) {
 
 	// Vérification que la description n'est pas déjà utilisée
 	// Préparation de la requête SQL
-	stmts, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE description = '" + newTopic.Description + "'")
+	stmts, err := db.Prepare(`SELECT * FROM topics WHERE description = "` + newTopic.Description + `"`)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -241,7 +241,7 @@ func AddTopic(context *gin.Context) {
 	newTopic.Crea_date = currentTime
 	newTopic.Format_crea_date = newTopic.Crea_date.Format("2006-01-02 15:04:05")
 
-	stmt2, err := db.Prepare("INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES (?, ?, NOW(), ?, ?)")
+	stmt2, err := db.Prepare(`INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES (?, ?, NOW(), ?, ?)`)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -255,7 +255,7 @@ func AddTopic(context *gin.Context) {
 		return
 	}
 
-	stmt3, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE titre = '" + newTopic.Titre + "' AND description = '" + newTopic.Description + "'")
+	stmt3, err := db.Prepare(`SELECT * FROM topics WHERE titre = "` + newTopic.Titre + `" AND description = "` + newTopic.Description + `"`)
 	if err != nil {
 		panic(err.Error())
 	}
