@@ -1,4 +1,93 @@
-import { User } from "./user_class.js"
+import { User } from "./user_class.js";
+import { Imagepp } from "./pp_class.js";
+
+const profil_pseudo = document.getElementById("profil_pseudo");
+const user_pp = document.getElementById("user_pp");
+const user_pseudo = document.getElementById("user_pseudo");
+const swmode = document.getElementById("swmode")
+const localUser = localStorage.getItem("loged_user")?.toString()
+let storageUser = new User("", "", "", "", "", "");
+
+
+if (localUser) {
+    console.log("auto connect")
+    storageUser = JSON.parse(localUser)
+    console.log(storageUser)
+
+    switch (storageUser.theme) {
+        case ("dark"):
+            document.querySelector('body').setAttribute('data-theme', 'dark');
+            console.log("default dark")
+            swmode.checked = true
+            break
+        case ("light"):
+            document.querySelector('body').setAttribute('data-theme', 'light');
+            console.log("default light")
+            swmode.checked = false
+            break
+    }
+
+    log_In()
+
+} else {
+    document.location.href = "/static/Html/home.html";
+    console.log("to connect")
+}
+
+const btn_deconenxion = document.getElementById("btn_deconenxion")
+
+btn_deconenxion.addEventListener("click", () => {
+    localStorage.removeItem("loged_user")
+    document.location.href = "/static/Html/home.html";
+});
+
+
+
+function log_In() {
+    if (localUser) {
+        profil_pseudo.innerHTML = storageUser.pseudo;
+        user_pseudo.innerHTML = storageUser.pseudo;
+        user_pp.src = "../../Assets/Images/profil/homer.svg"
+
+        const ppload = fetch(`http://localhost:8000/apiForum/pp/${storageUser.id_imagepp}`, {
+            method: 'GET',
+            headers: {
+                "Accept": "application/json",
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then((res) => {
+                if (res.ok) {
+                    res.json().then(data => {
+                        user_pp.src = `../../Assets/Images/profil/${data.image_loc}`
+                    })
+                } else {
+                    console.log("res.ok false")
+                }
+            });
+
+
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const update_name = document.getElementById('update_name')
 const update_mail = document.getElementById('update_mail')
@@ -72,29 +161,59 @@ update_mdp.addEventListener('click', event => {
 
 
 
-const swmode = document.getElementById("swmode")
-const localUser = localStorage.getItem("loged_user")?.toString()
-let storageUser = new User("", "", "", "", "", "");
+const body = document.querySelector('body');
 
 
-if (localUser) {
-    console.log("auto connect")
-    storageUser = JSON.parse(localUser)
-    console.log(storageUser)
+swmode.onclick = async function switch_theme() {
+    if (swmode.checked) {
+        console.log("dark");
+        body.setAttribute('data-theme', 'dark');
 
-    switch (storageUser.theme) {
-        case ("dark"):
-            document.querySelector('body').setAttribute('data-theme', 'dark');
-            console.log("default dark")
-            swmode.checked = true
-            break
-        case ("light"):
-            document.querySelector('body').setAttribute('data-theme', 'light');
-            console.log("default light")
-            swmode.checked = false
-            break
+        const localUser = localStorage.getItem("loged_user")?.toString()
+        let storageUser = new User("", "", "", "", "", "");
+
+        if (localUser) {
+            storageUser = JSON.parse(localUser)
+            console.log(storageUser)
+
+            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ theme: "dark" })
+            })
+            storageUser.theme = "dark"
+            localStorage.setItem("loged_user", JSON.stringify(storageUser))
+
+        }
+
     }
+    else {
+        console.log("light");
+        body.setAttribute('data-theme', 'light');
 
-} else {
-    console.log("to connect")
+        const localUser = localStorage.getItem("loged_user")?.toString()
+        let storageUser = new User("", "", "", "", "", "");
+
+        if (localUser) {
+            storageUser = JSON.parse(localUser)
+            console.log(storageUser)
+
+            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify({ theme: "light" })
+            })
+            storageUser.theme = "light"
+            localStorage.setItem("loged_user", JSON.stringify(storageUser))
+
+        }
+
+    }
 }
+

@@ -25,8 +25,10 @@
 <body data-theme="light">
     <header>
         <nav class="navbar">
+            <a href="home.html">
             <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
             <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
+            </a>
             <label class="switch">
                 <input type="checkbox" name="switch_theme" id="swmode">
                 <span class="slider"></span>
@@ -34,19 +36,18 @@
             <button onclick="toggleMenu()" class="burger"></button>
             <button class="button" id="open_create">Log in</button>
             <div class="dropdowns">
-                <div id="profil_pseudo"></div>
                 <div class="dropdown">
+                    <div id="profil_pseudo"></div>
                     <button class="button_user_img">
                         <img src="../../Assets/Images/profil/user.svg" alt="user">
                         <img src="../../Assets/Images/menu/arrow_down.svg" />
                     </button>
                     <div class="dropdown-menu">
-                        <button class="button_user">profil</button>
+                        <a href="profil.html"><button class="button_user">profil</button></a>
                         <button class="button_user">paramètres</button>
                         <button class="button_user" id="btn_deconenxion">déconnexion</button>
                     </div>
                 </div>
-            </div>
             </div>
         </nav>
     </header>
@@ -183,7 +184,7 @@
 <script type="module" src="../../JS/script.js"></script>
 <script type="module" src="../../JS/home.js"></script>
 <script type="module">
-    import {openmessage} from "../../JS/home.js"
+    import { openmessage } from "../../JS/home.js"
     window.openmessage = openmessage
 </script>
 

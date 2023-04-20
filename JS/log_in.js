@@ -1,5 +1,5 @@
 
-import {User} from "./user_class.js"
+import { User } from "./user_class.js"
 
 let message = document.getElementById("message");
 let in_pseudo = document.getElementById("in_pseudo");
@@ -14,72 +14,50 @@ form_log.addEventListener("submit", async function (event) {
     let names = in_pseudo.value;
     let pass = in_passwd.value;
 
-    if (storageUser.id_user == default_user.id_user && storageUser.pseudo == default_user.pseudo && storageUser.email == default_user.email && storageUser.passwd == default_user.passwd && storageUser.id_imagepp == default_user.id_imagepp && storageUser.theme == default_user.theme) {
-
-        const r = await fetch("http://localhost:8000/apiForum/login", {
-            method: 'POST',
-            headers: {
-                "Accept": "application/json",
-                "Content-type": "application/json; charset=UTF-8"
-            },
-            body: JSON.stringify({ pseudo: names, passwd: pass })
-        })
-            .then((res) => {
-                console.log(res)
-                if (res.ok) {
-                    console.log("res.ok true")
-                    res.json().then(data => {
-                        actual_user.id_user = data.id_user;
-                        actual_user.pseudo = data.pseudo;
-                        actual_user.email = data.email;
-                        actual_user.passwd = data.passwd;
-                        actual_user.id_imagepp = data.id_imagepp;
-                        actual_user.theme = data.theme
-                        console.log(actual_user)
-                        localStorage.setItem("loged_user", JSON.stringify(actual_user))
-                        window.location.href = "http://127.0.0.1:5500/static/Html/home.html"
-                    })
-                } else {
-                    console.log("res.ok false")
-                    res.json().then(data => {
-                        console.log("ERREUR");
-                        message.innerHTML = data.message;
-                        actual_user.id_user = ""
-                        actual_user.pseudo = ""
-                        actual_user.email = ""
-                        actual_user.passwd = ""
-                        actual_user.id_imagepp = ""
-                        actual_user.theme = ""
-                    })
-                }
-            });
-    }
+    const r = await fetch("http://localhost:8000/apiForum/login", {
+        method: 'POST',
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify({ pseudo: names, passwd: pass })
+    })
+        .then((res) => {
+            console.log(res)
+            if (res.ok) {
+                console.log("res.ok true")
+                res.json().then(data => {
+                    actual_user.id_user = data.id_user;
+                    actual_user.pseudo = data.pseudo;
+                    actual_user.email = data.email;
+                    actual_user.passwd = data.passwd;
+                    actual_user.id_imagepp = data.id_imagepp;
+                    actual_user.theme = data.theme
+                    console.log(actual_user)
+                    localStorage.setItem("loged_user", JSON.stringify(actual_user))
+                    window.location.href = "http://127.0.0.1:5500/static/Html/home.html"
+                })
+            } else {
+                console.log("res.ok false")
+                res.json().then(data => {
+                    console.log("ERREUR");
+                    message.innerHTML = data.message;
+                    actual_user.id_user = ""
+                    actual_user.pseudo = ""
+                    actual_user.email = ""
+                    actual_user.passwd = ""
+                    actual_user.id_imagepp = ""
+                    actual_user.theme = ""
+                })
+            }
+        });
 });
 
 const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
-let storageUser = new User("", "", "", "", "", "");
 
 if (localUser) {
-    console.log("auto connect")
-    storageUser = JSON.parse(localUser)
-    console.log(storageUser)
-
-    switch (storageUser.theme) {
-        case ("dark"):
-            document.querySelector('body').setAttribute('data-theme', 'dark');
-            console.log("default dark")
-            swmode.checked = true
-            break
-        case ("light"):
-            document.querySelector('body').setAttribute('data-theme', 'light');
-            console.log("default light")
-            swmode.checked = false
-            break
-    }
-
-
-
+    document.location.href = "/static/Html/home.html";
 } else {
     console.log("to connect")
 }

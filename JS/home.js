@@ -279,8 +279,25 @@ async function fetch_by_tags(tag) {
                 // console.log(publisher)
                 // console.log(actual_topic)
 
-                display_topics.innerHTML += `
-                                            <div class="card">
+                        let actual_topic = new Topics(elt.id_topics, elt.titre, elt.description, elt.crea_date, elt.format_crea_date, elt.id_tags, elt.id_user)
+                        list_topics.push(actual_topic)
+
+                        const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
+                            method: 'GET',
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                            .then((res) => {
+                                if (res.ok) {
+                                    res.json().then(data => {
+                                        publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
+                                        // console.log(publisher)
+                                        // console.log(actual_topic)
+
+                                        display_topics.innerHTML += `
+                                            <div class="card"  id="topics${actual_topic.id_topics}" onclick=openmessage(${actual_topic.id_topics})>
                                                 <div class="top_card">
                                                     <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
                                                     <p> &ensp; publié le ${actual_topic.format_crea_date}</p>
@@ -617,28 +634,24 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
-  const response = await fetch("http://localhost:8000/apiForum/topics", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json; charset=UTF-8",
-    },
-    body: JSON.stringify({
-      titre: titre,
-      description: description,
-      id_tags: parseInt(selectedTag),
-      id_user: userId,
-    }),
-  });
+    const response = await fetch("http://localhost:8000/apiForum/topics", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify({ titre: titre, description: description, id_tags: parseInt(selectedTag), id_user: parseInt(userId) })
+    });
 
-  if (response.ok) {
-    statusMessage.textContent = `Message ajouté avec succès`;
-  } else {
-    statusMessage.textContent = "Erreur lors de l'ajout du message";
-  }
-  setTimeout(function () {
-    popup_create.style.display = "none";
-  }, 3000);
+    if (response.ok) {
+        statusMessage.textContent = `Message ajouté avec succès`;
+    } else {
+        statusMessage.textContent = "Erreur lors de l'ajout du message";
+    }
+    setTimeout(function () {
+        popup_create.style.display = "none";
+        fetch_by_tags(selectedTag)
+    }, 2000)
 });
 
 const myBtn = document.getElementById("myBtn");
