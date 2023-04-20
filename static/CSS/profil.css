@@ -63,7 +63,6 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    border-radius: 100px;
     background: radial-gradient(circle, var(--couleur_fond) 60%, var(--couleur_principale) 90%);
 }
 
