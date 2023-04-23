@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"Forum1.0/env"
 	"Forum1.0/models"
@@ -44,8 +43,6 @@ func GetMessages(context *gin.Context) {
 			panic(err.Error())
 		}
 
-		// Formater la date du message pour l'afficher en sortie
-		message.Format_publi_time = message.Publi_time.Format("15:04:05 02/01/2006")
 		// Ajouter le message au slice de messages
 		messages = append(messages, message)
 	}
@@ -156,7 +153,7 @@ func GetMessagesByTopics(context *gin.Context) {
 	defer db.Close()
 
 	// Récupération des messages correspondants à l'id_topics donné
-	rows, err := db.Query("SELECT * FROM messages WHERE id_topics = ?", id_topics)
+	rows, err := db.Query("SELECT * FROM messages WHERE id_topics = '" + id_topics + "' ORDER BY publi_time DESC")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -175,8 +172,6 @@ func GetMessagesByTopics(context *gin.Context) {
 			panic(err.Error())
 		}
 
-		// Formater la date du message pour l'afficher en sortie
-		message.Format_publi_time = message.Publi_time.Format("15:04:05 02/01/2006")
 		// Ajouter le message au slice de messages
 		messages = append(messages, message)
 	}
@@ -203,11 +198,6 @@ func AddMessage(context *gin.Context) {
 	}
 	defer db.Close()
 
-	// Obtention de l'heure actuelle pour le moment de la publication du message
-	currentTime := time.Now()
-	newMessage.Publi_time = currentTime
-	newMessage.Format_publi_time = newMessage.Publi_time.Format("2006-01-02 15:04:05")
-
 	// Insertion du message dans la base de données
 	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `,  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
 		// Si l'insertion échoue, renvoyer une erreur
@@ -215,7 +205,7 @@ func AddMessage(context *gin.Context) {
 	}
 
 	// Récupération du message inséré pour obtenir l'ID de la catégorie
-	rows, err := db.Query("SELECT message, id_user, publi_time, id_topics FROM messages WHERE message = '" + newMessage.Message + "'")
+	rows, err := db.Query(`SELECT message, id_user, publi_time, id_topics FROM messages WHERE message = "` + newMessage.Message + `"`)
 	if err != nil {
 		// Si la requête échoue, renvoyer une erreur
 		panic(err.Error())

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"Forum1.0/env"
 	"Forum1.0/models"
@@ -48,8 +47,6 @@ func GetTopics(context *gin.Context) {
 		if err != nil {
 			panic(err.Error())
 		}
-		// Formatage de la date de création
-		topic.Format_crea_date = topic.Crea_date.Format("2006-01-02 15:04:05")
 		topics = append(topics, topic) // Ajout du topic à la liste des topics
 	}
 	if err != nil {
@@ -133,7 +130,7 @@ func GetTopicsByTags(context *gin.Context) {
 	defer db.Close()
 
 	// Préparation de la requête SQL
-	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_tags = '" + id_tags + "'")
+	stmt, err := db.Prepare("SELECT id_topics, titre, crea_date, description, id_tags, id_user FROM topics WHERE id_tags = '" + id_tags + "' ORDER BY crea_date DESC")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -157,8 +154,6 @@ func GetTopicsByTags(context *gin.Context) {
 		if err != nil {
 			panic(err.Error())
 		}
-		// Formatage de la date de création
-		topic.Format_crea_date = topic.Crea_date.Format("2006-01-02 15:04:05")
 		topics = append(topics, topic) // Ajout du topic à la liste des topics
 	}
 	if err != nil {
@@ -235,11 +230,6 @@ func AddTopic(context *gin.Context) {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Description déjà utilisée"})
 		return
 	}
-
-	// Ajout du sujet à la base de données
-	currentTime := time.Now()
-	newTopic.Crea_date = currentTime
-	newTopic.Format_crea_date = newTopic.Crea_date.Format("2006-01-02 15:04:05")
 
 	stmt2, err := db.Prepare(`INSERT INTO topics (titre, description, crea_date, id_tags, id_user) VALUES (?, ?, NOW(), ?, ?)`)
 	if err != nil {
