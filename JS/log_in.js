@@ -14,7 +14,7 @@ form_log.addEventListener("submit", async function (event) {
     let names = in_pseudo.value;
     let pass = in_passwd.value;
 
-    const r = await fetch("https://api.sqwado.websr.fr/apiForum/login", {
+    const r = await fetch("http://localhost:8000/apiForum/login", {
         method: 'POST',
         headers: {
             "Accept": "application/json",

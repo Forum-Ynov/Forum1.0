@@ -49,7 +49,7 @@ function log_In() {
         user_pseudo.innerHTML = storageUser.pseudo;
         user_pp.src = "/Assets/Images/profil/homer.svg"
 
-        const ppload = fetch(`https://api.sqwado.websr.fr/apiForum/pp/${storageUser.id_imagepp}`, {
+        const ppload = fetch(`http://localhost:8000/apiForum/pp/${storageUser.id_imagepp}`, {
             method: 'GET',
             headers: {
                 "Accept": "application/json",
@@ -176,7 +176,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`https://api.sqwado.websr.fr/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
@@ -201,7 +201,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`https://api.sqwado.websr.fr/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",

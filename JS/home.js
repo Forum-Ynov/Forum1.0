@@ -60,7 +60,7 @@ const style_mod = document.getElementById("style_mod");
 async function fetch_all() {
     favDialog.style.display = "none";
     display_topics.style.position = "inherit";
-    const topicsload = await fetch("https://api.sqwado.websr.fr/apiForum/topics", {
+    const topicsload = await fetch("http://localhost:8000/apiForum/topics", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -89,7 +89,7 @@ async function fetch_all() {
                 list_topics.forEach(elt => {
 
                     const topicsuserload = fetch(
-                        `https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`,
+                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -132,7 +132,7 @@ async function fetch_all() {
             }`;
 
                                 const ppload = fetch(
-                                    `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
+                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
                                     {
                                         method: "GET",
                                         headers: {
@@ -181,7 +181,7 @@ export function openmessage(id_topic) {
 let selectedTopic = 0;
 
 async function fetch_tags() {
-    const tagsload = await fetch("https://api.sqwado.websr.fr/apiForum/tags", {
+    const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -235,7 +235,7 @@ async function fetch_by_tags(tag) {
     favDialog.style.display = "none";
     display_topics.style.position = "inherit";
     const topicsload = await fetch(
-        `https://api.sqwado.websr.fr/apiForum/topicstags/${tag}`,
+        `http://localhost:8000/apiForum/topicstags/${tag}`,
         {
             method: "GET",
             headers: {
@@ -266,7 +266,7 @@ async function fetch_by_tags(tag) {
                 list_topics.forEach(elt => {
 
                     const topicsload = fetch(
-                        `https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`,
+                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -286,7 +286,7 @@ async function fetch_by_tags(tag) {
                                     data.theme
                                 );
 
-                                const topicsload = fetch(`https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`, {
+                                const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
                                     method: 'GET',
                                     headers: {
                                         "Accept": "application/json",
@@ -321,7 +321,7 @@ text-align: center;
 }`;
 
                                                 const ppload = fetch(
-                                                    `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
+                                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
                                                     {
                                                         method: "GET",
                                                         headers: {
@@ -366,7 +366,7 @@ const left_container = document.getElementById("left_container");
 
 async function fetch_by_topics(id_topics) {
     const topicsload = await fetch(
-        `https://api.sqwado.websr.fr/apiForum/topics/${id_topics}`,
+        `http://localhost:8000/apiForum/topics/${id_topics}`,
         {
             method: "GET",
             headers: {
@@ -389,7 +389,7 @@ async function fetch_by_topics(id_topics) {
                 );
 
                 const userload = fetch(
-                    `https://api.sqwado.websr.fr/apiForum/users/${data.id_user}`,
+                    `http://localhost:8000/apiForum/users/${data.id_user}`,
                     {
                         method: "GET",
                         headers: {
@@ -435,7 +435,7 @@ async function fetch_by_topics(id_topics) {
                     }`;
 
                             const ppload = fetch(
-                                `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
+                                `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
                                 {
                                     method: "GET",
                                     headers: {
@@ -473,7 +473,7 @@ const comment_container = document.getElementById("comment_container");
 
 async function fetch_by_topics_messages(id_topics) {
     const messagesload = await fetch(
-        `https://api.sqwado.websr.fr/apiForum/messagestopics/${id_topics}`,
+        `http://localhost:8000/apiForum/messagestopics/${id_topics}`,
         {
             method: "GET",
             headers: {
@@ -504,7 +504,7 @@ async function fetch_by_topics_messages(id_topics) {
                 list_messages.forEach(elt => {
 
                     const userload = fetch(
-                        `https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`,
+                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -536,7 +536,7 @@ async function fetch_by_topics_messages(id_topics) {
                                 </div>`;
 
                                 const ppload = fetch(
-                                    `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
+                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
                                     {
                                         method: "GET",
                                         headers: {
@@ -582,7 +582,7 @@ CreateMessage.addEventListener("submit", async (event) => {
 
     if (document.getElementById("comment").value != "") {
 
-        const response = await fetch("https://api.sqwado.websr.fr/apiForum/messages", {
+        const response = await fetch("http://localhost:8000/apiForum/messages", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -604,7 +604,7 @@ CreateMessage.addEventListener("submit", async (event) => {
 const tagDropdown = document.getElementById("tag-dropdown");
 
 async function post_tag() {
-    const tagsload = await fetch("https://api.sqwado.websr.fr/apiForum/tags", {
+    const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -641,7 +641,7 @@ form.addEventListener("submit", async (event) => {
         return;
     }
 
-    const response = await fetch("https://api.sqwado.websr.fr/apiForum/topics", {
+    const response = await fetch("http://localhost:8000/apiForum/topics", {
         method: "POST",
         headers: {
             "Accept": "application/json",

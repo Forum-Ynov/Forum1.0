@@ -2,8 +2,6 @@
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
 
-echo(`<base href="https://sqwado.websr.fr/httpdocs/" />`);
-
 if ($parts[1] == "home") {
     include("Static/Html/home.php");
 } elseif ($parts[1] == "log_in") {
@@ -13,5 +11,5 @@ if ($parts[1] == "home") {
 } elseif ($parts[1] == "profil") {
     include("Static/Html/profil.php");
 } else {
-    header("Location: https://sqwado.websr.fr/home");
+    header("Location: /home");
 }
