@@ -9,6 +9,7 @@ class MessagesGateway
         $this->conn = $database->getConnection();
     }
 
+    //récupère tous les messages
     public function getAll(): array
     {
         $sql = "SELECT * 
@@ -26,6 +27,7 @@ class MessagesGateway
 
     }
 
+    //créer un message
     public function create(array $data): string
     {
         $sql = "INSERT INTO messages (message, id_user, publi_time, id_topics) 
@@ -43,6 +45,7 @@ class MessagesGateway
 
     }
 
+    //récupérer un message par son id
     public function get(string $id): array|false
     {
         $sql = "SELECT *
@@ -60,6 +63,7 @@ class MessagesGateway
         return $data;
     }
 
+    //récupérer des messages par l'id de leur topics
     public function getByTopics(string $topics): array|false
     {
         $sql = "SELECT *
@@ -81,6 +85,7 @@ class MessagesGateway
         return $data;
     }
 
+    //modifier un message par son id
     public function update(array $current, array $new): int
     {
         $sql = "UPDATE messages
@@ -113,6 +118,7 @@ class MessagesGateway
         return $stmt->rowCount();
     }
 
+    //suprimer un message par son id
     public function delete(string $id): int
     {   
         $sql = "DELETE FROM messages

@@ -1,5 +1,6 @@
 <?php
 
+//gestion de l'erreur et de leurs affichage en json
 class ErrorHandler
 {
     public static function handleException(Throwable $exception): void

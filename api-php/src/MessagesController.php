@@ -6,6 +6,7 @@ class MessagesController
     {
     }
 
+    //gestion par id
     public function processRequest(string $method, ?string $id): void
     {
         if ($id) {
@@ -19,6 +20,7 @@ class MessagesController
         }
     }
 
+    //gestion par id de topic
     public function processRequestByTopics(string $method, ?string $pseudo): void
     {
         if ($pseudo) {
@@ -28,6 +30,7 @@ class MessagesController
         }
     }
 
+    //gérer des messages par leur id
     private function processRessourceRequest(string $method, string $id): void
     {
         $message = $this->gateway->get($id);
@@ -65,6 +68,7 @@ class MessagesController
 
     }
 
+    //récupérer des messages par leur id de topic
     private function processRessourceTopics(string $method, string $topics): void
     {
         $message = $this->gateway->getByTopics($topics);
@@ -87,6 +91,7 @@ class MessagesController
 
     }
 
+    //gestion des messages de tous et de création
     private function processCollectionRequest(string $method): void
     {
         switch ($method) {
