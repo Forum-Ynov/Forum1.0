@@ -1,6 +1,6 @@
 <?php
 
-$api_php = false;
+$api_php = true;
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
 
