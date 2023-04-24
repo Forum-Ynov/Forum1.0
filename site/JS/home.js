@@ -412,7 +412,7 @@ async function fetch_by_topics(id_topics) {
                     <div class="post">
                         <div class="top_post">
                                 <div class="info-top_post">
-                                    <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
+                                    <h4 class="user_card_post_comment user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
                                     <p> &ensp; publié le ${actual_topic.crea_date}</p>
                                 </div>
                             </div>
@@ -427,7 +427,7 @@ async function fetch_by_topics(id_topics) {
 
                             style_mod.innerHTML += `
                     .title_topic${actual_topic.id_tags}::before {
-                      content: url(/site/Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
+                        content: url(/site/Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
                     }
                     .title_topic${actual_topic.id_tags} {
                       text-align: center;
