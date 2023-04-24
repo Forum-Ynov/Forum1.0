@@ -1,5 +1,5 @@
-import { User } from "./user_class.js";
-import { Imagepp } from "./pp_class.js";
+import { User } from "/JS/user_class.js";
+import { Imagepp } from "/JS/pp_class.js";
 
 const profil_pseudo = document.getElementById("profil_pseudo");
 const user_pp = document.getElementById("user_pp");
@@ -30,7 +30,7 @@ if (localUser) {
     log_In()
 
 } else {
-    document.location.href = "/static/Html/home.html";
+    document.location.href = "/home";
     console.log("to connect")
 }
 
@@ -38,7 +38,7 @@ const btn_deconenxion = document.getElementById("btn_deconenxion")
 
 btn_deconenxion.addEventListener("click", () => {
     localStorage.removeItem("loged_user")
-    document.location.href = "/static/Html/home.html";
+    document.location.href = "/home";
 });
 
 
@@ -47,9 +47,9 @@ function log_In() {
     if (localUser) {
         profil_pseudo.innerHTML = storageUser.pseudo;
         user_pseudo.innerHTML = storageUser.pseudo;
-        user_pp.src = "../../Assets/Images/profil/homer.svg"
+        user_pp.src = "/Assets/Images/profil/homer.svg"
 
-        const ppload = fetch(`http://localhost:8000/apiForum/pp/${storageUser.id_imagepp}`, {
+        const ppload = fetch(`https://api.sqwado.websr.fr/apiForum/pp/${storageUser.id_imagepp}`, {
             method: 'GET',
             headers: {
                 "Accept": "application/json",
@@ -59,7 +59,7 @@ function log_In() {
             .then((res) => {
                 if (res.ok) {
                     res.json().then(data => {
-                        user_pp.src = `../../Assets/Images/profil/${data.image_loc}`
+                        user_pp.src = `/Assets/Images/profil/${data.image_loc}`
                     })
                 } else {
                     console.log("res.ok false")
@@ -176,7 +176,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(`https://api.sqwado.websr.fr/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
@@ -201,7 +201,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(`https://api.sqwado.websr.fr/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",

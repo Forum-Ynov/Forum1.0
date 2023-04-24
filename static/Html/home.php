@@ -10,13 +10,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../CSS/home.css">
+    <link rel="stylesheet" href="/Static/CSS/home.css">
     <title>Home page</title>
 </head>
 
 <style id="style_mod">
     .tagsall::before {
-        content: url(../../Assets/Images/icon_input/arobase.svg);
+        content: url(/Assets/Images/icon_input/arobase.svg);
         position: absolute;
         left: -20px;
     }
@@ -25,9 +25,9 @@
 <body data-theme="light">
     <header>
         <nav class="navbar">
-            <a href="home.html">
-                <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
-                <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
+            <a href="/home">
+                <img src="/Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
+                <img src="/Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
             </a>
             <label class="switch">
                 <input type="checkbox" name="switch_theme" id="swmode">
@@ -39,11 +39,11 @@
                 <div class="dropdown">
                     <div id="profil_pseudo"></div>
                     <button class="button_user_img">
-                        <img src="../../Assets/Images/profil/user.svg" alt="user">
-                        <img src="../../Assets/Images/menu/arrow_down.svg" />
+                        <img src="/Assets/Images/profil/user.svg" alt="user">
+                        <img src="/Assets/Images/menu/arrow_down.svg" />
                     </button>
                     <div class="dropdown-menu">
-                        <a href="profil.html"><button class="button_user">profil</button></a>
+                        <a href="/profil"><button class="button_user">profil</button></a>
                         <button class="button_user">paramètres</button>
                         <button class="button_user" id="btn_deconenxion">déconnexion</button>
                     </div>
@@ -73,7 +73,7 @@
     </aside>
 
     <article class="content" id="display_topics">
-        
+
     </article>
     <dialog id="favDialog" class="popup">
         <div class="container">
@@ -88,12 +88,12 @@
                     </form>
                 </div>
                 <div class="part_right">
-                    <img src="../../Assets/Images/menu/close.svg" alt="close" id="close_pop">
+                    <img src="/Assets/Images/menu/close.svg" alt="close" id="close_pop">
                     <div class="comment">
                         <div class="comment_top">
                             <p>Commentaire :</p>
                         </div>
-                        <div class="comment_main" id="comment_container">  
+                        <div class="comment_main" id="comment_container">
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
     <form action="" id="Createpost" class="popup_create">
         <div class="container_create">
             <div class="post_close">
-                <img src="../../Assets/Images/menu/close.svg" alt="fermeture popup" />
+                <img src="/Assets/Images/menu/close.svg" alt="fermeture popup" />
             </div>
             <h3>Create a new post</h3>
             <label for="" class="label_title">Titre :</label>
@@ -121,10 +121,10 @@
     </form>
 
 </body>
-<script type="module" src="../../JS/script.js"></script>
-<script type="module" src="../../JS/home.js"></script>
+<script type="module" src="/JS/script.js"></script>
+<script type="module" src="/JS/home.js"></script>
 <script type="module">
-    import { openmessage } from "../../JS/home.js"
+    import { openmessage } from "/JS/home.js"
     window.openmessage = openmessage
 </script>
 

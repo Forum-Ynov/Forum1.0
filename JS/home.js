@@ -1,8 +1,8 @@
-import { User } from "./user_class.js";
-import { Imagepp } from "./pp_class.js";
-import { Tags } from "./tags_class.js";
-import { Topics } from "./topics_class.js";
-import { Messages } from "./messages_class.js";
+import { User } from "/JS/user_class.js";
+import { Imagepp } from "/JS/pp_class.js";
+import { Tags } from "/JS/tags_class.js";
+import { Topics } from "/JS/topics_class.js";
+import { Messages } from "/JS/messages_class.js";
 
 class Cards {
     constructor(Topics, Tags, User) {
@@ -13,6 +13,7 @@ class Cards {
 }
 
 const CreateMessage = document.getElementById("CreateMessage");
+const favDialog = document.getElementById("favDialog");
 const swmode = document.getElementById("swmode");
 const localUser = localStorage.getItem("loged_user")?.toString();
 let storageUser = new User("", "", "", "", "", "");
@@ -43,7 +44,7 @@ const btn_deconenxion = document.getElementById("btn_deconenxion");
 
 btn_deconenxion.addEventListener("click", () => {
     localStorage.removeItem("loged_user");
-    window.location.href = "http://127.0.0.1:5500/static/Html/home.html";
+    window.location.href = "/home";
 });
 
 let publisher;
@@ -57,7 +58,9 @@ const display_topics = document.getElementById("display_topics");
 const style_mod = document.getElementById("style_mod");
 
 async function fetch_all() {
-    const topicsload = await fetch("http://localhost:8000/apiForum/topics", {
+    favDialog.style.display = "none";
+    display_topics.style.position = "inherit";
+    const topicsload = await fetch("https://api.sqwado.websr.fr/apiForum/topics", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -86,7 +89,7 @@ async function fetch_all() {
                 list_topics.forEach(elt => {
 
                     const topicsuserload = fetch(
-                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
+                        `https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -122,14 +125,14 @@ async function fetch_all() {
 
                                 style_mod.innerHTML += `
             .title_topic${elt.id_tags}::before {
-            content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
+            content: url(/Assets/Images/icon_tag/tags${elt.id_tags}.svg);
             }
             .title_topic${elt.id_tags} {
             text-align: center;
             }`;
 
                                 const ppload = fetch(
-                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
+                                    `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
                                     {
                                         method: "GET",
                                         headers: {
@@ -144,7 +147,7 @@ async function fetch_all() {
 
                                             style_mod.innerHTML += `
             .user_card${data.id_pp}::before {
-            content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+            content: url(/Assets/Images/profil/${pp_publi.image_loc});
             }`;
                                         });
                                     } else {
@@ -172,12 +175,13 @@ export function openmessage(id_topic) {
     selectedTopic = id_topic
     favDialog.style.display = "block";
     display_topics.style.position = "fixed";
+    popup_create.style.display = "none";
 }
 
 let selectedTopic = 0;
 
 async function fetch_tags() {
-    const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
+    const tagsload = await fetch("https://api.sqwado.websr.fr/apiForum/tags", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -193,7 +197,7 @@ async function fetch_tags() {
                 display_tags.innerHTML += `<h4 class="tag tagsall" id="tagsall"><span class="hover-underline-animation">All Tags</span></h4>`;
                 style_mod.innerHTML += `
 .tagsall::before{
-    content: url(../../Assets/Images/icon_input/arobase.svg);
+    content: url(/Assets/Images/icon_input/arobase.svg);
     position: absolute;
     left: -20px;
 }`;
@@ -202,7 +206,7 @@ async function fetch_tags() {
                     display_tags.innerHTML += `<h4 class="tag tags${elt.id_tags}" id="tags${elt.id_tags}" style= ""><span class="hover-underline-animation">${elt.tags}</span></h4>`;
                     style_mod.innerHTML += `
 .tags${elt.id_tags}::before{
-    content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
+    content: url(/Assets/Images/icon_tag/tags${elt.id_tags}.svg);
     position: absolute;
     left: -20px;
 }`;
@@ -228,8 +232,10 @@ fetch_tags();
 fetch_all();
 
 async function fetch_by_tags(tag) {
+    favDialog.style.display = "none";
+    display_topics.style.position = "inherit";
     const topicsload = await fetch(
-        `http://localhost:8000/apiForum/topicstags/${tag}`,
+        `https://api.sqwado.websr.fr/apiForum/topicstags/${tag}`,
         {
             method: "GET",
             headers: {
@@ -242,59 +248,57 @@ async function fetch_by_tags(tag) {
             res.json().then((datas) => {
                 display_topics.innerHTML = "";
                 list_topics = []
+                datas.forEach((elt) => {
+                    let time = new Date(elt.crea_date)
+                    elt.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
+                    let actual_topic = new Topics(
+                        elt.id_topics,
+                        elt.titre,
+                        elt.description,
+                        elt.crea_date,
+                        elt.id_tags,
+                        elt.id_user
+                    );
+                    list_topics.push(actual_topic);
 
-                if (datas.length != 0) {
-                    datas.forEach((elt) => {
-                        let time = new Date(elt.crea_date)
-                        elt.crea_date = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
-                        let actual_topic = new Topics(
-                            elt.id_topics,
-                            elt.titre,
-                            elt.description,
-                            elt.crea_date,
-                            elt.id_tags,
-                            elt.id_user
-                        );
-                        list_topics.push(actual_topic);
+                });
 
-                    });
+                list_topics.forEach(elt => {
 
-                    list_topics.forEach(elt => {
+                    const topicsload = fetch(
+                        `https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-type": "application/json; charset=UTF-8",
+                            },
+                        }
+                    ).then((res) => {
+                        if (res.ok) {
+                            res.json().then((data) => {
+                                publisher = new User(
+                                    data.id_user,
+                                    data.pseudo,
+                                    data.email,
+                                    data.passwd,
+                                    data.id_imagepp,
+                                    data.theme
+                                );
 
-                        const topicsload = fetch(
-                            `http://localhost:8000/apiForum/users/${elt.id_user}`,
-                            {
-                                method: "GET",
-                                headers: {
-                                    Accept: "application/json",
-                                    "Content-type": "application/json; charset=UTF-8",
-                                },
-                            }
-                        ).then((res) => {
-                            if (res.ok) {
-                                res.json().then((data) => {
-                                    publisher = new User(
-                                        data.id_user,
-                                        data.pseudo,
-                                        data.email,
-                                        data.passwd,
-                                        data.id_imagepp,
-                                        data.theme
-                                    );
+                                const topicsload = fetch(`https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`, {
+                                    method: 'GET',
+                                    headers: {
+                                        "Accept": "application/json",
+                                        "Content-type": "application/json; charset=UTF-8"
+                                    }
+                                })
+                                    .then((res) => {
+                                        if (res.ok) {
+                                            res.json().then(data => {
+                                                publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
 
-                                    const topicsload = fetch(`http://localhost:8000/apiForum/users/${elt.id_user}`, {
-                                        method: 'GET',
-                                        headers: {
-                                            "Accept": "application/json",
-                                            "Content-type": "application/json; charset=UTF-8"
-                                        }
-                                    })
-                                        .then((res) => {
-                                            if (res.ok) {
-                                                res.json().then(data => {
-                                                    publisher = new User(data.id_user, data.pseudo, data.email, data.passwd, data.id_imagepp, data.theme)
-
-                                                    display_topics.innerHTML += `
+                                                display_topics.innerHTML += `
                                         <div class="card"  id="topics${elt.id_topics}" onclick=openmessage(${elt.id_topics})>
                                             <div class="top_card">
                                                 <h4 class="user_card${publisher.id_imagepp}">${publisher.pseudo}</h4>
@@ -308,54 +312,52 @@ async function fetch_by_tags(tag) {
                                             </div>
                                         </div>`;
 
-                                                    style_mod.innerHTML += `
+                                                style_mod.innerHTML += `
 .title_topic${elt.id_tags}::before {
-content: url(../../Assets/Images/icon_tag/tags${elt.id_tags}.svg);
+content: url(/Assets/Images/icon_tag/tags${elt.id_tags}.svg);
 }
 .title_topic${elt.id_tags} {
 text-align: center;
 }`;
 
-                                                    const ppload = fetch(
-                                                        `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
-                                                        {
-                                                            method: "GET",
-                                                            headers: {
-                                                                Accept: "application/json",
-                                                                "Content-type": "application/json; charset=UTF-8",
-                                                            },
-                                                        }
-                                                    ).then((res) => {
-                                                        if (res.ok) {
-                                                            res.json().then((data) => {
-                                                                pp_publi = new Imagepp(data.id_pp, data.image_loc);
+                                                const ppload = fetch(
+                                                    `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
+                                                    {
+                                                        method: "GET",
+                                                        headers: {
+                                                            Accept: "application/json",
+                                                            "Content-type": "application/json; charset=UTF-8",
+                                                        },
+                                                    }
+                                                ).then((res) => {
+                                                    if (res.ok) {
+                                                        res.json().then((data) => {
+                                                            pp_publi = new Imagepp(data.id_pp, data.image_loc);
 
-                                                                style_mod.innerHTML += `
+                                                            style_mod.innerHTML += `
 .user_card${data.id_pp}::before {
 content: url(../../Assets/Images/profil/${pp_publi.image_loc});
 }`;
-                                                            });
-                                                        } else {
-                                                            console.log("res.ok false");
-                                                        }
-                                                    });
+                                                        });
+                                                    } else {
+                                                        console.log("res.ok false");
+                                                    }
                                                 });
-                                            } else {
-                                                console.log("res.ok false");
-                                            }
-                                        });
-                                });
-                            } else {
-                                console.log("res.ok false");
-                            }
-                        });
-                    })
-                }else{
-                    display_topics.innerHTML += `<h3>Aucun topic trouvé</h3>`
-                }                
+                                            });
+                                        } else {
+                                            console.log("res.ok false");
+                                        }
+                                    });
+                            });
+                        } else {
+                            console.log("res.ok false");
+                        }
+                    });
+                })
             });
         } else {
             console.log("res.ok false");
+            display_topics.innerHTML = `<h3>Aucun topic trouvé</h3>`
         }
     });
 }
@@ -364,7 +366,7 @@ const left_container = document.getElementById("left_container");
 
 async function fetch_by_topics(id_topics) {
     const topicsload = await fetch(
-        `http://localhost:8000/apiForum/topics/${id_topics}`,
+        `https://api.sqwado.websr.fr/apiForum/topics/${id_topics}`,
         {
             method: "GET",
             headers: {
@@ -387,7 +389,7 @@ async function fetch_by_topics(id_topics) {
                 );
 
                 const userload = fetch(
-                    `http://localhost:8000/apiForum/users/${data.id_user}`,
+                    `https://api.sqwado.websr.fr/apiForum/users/${data.id_user}`,
                     {
                         method: "GET",
                         headers: {
@@ -426,14 +428,14 @@ async function fetch_by_topics(id_topics) {
 
                             style_mod.innerHTML += `
                     .title_topic${actual_topic.id_tags}::before {
-                      content: url(../../Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
+                      content: url(/Assets/Images/icon_tag/tags${actual_topic.id_tags}.svg);
                     }
                     .title_topic${actual_topic.id_tags} {
                       text-align: center;
                     }`;
 
                             const ppload = fetch(
-                                `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
+                                `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
                                 {
                                     method: "GET",
                                     headers: {
@@ -448,7 +450,7 @@ async function fetch_by_topics(id_topics) {
 
                                         style_mod.innerHTML += `
                           .user_card${data.id_pp}::before {
-                            content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+                            content: url(/Assets/Images/profil/${pp_publi.image_loc});
                           }`;
                                     });
                                 } else {
@@ -471,7 +473,7 @@ const comment_container = document.getElementById("comment_container");
 
 async function fetch_by_topics_messages(id_topics) {
     const messagesload = await fetch(
-        `http://localhost:8000/apiForum/messagestopics/${id_topics}`,
+        `https://api.sqwado.websr.fr/apiForum/messagestopics/${id_topics}`,
         {
             method: "GET",
             headers: {
@@ -484,29 +486,25 @@ async function fetch_by_topics_messages(id_topics) {
             res.json().then((data) => {
                 comment_container.innerHTML = "";
                 list_messages = []
-                if (data) {
-                    data.forEach((elt) => {
-                        let time = new Date(elt.publi_time)
-                        elt.publi_time = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
+                data.forEach((elt) => {
+                    let time = new Date(elt.publi_time)
+                    elt.publi_time = time.toLocaleDateString('fr') + " à " + time.toLocaleTimeString("fr")
 
-                        let actual_message = new Messages(
-                            elt.id_message,
-                            elt.message,
-                            elt.id_user,
-                            elt.publi_time,
-                            elt.id_topics
-                        );
-                        list_messages.push(actual_message);
+                    let actual_message = new Messages(
+                        elt.id_message,
+                        elt.message,
+                        elt.id_user,
+                        elt.publi_time,
+                        elt.id_topics
+                    );
+                    list_messages.push(actual_message);
 
-                    });
-                } else {
-                    comment_container.innerHTML += `<h3>Aucun message trouvé</h3>`
-                }
+                });
 
                 list_messages.forEach(elt => {
 
                     const userload = fetch(
-                        `http://localhost:8000/apiForum/users/${elt.id_user}`,
+                        `https://api.sqwado.websr.fr/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -538,7 +536,7 @@ async function fetch_by_topics_messages(id_topics) {
                                 </div>`;
 
                                 const ppload = fetch(
-                                    `http://localhost:8000/apiForum/pp/${publisher.id_imagepp}`,
+                                    `https://api.sqwado.websr.fr/apiForum/pp/${publisher.id_imagepp}`,
                                     {
                                         method: "GET",
                                         headers: {
@@ -553,7 +551,7 @@ async function fetch_by_topics_messages(id_topics) {
 
                                             style_mod.innerHTML += `
                   .user_card${data.id_pp}::before {
-                    content: url(../../Assets/Images/profil/${pp_publi.image_loc});
+                    content: url(/Assets/Images/profil/${pp_publi.image_loc});
                   }`;
                                         });
                                     } else {
@@ -570,6 +568,7 @@ async function fetch_by_topics_messages(id_topics) {
             });
         } else {
             console.log("res.ok false");
+            comment_container.innerHTML = `<h3>Aucun message trouvé</h3>`
         }
     });
 }
@@ -583,7 +582,7 @@ CreateMessage.addEventListener("submit", async (event) => {
 
     if (document.getElementById("comment").value != "") {
 
-        const response = await fetch("http://localhost:8000/apiForum/messages", {
+        const response = await fetch("https://api.sqwado.websr.fr/apiForum/messages", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -605,7 +604,7 @@ CreateMessage.addEventListener("submit", async (event) => {
 const tagDropdown = document.getElementById("tag-dropdown");
 
 async function post_tag() {
-    const tagsload = await fetch("http://localhost:8000/apiForum/tags", {
+    const tagsload = await fetch("https://api.sqwado.websr.fr/apiForum/tags", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -642,7 +641,7 @@ form.addEventListener("submit", async (event) => {
         return;
     }
 
-    const response = await fetch("http://localhost:8000/apiForum/topics", {
+    const response = await fetch("https://api.sqwado.websr.fr/apiForum/topics", {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -672,6 +671,7 @@ if (localUser) {
     myBtn.onclick = function () {
         popup_create.style.display = "block";
         display_topics.style.position = "fixed";
+        favDialog.style.display = "none";
     };
 
     // When the user clicks on <span> (x), close the modal
@@ -688,7 +688,7 @@ if (localUser) {
     };
 } else {
     myBtn.onclick = function () {
-        document.location.href = "/static/Html/log_in.html";
+        document.location.href = "/log_in";
     };
 }
 
@@ -713,12 +713,11 @@ function log_In() {
 log_In();
 
 open_create.addEventListener("click", function () {
-    document.location.href = "/static/Html/log_in.html";
+    document.location.href = "/log_in";
 });
 
 //pop-up commentaire
 const close_pop = document.getElementById("close_pop");
-const favDialog = document.getElementById("favDialog");
 
 close_pop.addEventListener("click", function () {
     favDialog.style.display = "none";
