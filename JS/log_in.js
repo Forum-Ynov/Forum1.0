@@ -1,5 +1,5 @@
 
-import { User } from "./user_class.js"
+import { User } from "/JS/user_class.js"
 
 let message = document.getElementById("message");
 let in_pseudo = document.getElementById("in_pseudo");
@@ -14,7 +14,7 @@ form_log.addEventListener("submit", async function (event) {
     let names = in_pseudo.value;
     let pass = in_passwd.value;
 
-    const r = await fetch("http://localhost:8000/apiForum/login", {
+    const r = await fetch("https://api.sqwado.websr.fr/apiForum/login", {
         method: 'POST',
         headers: {
             "Accept": "application/json",
@@ -35,7 +35,7 @@ form_log.addEventListener("submit", async function (event) {
                     actual_user.theme = data.theme
                     console.log(actual_user)
                     localStorage.setItem("loged_user", JSON.stringify(actual_user))
-                    window.location.href = "http://127.0.0.1:5500/static/Html/home.html"
+                    window.location.href = "/home"
                 })
             } else {
                 console.log("res.ok false")
@@ -57,7 +57,7 @@ const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
 
 if (localUser) {
-    document.location.href = "/static/Html/home.html";
+    document.location.href = "/home";
 } else {
     console.log("to connect")
 }
@@ -69,10 +69,10 @@ let imgpass = document.getElementById("imgpass")
 passtotext.onclick = function () {
     if (in_passwd.type == "password") {
         in_passwd.type = "text"
-        imgpass.src = "../../Assets/Images/icon_input/eye-off.svg"
+        imgpass.src = "/Assets/Images/icon_input/eye-off.svg"
     } else {
         in_passwd.type = "password"
-        imgpass.src = "../../Assets/Images/icon_input/eye.svg"
+        imgpass.src = "/Assets/Images/icon_input/eye.svg"
     }
 
 }

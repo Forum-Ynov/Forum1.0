@@ -1,5 +1,5 @@
 
-import { User } from "./user_class.js"
+import { User } from "/JS/user_class.js"
 
 const toggleMenu = () => document.body.classList.toggle("open");
 
@@ -21,7 +21,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(`https://api.sqwado.websr.fr/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
@@ -46,7 +46,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`http://localhost:8000/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(`https://api.sqwado.websr.fr/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",

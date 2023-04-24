@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/profil.css">
+    <link rel="stylesheet" href="/Static/CSS/profil.css">
     <title>Profil</title>
 </head>
 
 <body data-theme="light">
     <header>
         <nav class="navbar">
-            <a href="home.html">
-            <img src="../../Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
-            <img src="../../Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
+            <a href="/home">
+                <img src="/Assets/Images/others/logo_forum_light.png" alt="logo" class="logo">
+                <img src="/Assets/Images/others/logo_forum.png" alt="logo_dark" class="logo" style="opacity: .3;">
             </a>
             <label class="switch">
                 <input type="checkbox" name="switch_theme" id="swmode">
@@ -25,11 +25,11 @@
                 <div class="dropdown">
                     <div id="profil_pseudo"></div>
                     <button class="button_user_img">
-                        <img src="../../Assets/Images/profil/user.svg" alt="user">
-                        <img src="../../Assets/Images/menu/arrow_down.svg" />
+                        <img src="/Assets/Images/profil/user.svg" alt="user">
+                        <img src="/Assets/Images/menu/arrow_down.svg" />
                     </button>
                     <div class="dropdown-menu">
-                        <a href="profil.html"><button class="button_user">profil</button></a>
+                        <a href="/profil"><button class="button_user">profil</button></a>
                         <button class="button_user">paramètres</button>
                         <button class="button_user" id="btn_deconenxion">déconnexion</button>
                     </div>
@@ -40,7 +40,7 @@
     <div class="containers">
         <div class="top_info">
             <div class="left_top_info">
-                <img id="user_pp" src="../../Assets/Images/profil/chat.svg" alt="profil">
+                <img id="user_pp" src="/Assets/Images/profil/chat.svg" alt="profil">
                 <h3 id="user_pseudo">user121519</h3>
             </div>
         </div>
@@ -70,7 +70,7 @@
         </div>
     </div>
 </body>
-<script type="module" src="../../JS/script.js"></script>
-<script type="module" src="../../JS/profil.js"></script>
+<script type="module" src="/JS/script.js"></script>
+<script type="module" src="/JS/profil.js"></script>
 
 </html>

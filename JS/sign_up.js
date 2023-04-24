@@ -1,11 +1,11 @@
 
-import { User } from "./user_class.js"
-import { Imagepp } from "./pp_class.js"
+import { User } from "/JS/user_class.js"
+import { Imagepp } from "/JS/pp_class.js"
 
 let list_pp = []
 
 async function loadpp() {
-    const r = await fetch("http://localhost:8000/apiForum/pp", {
+    const r = await fetch("https://api.sqwado.websr.fr/apiForum/pp", {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -24,7 +24,7 @@ async function loadpp() {
 
                     list_pp.forEach(elt => {
                         ppcontent.innerHTML += `<option id="imgpp${elt.id_pp}" value="${elt.id_pp}" onclick = setpp()
-                        style="background: no-repeat; background-image:url(../../Assets/Images/profil/${elt.image_loc}); height: 64px; width: 64px;">
+                        style="background: no-repeat; background-image:url(/Assets/Images/profil/${elt.image_loc}); height: 64px; width: 64px;">
                     </option >`
 
                     })
@@ -51,7 +51,7 @@ const swmode = document.getElementById("swmode")
 const localUser = localStorage.getItem("loged_user")?.toString()
 
 if (localUser) {
-    document.location.href = "/static/Html/home.html";
+    document.location.href = "/home";
 } else {
     console.log("to connect")
 }
@@ -63,10 +63,10 @@ let imgpass = document.getElementById("imgpass")
 passtotext.onclick = function () {
     if (in_passwd.type == "password") {
         in_passwd.type = "text"
-        imgpass.src = "../../Assets/Images/icon_input/eye-off.svg"
+        imgpass.src = "/Assets/Images/icon_input/eye-off.svg"
     } else {
         in_passwd.type = "password"
-        imgpass.src = "../../Assets/Images/icon_input/eye.svg"
+        imgpass.src = "/Assets/Images/icon_input/eye.svg"
     }
 
 }
@@ -119,7 +119,7 @@ form_sign.addEventListener("submit", async function (event) {
     let user_theme = body.getAttribute('data-theme');
 
 
-    const r = await fetch("http://localhost:8000/apiForum/users", {
+    const r = await fetch("https://api.sqwado.websr.fr/apiForum/users", {
         method: 'POST',
         headers: {
             "Accept": "application/json",
