@@ -4,6 +4,7 @@ $api_php = true;
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
 
+// gestion des redirections du Forum
 if ($parts[1] == "Forum") {
     if ($parts[2] == "home") {
         include("site/Static/Html/home.php");
@@ -18,6 +19,7 @@ if ($parts[1] == "Forum") {
     }
 }
 
+// gestion des redirections de l'API en php si activé
 if ($api_php) {
     if ($parts[1] == "apiForum") {
         include("api-php/api_php.php");

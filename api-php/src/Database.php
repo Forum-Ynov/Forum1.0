@@ -1,5 +1,6 @@
 <?php
 
+// propriété pour l'ouverture de la db
 class Database
 {
     public function __construct(
@@ -11,6 +12,7 @@ class Database
     ) {
     }
 
+    //ouverture de la db avec les paramètres attribués
     public function getConnection(): PDO
     {
         $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->name};charset=utf8";
