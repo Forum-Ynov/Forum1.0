@@ -79,6 +79,7 @@ body {
 .user_card_post_comment {
     width: 20%;
     margin-left: -5px;
+    margin-top: 15px;
 }
 
 .user_card_post_comment::before {
@@ -183,6 +184,12 @@ input {
 .comment_user_text {
     text-align: center;
     padding: 5px;
+}
+
+.comment_user_name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .button_pop {
