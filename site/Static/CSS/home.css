@@ -9,15 +9,15 @@ body {
 .popup {
     position: fixed;
     top: 10vh;
-    left: 10%;
-    margin-right: 10%;
+    left: 10vw;
+    margin-right: 10vw;
     border: none;
     border-radius: 10px;
 }
 
 .container {
     background-color: var(--couleur_principale);
-    width: 100%;
+    width: 80vw;
     height: 85vh;
     border-radius: 10px;
     border: 1px solid gray;

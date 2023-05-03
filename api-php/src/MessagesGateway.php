@@ -34,8 +34,11 @@ class MessagesGateway
                 VALUES (:message, :id_user, NOW(), :id_topics)";
 
         $stmt = $this->conn->prepare($sql);
+        if (isset($data["message"])) {
+            $data["message"] = htmlspecialchars($data["message"]);
+        }
 
-        $stmt->bindValue(":message", htmlspecialchars($data["message"]), PDO::PARAM_STR);
+        $stmt->bindValue(":message", $data["message"], PDO::PARAM_STR);
         $stmt->bindValue(":id_user", htmlspecialchars($data["id_user"]), PDO::PARAM_INT);
         $stmt->bindValue(":id_topics", htmlspecialchars($data["id_topics"]), PDO::PARAM_INT);
 
@@ -94,20 +97,33 @@ class MessagesGateway
 
         $stmt = $this->conn->prepare($sql);
 
+        if (isset($new["message"])) {
+            $new["message"] = htmlspecialchars($new["message"]);
+        }
+        if (isset($new["id_user"])) {
+            $new["id_user"] = htmlspecialchars($new["id_user"]);
+        }
+        if (isset($new["publi_time"])) {
+            $new["publi_time"] = htmlspecialchars($new["publi_time"]);
+        }
+        if (isset($new["id_topics"])) {
+            $new["id_topics"] = htmlspecialchars($new["id_topics"]);
+        }
+
         $stmt->bindValue(
-            ":message", htmlspecialchars($new["message"]) ?? $current["message"],
+            ":message", $new["message"] ?? $current["message"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":id_user", htmlspecialchars($new["id_user"]) ?? $current["id_user"],
+            ":id_user", $new["id_user"] ?? $current["id_user"],
             PDO::PARAM_INT
         );
         $stmt->bindValue(
-            ":publi_time", htmlspecialchars($new["publi_time"]) ?? $current["publi_time"],
+            ":publi_time", $new["publi_time"] ?? $current["publi_time"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":id_topics", htmlspecialchars($new["id_topics"]) ?? $current["id_topics"],
+            ":id_topics", $new["id_topics"] ?? $current["id_topics"],
             PDO::PARAM_INT
         );
 
@@ -120,7 +136,7 @@ class MessagesGateway
 
     //suprimer un message par son id
     public function delete(string $id): int
-    {   
+    {
         $sql = "DELETE FROM messages
                 WHERE id_message = :id_message";
 

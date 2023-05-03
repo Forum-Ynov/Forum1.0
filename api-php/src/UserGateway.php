@@ -112,14 +112,29 @@ class UserGateway
         $options = [
             'cost' => 14,
         ];
-        $new["passwd"] = password_hash(htmlspecialchars($new["passwd"]), PASSWORD_DEFAULT, $options);
+
+        if (isset($new["pseudo"])) {
+            $new["pseudo"] = htmlspecialchars($new["pseudo"]);
+        }
+        if (isset($new["email"])) {
+            $new["email"] = htmlspecialchars($new["email"]);
+        }
+        if (isset($new["passwd"])) {
+            $new["passwd"] = password_hash(htmlspecialchars($new["passwd"]), PASSWORD_DEFAULT, $options);
+        }
+        if (isset($new["id_imagepp"])) {
+            $new["id_imagepp"] = htmlspecialchars($new["id_imagepp"]);
+        }
+        if (isset($new["theme"])) {
+            $new["theme"] = htmlspecialchars($new["theme"]);
+        }
 
         $stmt->bindValue(
-            ":pseudo", htmlspecialchars($new["pseudo"]) ?? $current["pseudo"],
+            ":pseudo", $new["pseudo"] ?? $current["pseudo"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":email", htmlspecialchars($new["email"]) ?? $current["email"],
+            ":email", $new["email"] ?? $current["email"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
@@ -127,11 +142,11 @@ class UserGateway
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":id_imagepp", htmlspecialchars($new["id_imagepp"]) ?? $current["id_imagepp"],
+            ":id_imagepp", $new["id_imagepp"] ?? $current["id_imagepp"],
             PDO::PARAM_INT
         );
         $stmt->bindValue(
-            ":theme", htmlspecialchars($new["theme"]) ?? $current["theme"],
+            ":theme", $new["theme"] ?? $current["theme"],
             PDO::PARAM_STR
         );
 

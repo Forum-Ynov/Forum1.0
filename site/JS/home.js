@@ -576,10 +576,11 @@ CreateMessage.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const message = document.getElementById("comment").value;
+    document.getElementById("comment").value = ""
     const userId = storageUser.id_user;
     const topics = selectedTopic;
 
-    if (document.getElementById("comment").value != "") {
+    if (message != "") {    
 
         const response = await fetch("http://localhost:" + api_port + "/apiForum/messages", {
             method: "POST",
@@ -593,6 +594,11 @@ CreateMessage.addEventListener("submit", async (event) => {
                 id_user: userId,
             }),
         })
+        // .then((res) => {
+        //     if (!res.ok) {
+        //         console.log(res.json()) 
+        //     }
+        // })
         setTimeout(function () {
             fetch_by_topics_messages(selectedTopic)
         }, 500)
