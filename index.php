@@ -1,5 +1,10 @@
 <?php
 
+// *** INSTRUCTION API GO/PHP + .ENV ***
+// pour utiliser l'api php $api_php = true et dans site/config.json  "api_port": "même port que le serveur"
+// pour utiliser l'api go $api_php = false et dans site/config.json  "api_port": 8080 ou port indiquer dans api-go/.ENV
+// pour changer la source de la base de données: changé les valeurs des variables corresondantes dans api-go/.ENV et api-php/.ENV
+
 $api_php = true;
 
 $parts = explode("/", $_SERVER["REQUEST_URI"]);

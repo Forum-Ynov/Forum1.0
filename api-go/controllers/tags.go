@@ -3,6 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"errors"
+	"html"
 	"net/http"
 
 	"API-go/env"
@@ -65,14 +66,16 @@ func GetTagsById(id string) (*models.Tags, error) {
 	}
 	defer db.Close()
 
+	id = html.EscapeString(id)
+
 	// Récupération des tags
-	stmt, err := db.Prepare("SELECT id_tags, tags FROM tags WHERE id_tags = '" + id + "'")
+	stmt, err := db.Prepare("SELECT id_tags, tags FROM tags WHERE id_tags = ?")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer stmt.Close()
 
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(id)
 	if err != nil {
 		panic(err.Error())
 	}

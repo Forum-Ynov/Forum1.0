@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"html"
 	"net/http"
 	"strconv"
 
@@ -49,7 +50,7 @@ func Loginuser(context *gin.Context) {
 		return
 	} else {
 		// On vérifie si le mot de passe fourni correspond à celui stocké dans la base de données en utilisant la fonction CheckPasswordHash
-		if !CheckPasswordHash(newUser.Passwd, user.Passwd) {
+		if !CheckPasswordHash(html.EscapeString(newUser.Passwd), user.Passwd) {
 			// Si les mots de passe ne correspondent pas, on retourne une erreur
 			context.IndentedJSON(http.StatusNotFound, gin.H{"message": "password incorect"})
 			return
@@ -102,8 +103,10 @@ func GetUserById(id string) (*models.User, error) {
 	}
 	defer db.Close()
 
+	id = html.EscapeString(id)
+
 	// Récupère les utilisateurs correspondant à l'identifiant
-	rows, err := db.Query("SELECT * FROM user WHERE id_user = '" + id + "'")
+	rows, err := db.Query("SELECT * FROM user WHERE id_user = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -158,8 +161,10 @@ func GetUserByPseudo(pseudo string) (*models.User, error) {
 	}
 	defer db.Close()
 
+	pseudo = html.EscapeString(pseudo)
+
 	// exécuter la requête pour récupérer l'utilisateur avec le pseudo spécifié
-	rows, err := db.Query("SELECT * FROM user WHERE pseudo = '" + pseudo + "'")
+	rows, err := db.Query("SELECT * FROM user WHERE pseudo = ?", pseudo)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -225,7 +230,7 @@ func UpdateUser(context *gin.Context) {
 	ispass := context.Param("passwd")
 
 	if ispass != "" {
-		user.Passwd, _ = HashPassword(user.Passwd)
+		user.Passwd, _ = HashPassword(html.EscapeString(user.Passwd))
 	}
 
 	// Ouverture d'une connexion à la base de données
@@ -236,7 +241,7 @@ func UpdateUser(context *gin.Context) {
 	defer db.Close()
 
 	// Exécution de la requête pour changer les infos de l'utilisateur
-	if _, err := db.Exec("UPDATE user SET pseudo = '" + user.Pseudo + "', email = '" + user.Email + "', passwd ='" + user.Passwd + "', id_imagepp= '" + strconv.Itoa(user.Id_imagepp) + "', theme = '" + user.Theme + "'  WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
+	if _, err := db.Exec("UPDATE user SET pseudo = ?, email = ?, passwd = ?, id_imagepp= ?, theme = ?  WHERE id_user = ?", html.EscapeString(user.Pseudo), html.EscapeString(user.Email), user.Passwd, strconv.Itoa(user.Id_imagepp), html.EscapeString(user.Theme), strconv.Itoa(user.Id_user)); err != nil {
 		fmt.Println(err)
 	}
 
@@ -261,7 +266,7 @@ func AddUsers(context *gin.Context) {
 	defer db.Close()
 
 	// Vérification si le pseudo existe déjà
-	rowspseudo, err := db.Query("SELECT * FROM user WHERE pseudo = '" + newUser.Pseudo + "'")
+	rowspseudo, err := db.Query("SELECT * FROM user WHERE pseudo = ?", html.EscapeString(newUser.Pseudo))
 	if err != nil {
 		panic(err.Error())
 	}
@@ -282,7 +287,7 @@ func AddUsers(context *gin.Context) {
 	}
 
 	// Vérification si l'email existe déjà
-	rowsemail, err := db.Query("SELECT * FROM user WHERE email = '" + newUser.Email + "'")
+	rowsemail, err := db.Query("SELECT * FROM user WHERE email = ?", html.EscapeString(newUser.Email))
 	if err != nil {
 		panic(err.Error())
 	}
@@ -302,29 +307,19 @@ func AddUsers(context *gin.Context) {
 	}
 
 	// Hashage du mot de passe
-	newUser.Passwd, _ = HashPassword(newUser.Passwd)
+	newUser.Passwd, _ = HashPassword(html.EscapeString(newUser.Passwd))
 
 	// Insertion du nouvel utilisateur dans la base de données
-	if _, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp, theme) VALUES ('" + newUser.Pseudo + "', '" + newUser.Email + "', '" + newUser.Passwd + "', '" + strconv.Itoa(newUser.Id_imagepp) + "', '" + newUser.Theme + "')"); err != nil {
+	if resus, err := db.Exec("INSERT INTO user (pseudo, email, passwd, id_imagepp, theme) VALUES (?, ?, ?, ?, ?)", html.EscapeString(newUser.Pseudo), html.EscapeString(newUser.Email), newUser.Passwd, strconv.Itoa(newUser.Id_imagepp), html.EscapeString(newUser.Theme)); err != nil {
 		fmt.Println(err)
-	}
-
-	// Récupération de l'utilisateur inséré dans la base de données pour retourner la réponse
-	rows, err := db.Query("SELECT * FROM user WHERE pseudo = '" + newUser.Pseudo + "' AND email = '" + newUser.Email + "'")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer rows.Close()
-
-	var temp_user models.User
-	for rows.Next() {
-		err = rows.Scan(&temp_user.Id_user, &temp_user.Pseudo, &temp_user.Email, &temp_user.Passwd, &temp_user.Id_imagepp, &temp_user.Theme)
-		if err != nil {
-			println(errors.New("user not found"))
+	} else {
+		id, err := resus.LastInsertId()
+		if err == nil {
+			Userform, _ := GetMessagesById(strconv.FormatInt(id, 10))
+			context.IndentedJSON(http.StatusCreated, Userform)
+			return
 		}
 	}
-
-	newUser.Id_user = temp_user.Id_user
 
 	// Retourne la réponse
 	context.IndentedJSON(http.StatusCreated, newUser)
@@ -350,7 +345,7 @@ func DeleteUser(context *gin.Context) {
 	defer db.Close()
 
 	// Suppression de l'utilisateur en base de données
-	if _, err := db.Exec("DELETE FROM user WHERE id_user = '" + strconv.Itoa(user.Id_user) + "'"); err != nil {
+	if _, err := db.Exec("DELETE FROM user WHERE id_user = ?", strconv.Itoa(user.Id_user)); err != nil {
 		fmt.Println(err)
 	}
 

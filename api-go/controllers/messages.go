@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"html"
 	"net/http"
 	"strconv"
 
@@ -60,8 +61,10 @@ func GetMessagesById(id string) (*models.Messages, error) {
 	}
 	defer db.Close()
 
+	id = html.EscapeString(id)
+
 	// Requête SQL pour récupérer un message par son ID
-	rows, err := db.Query("SELECT * FROM messages WHERE id_message = '" + id + "'")
+	rows, err := db.Query("SELECT * FROM messages WHERE id_message = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -132,7 +135,7 @@ func ChangeMessage(context *gin.Context) {
 	defer db.Close()
 
 	// Mettre à jour le message dans la base de données en utilisant une requête SQL
-	if _, err := db.Exec(`UPDATE messages SET message = "` + message.Message + `" , publi_time = NOW()  WHERE id_message = "` + strconv.Itoa(message.Id_message) + `"`); err != nil {
+	if _, err := db.Exec("UPDATE messages SET message = ? , publi_time = NOW()  WHERE id_message = ?", message.Message, strconv.Itoa(message.Id_message)); err != nil {
 		// Si la requête échoue, afficher l'erreur dans la console
 		fmt.Println(err)
 	}
@@ -153,7 +156,7 @@ func GetMessagesByTopics(context *gin.Context) {
 	defer db.Close()
 
 	// Récupération des messages correspondants à l'id_topics donné
-	rows, err := db.Query("SELECT * FROM messages WHERE id_topics = '" + id_topics + "' ORDER BY publi_time DESC")
+	rows, err := db.Query("SELECT * FROM messages WHERE id_topics = ? ORDER BY publi_time DESC", id_topics)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -174,6 +177,11 @@ func GetMessagesByTopics(context *gin.Context) {
 
 		// Ajouter le message au slice de messages
 		messages = append(messages, message)
+	}
+
+	if len(messages) <= 0 {
+		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "message not found"})
+		return
 	}
 
 	context.IndentedJSON(http.StatusOK, messages) // Renvoie la liste des messages sous forme de JSON
@@ -199,32 +207,17 @@ func AddMessage(context *gin.Context) {
 	defer db.Close()
 
 	// Insertion du message dans la base de données
-	if _, err := db.Exec(`INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES ("` + newMessage.Message + `", ` + strconv.Itoa(newMessage.Id_user) + `,  NOW() , "` + strconv.Itoa(newMessage.Id_topics) + `")`); err != nil {
+	if res, err := db.Exec("INSERT INTO messages (message, id_user, publi_time, id_topics) VALUES (?, ?,  NOW() , ?)", html.EscapeString(newMessage.Message), html.EscapeString(strconv.Itoa(newMessage.Id_user)), html.EscapeString(strconv.Itoa(newMessage.Id_topics))); err != nil {
 		// Si l'insertion échoue, renvoyer une erreur
 		fmt.Println(err)
-	}
-
-	// Récupération du message inséré pour obtenir l'ID de la catégorie
-	rows, err := db.Query(`SELECT message, id_user, publi_time, id_topics FROM messages WHERE message = "` + newMessage.Message + `"`)
-	if err != nil {
-		// Si la requête échoue, renvoyer une erreur
-		panic(err.Error())
-	}
-
-	defer rows.Close()
-
-	var temp_message models.Messages
-	for rows.Next() {
-		// Si le message est trouvé, le stocker dans une variable temporaire
-		err = rows.Scan(&temp_message.Id_message, &temp_message.Message, &temp_message.Id_user, &temp_message.Publi_time, &temp_message.Id_topics)
-		if err != nil {
-			println(errors.New("message not found"))
+	} else {
+		id, err := res.LastInsertId()
+		if err == nil {
+			Messageform, _ := GetMessagesById(strconv.FormatInt(id, 10))
+			context.IndentedJSON(http.StatusCreated, Messageform)
+			return
 		}
-
 	}
-
-	// Stockage de l'ID de la catégorie dans le nouveau message
-	newMessage.Id_topics = temp_message.Id_topics
 
 	// Envoi du nouveau message en réponse
 	context.IndentedJSON(http.StatusCreated, newMessage)
@@ -253,7 +246,7 @@ func DeleteMessage(context *gin.Context) {
 	defer db.Close()
 
 	// Supprime le message de la base de données
-	if _, err := db.Exec("DELETE FROM messages WHERE id_message = '" + strconv.Itoa(message.Id_message) + "'"); err != nil {
+	if _, err := db.Exec("DELETE FROM messages WHERE id_message = ?", strconv.Itoa(message.Id_message)); err != nil {
 		fmt.Println(err)
 	}
 

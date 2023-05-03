@@ -3,6 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"errors"
+	"html"
 	"net/http"
 
 	"API-go/env"
@@ -65,14 +66,16 @@ func GetPpById(id string) (*models.Imagepp, error) {
 	}
 	defer db.Close()
 
+	id = html.EscapeString(id)
+
 	// Récupération des pp
-	stmt, err := db.Prepare("SELECT * FROM imagepp WHERE id_pp = '" + id + "'")
+	stmt, err := db.Prepare("SELECT * FROM imagepp WHERE id_pp = ?")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer stmt.Close()
 
-	rows, err := stmt.Query()
+	rows, err := stmt.Query(id)
 	if err != nil {
 		panic(err.Error())
 	}
