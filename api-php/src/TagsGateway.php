@@ -34,7 +34,7 @@ class TagsGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_tags", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_tags", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 

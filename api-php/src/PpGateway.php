@@ -34,7 +34,7 @@ class PpGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_pp", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_pp", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 

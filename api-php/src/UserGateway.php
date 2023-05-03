@@ -36,13 +36,13 @@ class UserGateway
         $options = [
             'cost' => 14,
         ];
-        $data["passwd"] = password_hash($data["passwd"], PASSWORD_DEFAULT, $options);
+        $data["passwd"] = password_hash(htmlspecialchars($data["passwd"]), PASSWORD_DEFAULT, $options);
 
-        $stmt->bindValue(":pseudo", $data["pseudo"], PDO::PARAM_STR);
-        $stmt->bindValue(":email", $data["email"], PDO::PARAM_STR);
+        $stmt->bindValue(":pseudo", htmlspecialchars($data["pseudo"]), PDO::PARAM_STR);
+        $stmt->bindValue(":email", htmlspecialchars($data["email"]), PDO::PARAM_STR);
         $stmt->bindValue(":passwd", $data["passwd"], PDO::PARAM_STR);
-        $stmt->bindValue(":id_imagepp", $data["id_imagepp"], PDO::PARAM_INT);
-        $stmt->bindValue(":theme", $data["theme"], PDO::PARAM_STR);
+        $stmt->bindValue(":id_imagepp", htmlspecialchars($data["id_imagepp"]), PDO::PARAM_INT);
+        $stmt->bindValue(":theme", htmlspecialchars($data["theme"]), PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -58,7 +58,7 @@ class UserGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_user", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_user", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -75,7 +75,7 @@ class UserGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":pseudo", $pseudo, PDO::PARAM_STR);
+        $stmt->bindValue(":pseudo", htmlspecialchars($pseudo), PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -92,7 +92,7 @@ class UserGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":email", $pseudo, PDO::PARAM_STR);
+        $stmt->bindValue(":email", htmlspecialchars($pseudo), PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -109,12 +109,17 @@ class UserGateway
 
         $stmt = $this->conn->prepare($sql);
 
+        $options = [
+            'cost' => 14,
+        ];
+        $new["passwd"] = password_hash(htmlspecialchars($new["passwd"]), PASSWORD_DEFAULT, $options);
+
         $stmt->bindValue(
-            ":pseudo", $new["pseudo"] ?? $current["pseudo"],
+            ":pseudo", htmlspecialchars($new["pseudo"]) ?? $current["pseudo"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":email", $new["email"] ?? $current["email"],
+            ":email", htmlspecialchars($new["email"]) ?? $current["email"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
@@ -122,11 +127,11 @@ class UserGateway
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":id_imagepp", $new["id_imagepp"] ?? $current["id_imagepp"],
+            ":id_imagepp", htmlspecialchars($new["id_imagepp"]) ?? $current["id_imagepp"],
             PDO::PARAM_INT
         );
         $stmt->bindValue(
-            ":theme", $new["theme"] ?? $current["theme"],
+            ":theme", htmlspecialchars($new["theme"]) ?? $current["theme"],
             PDO::PARAM_STR
         );
 
@@ -144,7 +149,7 @@ class UserGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_user", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_user", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 

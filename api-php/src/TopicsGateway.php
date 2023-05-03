@@ -33,10 +33,10 @@ class TopicsGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":titre", $data["titre"], PDO::PARAM_STR);
-        $stmt->bindValue(":description", $data["description"], PDO::PARAM_STR);
-        $stmt->bindValue(":id_tags", $data["id_tags"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_user", $data["id_user"], PDO::PARAM_INT);
+        $stmt->bindValue(":titre", htmlspecialchars($data["titre"]), PDO::PARAM_STR);
+        $stmt->bindValue(":description", htmlspecialchars($data["description"]), PDO::PARAM_STR);
+        $stmt->bindValue(":id_tags", htmlspecialchars($data["id_tags"]), PDO::PARAM_INT);
+        $stmt->bindValue(":id_user", htmlspecialchars($data["id_user"]), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -52,7 +52,7 @@ class TopicsGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_topics", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_topics", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -69,7 +69,7 @@ class TopicsGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_tags", $tags, PDO::PARAM_INT);
+        $stmt->bindValue(":id_tags", htmlspecialchars($tags), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -90,7 +90,7 @@ class TopicsGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":titre", $titre, PDO::PARAM_STR);
+        $stmt->bindValue(":titre", htmlspecialchars($titre), PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -107,7 +107,7 @@ class TopicsGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":description", $description, PDO::PARAM_STR);
+        $stmt->bindValue(":description", htmlspecialchars($description), PDO::PARAM_STR);
 
         $stmt->execute();
 

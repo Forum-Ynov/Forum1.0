@@ -35,9 +35,9 @@ class MessagesGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":message", $data["message"], PDO::PARAM_STR);
-        $stmt->bindValue(":id_user", $data["id_user"], PDO::PARAM_INT);
-        $stmt->bindValue(":id_topics", $data["id_topics"], PDO::PARAM_INT);
+        $stmt->bindValue(":message", htmlspecialchars($data["message"]), PDO::PARAM_STR);
+        $stmt->bindValue(":id_user", htmlspecialchars($data["id_user"]), PDO::PARAM_INT);
+        $stmt->bindValue(":id_topics", htmlspecialchars($data["id_topics"]), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -54,7 +54,7 @@ class MessagesGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_message", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_message", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -72,7 +72,7 @@ class MessagesGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_topics", $topics, PDO::PARAM_INT);
+        $stmt->bindValue(":id_topics", htmlspecialchars($topics), PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -95,19 +95,19 @@ class MessagesGateway
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(
-            ":message", $new["message"] ?? $current["message"],
+            ":message", htmlspecialchars($new["message"]) ?? $current["message"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":id_user", $new["id_user"] ?? $current["id_user"],
+            ":id_user", htmlspecialchars($new["id_user"]) ?? $current["id_user"],
             PDO::PARAM_INT
         );
         $stmt->bindValue(
-            ":publi_time", $new["publi_time"] ?? $current["publi_time"],
+            ":publi_time", htmlspecialchars($new["publi_time"]) ?? $current["publi_time"],
             PDO::PARAM_STR
         );
         $stmt->bindValue(
-            ":id_topics", $new["id_topics"] ?? $current["id_topics"],
+            ":id_topics", htmlspecialchars($new["id_topics"]) ?? $current["id_topics"],
             PDO::PARAM_INT
         );
 
@@ -126,7 +126,7 @@ class MessagesGateway
 
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(":id_message", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id_message", htmlspecialchars($id), PDO::PARAM_INT);
 
         $stmt->execute();
 
