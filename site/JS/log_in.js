@@ -13,7 +13,6 @@ let in_passwd = document.getElementById("in_passwd");
 let form_log = document.getElementById("form_log");
 
 let actual_user = new User("", "", "", "", "", "");
-let default_user = new User("", "", "", "", "", "");
 
 form_log.addEventListener("submit", async function (event) {
     event.preventDefault();
