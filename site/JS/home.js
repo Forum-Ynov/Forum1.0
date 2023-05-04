@@ -6,12 +6,12 @@ import { Messages } from "/site/JS/messages_class.js";
 
 let api_port
 
+// charge le site avec l
 $.getJSON("/site/conf.json", function (data) {
     api_port = data.api_port
     fetch_tags();
     fetch_all();
     post_tag();
-    console.log(api_port)
 })
 
 const CreateMessage = document.getElementById("CreateMessage");
@@ -53,7 +53,6 @@ let publisher;
 let pp_publi;
 let list_tags = [];
 let list_topics = [];
-let list_cards = [];
 let list_messages = [];
 const display_tags = document.getElementById("display_tags");
 const display_topics = document.getElementById("display_topics");
@@ -580,7 +579,7 @@ CreateMessage.addEventListener("submit", async (event) => {
     const userId = storageUser.id_user;
     const topics = selectedTopic;
 
-    if (message != "") {    
+    if (message != "") {
 
         const response = await fetch("http://localhost:" + api_port + "/apiForum/messages", {
             method: "POST",
