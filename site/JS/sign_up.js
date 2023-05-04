@@ -143,8 +143,8 @@ form_sign.addEventListener("submit", async function (event) {
                     actual_user.id_imagepp = data.id_imagepp;
                     actual_user.theme = data.theme
                     console.log(actual_user)
-                    alert("created")
                     localStorage.setItem("loged_user", JSON.stringify(actual_user))
+                    window.location.href = "/Forum/home"
                 })
             } else {
                 console.log("res.ok false")

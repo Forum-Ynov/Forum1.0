@@ -315,7 +315,7 @@ func AddUsers(context *gin.Context) {
 	} else {
 		id, err := resus.LastInsertId()
 		if err == nil {
-			Userform, _ := GetMessagesById(strconv.FormatInt(id, 10))
+			Userform, _ := GetUserById(strconv.FormatInt(id, 10))
 			context.IndentedJSON(http.StatusCreated, Userform)
 			return
 		}

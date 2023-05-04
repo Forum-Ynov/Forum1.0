@@ -23,7 +23,6 @@ let storageUser = new User("", "", "", "", "", "");
 if (localUser) {
     console.log("auto connect");
     storageUser = JSON.parse(localUser);
-    console.log(storageUser);
 
     switch (storageUser.theme) {
         case "dark":

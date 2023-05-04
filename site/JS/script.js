@@ -25,7 +25,6 @@ swmode.onclick = async function switch_theme() {
 
         if (localUser) {
             storageUser = JSON.parse(localUser)
-            console.log(storageUser)
 
             const r = await fetch(`http://localhost:`+api_port+`/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
@@ -50,7 +49,6 @@ swmode.onclick = async function switch_theme() {
 
         if (localUser) {
             storageUser = JSON.parse(localUser)
-            console.log(storageUser)
 
             const r = await fetch(`http://localhost:`+api_port+`/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
