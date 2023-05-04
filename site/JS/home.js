@@ -601,7 +601,7 @@ CreateMessage.addEventListener("submit", async (event) => {
         // })
         setTimeout(function () {
             fetch_by_topics_messages(selectedTopic)
-        }, 500)
+        }, 400)
     }
 });
 
