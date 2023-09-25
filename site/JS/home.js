@@ -12,6 +12,9 @@ $.getJSON("/site/conf.json", function (data) {
     fetch_tags();
     fetch_all();
     post_tag();
+    if(localUser){
+        get_pp()
+    }
 })
 
 const CreateMessage = document.getElementById("CreateMessage");
@@ -592,11 +595,6 @@ CreateMessage.addEventListener("submit", async (event) => {
                 id_user: userId,
             }),
         })
-        // .then((res) => {
-        //     if (!res.ok) {
-        //         console.log(res.json()) 
-        //     }
-        // })
         setTimeout(function () {
             fetch_by_topics_messages(selectedTopic)
         }, 400)
@@ -695,6 +693,23 @@ if (localUser) {
 
 const div_text = document.querySelector(".div_text");
 const div_text_connect = document.querySelector(".div_text_connect");
+
+let profil_picture = document.getElementById("profil_picture")
+
+async function get_pp() {
+    const tagsload = await fetch("http://localhost:" + api_port + "/apiForum/pp/" + storageUser.id_imagepp, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            profil_picture.src = "/site/Assets/Images/profil/"+data.image_loc
+        })
+        .catch((error) => console.error(error));
+}
 
 function log_In() {
     if (localUser) {

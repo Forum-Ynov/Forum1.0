@@ -39,7 +39,7 @@
                 <div class="dropdown">
                     <div id="profil_pseudo"></div>
                     <button class="button_user_img">
-                        <img src="/site/Assets/Images/profil/user.svg" alt="user">
+                        <img id="profil_picture" src="/site/Assets/Images/profil/user.svg" alt="user">
                         <img src="/site/Assets/Images/menu/arrow_down.svg" />
                     </button>
                     <div class="dropdown-menu">
