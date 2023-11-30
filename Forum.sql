@@ -1,18 +1,3 @@
--- --------------------------------------------------------
--- Hôte:                         176.31.132.185
--- Version du serveur:           10.5.19-MariaDB-0+deb11u2 - Debian 11
--- SE du serveur:                debian-linux-gnu
--- HeidiSQL Version:             12.1.0.6537
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Listage de la structure de table kcdxbd_sqwadowe_db. imagepp
 CREATE TABLE IF NOT EXISTS `imagepp` (
@@ -115,9 +100,3 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id_user`, `pseudo`, `email`, `passwd`, `id_imagepp`, `theme`) VALUES
 	(16, 'mateo', 'mateoluque@aol.com', '$2a$14$aYiMig8XzdQ/vSndSlvxLO8IZWbQP0LEg5Rp9AkLs7Lq2dna0aUAO', 5, 'dark'),
 	(17, 'lorenzo', 'lorenzo.gotti@ynov.com', '$2a$14$yUVCzWRozD4BrBXl7Hp97.hFqVeBDJD.hOgzzgAFnUnvfsgFJSvta', 2, 'dark');
-
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

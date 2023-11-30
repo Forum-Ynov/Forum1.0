@@ -19,7 +19,7 @@ form_log.addEventListener("submit", async function (event) {
     let names = in_pseudo.value;
     let pass = in_passwd.value;
 
-    const r = await fetch("http://localhost:"+api_port+"/apiForum/login", {
+    const r = await fetch(window.location.origin+"/apiForum/login", {
         method: 'POST',
         headers: {
             "Accept": "application/json",

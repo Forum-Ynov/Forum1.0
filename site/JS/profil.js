@@ -54,7 +54,7 @@ function log_In() {
         user_pseudo.innerHTML = storageUser.pseudo;
         user_pp.src = "/site/Assets/Images/profil/homer.svg"
 
-        const ppload = fetch(`http://localhost:`+api_port+`/apiForum/pp/${storageUser.id_imagepp}`, {
+        const ppload = fetch(window.location.origin+`/apiForum/pp/${storageUser.id_imagepp}`, {
             method: 'GET',
             headers: {
                 "Accept": "application/json",
@@ -181,7 +181,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`http://localhost:`+api_port+`/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(window.location.origin+`/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
@@ -206,7 +206,7 @@ swmode.onclick = async function switch_theme() {
             storageUser = JSON.parse(localUser)
             console.log(storageUser)
 
-            const r = await fetch(`http://localhost:`+api_port+`/apiForum/users/${storageUser.id_user}`, {
+            const r = await fetch(window.location.origin+`/apiForum/users/${storageUser.id_user}`, {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",

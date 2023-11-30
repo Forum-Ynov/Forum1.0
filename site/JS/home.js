@@ -63,7 +63,7 @@ const style_mod = document.getElementById("style_mod");
 async function fetch_all() {
     favDialog.style.display = "none";
     display_topics.style.position = "inherit";
-    const topicsload = await fetch("http://localhost:" + api_port + "/apiForum/topics", {
+    const topicsload = await fetch(window.location.origin + "/apiForum/topics", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -92,7 +92,7 @@ async function fetch_all() {
                 list_topics.forEach(elt => {
 
                     const topicsuserload = fetch(
-                        `http://localhost:` + api_port + `/apiForum/users/${elt.id_user}`,
+                        window.location.origin + `/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -135,7 +135,7 @@ async function fetch_all() {
             }`;
 
                                 const ppload = fetch(
-                                    `http://localhost:` + api_port + `/apiForum/pp/${publisher.id_imagepp}`,
+                                    window.location.origin + `/apiForum/pp/${publisher.id_imagepp}`,
                                     {
                                         method: "GET",
                                         headers: {
@@ -235,7 +235,7 @@ async function fetch_by_tags(tag) {
     favDialog.style.display = "none";
     display_topics.style.position = "inherit";
     const topicsload = await fetch(
-        `http://localhost:` + api_port + `/apiForum/topicstags/${tag}`,
+        window.location.origin + `/apiForum/topicstags/${tag}`,
         {
             method: "GET",
             headers: {
@@ -266,7 +266,7 @@ async function fetch_by_tags(tag) {
                 list_topics.forEach(elt => {
 
                     const topicsload = fetch(
-                        `http://localhost:` + api_port + `/apiForum/users/${elt.id_user}`,
+                        window.location.origin + `/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -286,7 +286,7 @@ async function fetch_by_tags(tag) {
                                     data.theme
                                 );
 
-                                const topicsload = fetch(`http://localhost:` + api_port + `/apiForum/users/${elt.id_user}`, {
+                                const topicsload = fetch(window.location.origin + `/apiForum/users/${elt.id_user}`, {
                                     method: 'GET',
                                     headers: {
                                         "Accept": "application/json",
@@ -321,7 +321,7 @@ text-align: center;
 }`;
 
                                                 const ppload = fetch(
-                                                    `http://localhost:` + api_port + `/apiForum/pp/${publisher.id_imagepp}`,
+                                                    window.location.origin + `/apiForum/pp/${publisher.id_imagepp}`,
                                                     {
                                                         method: "GET",
                                                         headers: {
@@ -366,7 +366,7 @@ const left_container = document.getElementById("left_container");
 
 async function fetch_by_topics(id_topics) {
     const topicsload = await fetch(
-        `http://localhost:` + api_port + `/apiForum/topics/${id_topics}`,
+        window.location.origin + `/apiForum/topics/${id_topics}`,
         {
             method: "GET",
             headers: {
@@ -389,7 +389,7 @@ async function fetch_by_topics(id_topics) {
                 );
 
                 const userload = fetch(
-                    `http://localhost:` + api_port + `/apiForum/users/${data.id_user}`,
+                    window.location.origin + `/apiForum/users/${data.id_user}`,
                     {
                         method: "GET",
                         headers: {
@@ -435,7 +435,7 @@ async function fetch_by_topics(id_topics) {
                     }`;
 
                             const ppload = fetch(
-                                `http://localhost:` + api_port + `/apiForum/pp/${publisher.id_imagepp}`,
+                                window.location.origin + `/apiForum/pp/${publisher.id_imagepp}`,
                                 {
                                     method: "GET",
                                     headers: {
@@ -473,7 +473,7 @@ const comment_container = document.getElementById("comment_container");
 
 async function fetch_by_topics_messages(id_topics) {
     const messagesload = await fetch(
-        `http://localhost:` + api_port + `/apiForum/messagestopics/${id_topics}`,
+        window.location.origin + `/apiForum/messagestopics/${id_topics}`,
         {
             method: "GET",
             headers: {
@@ -504,7 +504,7 @@ async function fetch_by_topics_messages(id_topics) {
                 list_messages.forEach(elt => {
 
                     const userload = fetch(
-                        `http://localhost:` + api_port + `/apiForum/users/${elt.id_user}`,
+                        window.location.origin + `/apiForum/users/${elt.id_user}`,
                         {
                             method: "GET",
                             headers: {
@@ -536,7 +536,7 @@ async function fetch_by_topics_messages(id_topics) {
                                 </div>`;
 
                                 const ppload = fetch(
-                                    `http://localhost:` + api_port + `/apiForum/pp/${publisher.id_imagepp}`,
+                                    window.location.origin + `/apiForum/pp/${publisher.id_imagepp}`,
                                     {
                                         method: "GET",
                                         headers: {

@@ -12,7 +12,7 @@ $.getJSON("/site/conf.json", function (data) {
 let list_pp = []
 
 async function loadpp() {
-    const r = await fetch("http://localhost:"+api_port+"/apiForum/pp", {
+    const r = await fetch(window.location.origin+"/apiForum/pp", {
         method: 'GET',
         headers: {
             "Accept": "application/json",
@@ -123,7 +123,7 @@ form_sign.addEventListener("submit", async function (event) {
     let user_theme = body.getAttribute('data-theme');
 
 
-    const r = await fetch("http://localhost:"+api_port+"/apiForum/users", {
+    const r = await fetch(window.location.origin+"/apiForum/users", {
         method: 'POST',
         headers: {
             "Accept": "application/json",
